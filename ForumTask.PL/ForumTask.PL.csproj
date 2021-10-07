@@ -1,7 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <StartupObject>ForumTask.PL.Program</StartupObject>
+    <Authors>Dmytrenko Andrey</Authors>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\Projects\Visual_Studio\ForumTask\BuildResult\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\Projects\Visual_Studio\ForumTask\BuildResult\Release\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ForumTask.BLL\ForumTask.BLL.csproj" />
+  </ItemGroup>
 
 </Project>

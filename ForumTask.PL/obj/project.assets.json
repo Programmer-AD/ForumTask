@@ -1,11 +1,48 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {}
+    "net5.0": {
+      "ForumTask.BLL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "ForumTask.DAL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ForumTask.BLL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ForumTask.BLL.dll": {}
+        }
+      },
+      "ForumTask.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/ForumTask.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ForumTask.DAL.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "ForumTask.BLL/1.0.0": {
+      "type": "project",
+      "path": "../ForumTask.BLL/ForumTask.BLL.csproj",
+      "msbuildProject": "../ForumTask.BLL/ForumTask.BLL.csproj"
+    },
+    "ForumTask.DAL/1.0.0": {
+      "type": "project",
+      "path": "../ForumTask.DAL/ForumTask.DAL.csproj",
+      "msbuildProject": "../ForumTask.DAL/ForumTask.DAL.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net5.0": []
+    "net5.0": [
+      "ForumTask.BLL >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\AndreyPC\\.nuget\\packages\\": {},
@@ -37,7 +74,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\Visual_Studio\\ForumTask\\ForumTask.BLL\\ForumTask.BLL.csproj": {
+              "projectPath": "D:\\Projects\\Visual_Studio\\ForumTask\\ForumTask.BLL\\ForumTask.BLL.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

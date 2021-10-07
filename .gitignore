@@ -1,0 +1,6 @@
+/ForumTask.Front/src/node_modules/*
+/ForumTask.Front/result/*
+/BuildResult/*
+**/obj/Debug/*
+**/obj/Release/*
+/.vs/*
