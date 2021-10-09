@@ -23,4 +23,9 @@
     <ProjectReference Include="..\ForumTask.BLL\ForumTask.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
