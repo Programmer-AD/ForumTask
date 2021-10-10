@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumTask.DAL.EF {
-    public class UnitOfWork : IUnitOfWork {
+    class UnitOfWork : IUnitOfWork {
         private ITopicRepository topic;
         public ITopicRepository Topics => topic ??= new TopicRepository(db);
 

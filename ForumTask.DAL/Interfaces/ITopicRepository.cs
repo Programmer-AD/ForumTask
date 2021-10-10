@@ -9,30 +9,19 @@ namespace ForumTask.DAL.Interfaces {
     public interface ITopicRepository:IRepository<Topic> {
         /// <summary>
         /// Order topics by <see cref="Topic.CreateTime"/> desc then skips <paramref name="offset"/> and takes <paramref name="count"/> as result
-        /// </summary>
-        /// <param name="count">Count of entities to return</param>
-        /// <param name="offset">Number of entities to skip</param>
-        /// <returns>Ordered collection of topics</returns>
-        IEnumerable<Topic> GetTopNew(int count, int offset);
-        /// <summary>
-        /// Pick topics which <see cref="Topic.Title"/> contains <paramref name="title"/> 
-        /// then orders them by <see cref="Topic.CreateTime"/> desc,
-        /// skips <paramref name="offset"/> and takes <paramref name="count"/> as result
-        /// </summary>
-        /// <param name="title">Title to search</param>
-        /// <param name="count">Count of entities to return</param>
-        /// <param name="offset">Number of entities to skip</param>
-        /// <returns>Filtered and order collection of topics</returns>
-        IEnumerable<Topic> FindNewestByTitle(string title, int count, int offset);
-        /// <summary>
-        /// Gets count of messages attached to <paramref name="topic"/>
         /// <para>
-        /// If <paramref name="topic"/> is null, throws <see cref="ArgumentNullException"/>
+        /// If <paramref name="searchTitle"/> is not empty or null previously filter topics by title 
         /// </para>
         /// </summary>
-        /// <param name="topic"></param>
-        /// <returns>Count of messages attached to <paramref name="topic"/></returns>
-        /// <exception cref="ArgumentNullException"/>
-        int GetMessageCount(Topic topic);
+        /// <param name="count">Count of entities to return</param>
+        /// <param name="offset">Number of entities to skip</param>
+        /// <param name="searchTitle">Title to search</param>
+        /// <returns>Ordered collection of topics</returns>
+        IEnumerable<Topic> GetTopNew(int count, int offset, string searchTitle="");
+        /// <summary>
+        /// Gets total count of topic
+        /// </summary>
+        /// <returns>Count of topics</returns>
+        int Count();
     }
 }

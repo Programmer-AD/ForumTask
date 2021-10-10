@@ -15,8 +15,8 @@ namespace ForumTask.DAL.Entities {
         
         public DateTime WriteTime { get; set; }
 
-        public Topic Topic { get; set; }
         public ulong TopicId { get; set; }
+        public Topic Topic { get; set; }
 
         public uint? AuthorId { get; set; }
         public User Author { get; set; }

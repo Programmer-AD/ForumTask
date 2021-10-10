@@ -10,9 +10,7 @@ namespace ForumTask.DAL.EF.Repositories {
     class MarkRepository : GenericRepository<Mark>, IMarkRepository {
         public MarkRepository(ForumContext context):base(context) { }
 
-        public int GetMarkValue(Message message) {
-            if (message is null) throw new ArgumentNullException(nameof(message));
-            return set.Where(m => m.MessageId == message.Id).Sum(m => (sbyte)m.Type);
-        }
+        public long GetMarkValue(ulong messageId) 
+            => set.Where(m => m.MessageId == messageId).Sum(m => (long)m.Type);
     }
 }

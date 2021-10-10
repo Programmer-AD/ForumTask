@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ForumTask.DAL.Entities;
 
 namespace ForumTask.DAL.EF {
-    public class ForumContext:IdentityDbContext<User,IdentityRole<uint>,uint> {
+    class ForumContext:IdentityDbContext<User,IdentityRole<uint>,uint> {
         public DbSet<Message> Messages { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Mark> Marks { get; set; }

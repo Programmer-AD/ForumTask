@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumTask.DAL.Identity {
     class IdentityManager:IIdentityManager {
-        private UserManager<User> userMan;
-        private SignInManager<User> signInMan;
+        private readonly UserManager<User> userMan;
+        private readonly SignInManager<User> signInMan;
 
         public IdentityManager(UserManager<User> userManager, SignInManager<User> signInManager) {
             userMan = userManager;
@@ -46,14 +47,19 @@ namespace ForumTask.DAL.Identity {
         }
 
         public void Delete(uint id) {
-            User user = FindById(id);
-            if (user is null)
+            User user = FindById(id)??
                 throw new InvalidOperationException("User with providden id wasn`t found, so can`t be deleted");
             Delete(user);
         }
 
         public User FindById(uint id) {
             var t=userMan.FindByIdAsync(id.ToString());
+            t.Wait();
+            return t.Result;
+        }
+
+        public User FindByName(string name) {
+            var t = userMan.FindByNameAsync(name);
             t.Wait();
             return t.Result;
         }
@@ -78,6 +84,14 @@ namespace ForumTask.DAL.Identity {
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
             CallIdentitySync(() => userMan.UpdateAsync(user));
+        }
+
+        public IList<string> GetRoles(User user) {
+            if (user is null)
+                throw new ArgumentNullException(nameof(user));
+            var t = userMan.GetRolesAsync(user);
+            t.Wait();
+            return t.Result;
         }
     }
 }

@@ -10,10 +10,11 @@ namespace ForumTask.DAL.EF.Repositories {
     class MessageRepository : GenericRepository<Message>, IMessageRepository {
         public MessageRepository(ForumContext context):base(context) { }
 
-        public IEnumerable<Message> GetTopOld(Topic topic, int count, int offset) {
-            if (topic is null)
-                throw new ArgumentNullException(nameof(topic));
-            return set.Where(m => m.TopicId == topic.Id).OrderBy(m => m.WriteTime).Skip(offset).Take(count);
-        }
+        public IEnumerable<Message> GetTopOld(ulong topicId, int count, int offset) 
+            => set.Where(m => m.TopicId == topicId).OrderBy(m => m.WriteTime).Skip(offset).Take(count);
+        
+
+        public int GetMessageCount(ulong topicId) 
+            => set.Where(m => m.TopicId == topicId).Count();
     }
 }

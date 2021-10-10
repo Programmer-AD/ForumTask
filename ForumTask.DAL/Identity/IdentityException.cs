@@ -8,7 +8,6 @@ namespace ForumTask.DAL.Identity {
 
     [Serializable]
     public class IdentityException : Exception {
-        public IEnumerable<string> IdentityErrorCodes;
         public IdentityException() { }
         public IdentityException(IEnumerable<string> errCodes):base(string.Join(", ", errCodes)) {
             IdentityErrorCodes = errCodes;
@@ -21,5 +20,7 @@ namespace ForumTask.DAL.Identity {
         protected IdentityException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+
+        public IEnumerable<string> IdentityErrorCodes { get; set; }
     }
 }

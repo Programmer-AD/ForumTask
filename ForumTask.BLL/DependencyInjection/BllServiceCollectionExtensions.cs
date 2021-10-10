@@ -1,4 +1,6 @@
-﻿using ForumTask.DAL.DependencyInjection;
+﻿using ForumTask.BLL.Interfaces;
+using ForumTask.BLL.Services;
+using ForumTask.DAL.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,7 +14,10 @@ namespace ForumTask.BLL.DependencyInjection {
         public static void AddBll(this IServiceCollection services, IConfiguration config) {
             services.AddDal(config);
 
-
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMarkService, MarkService>();
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<ITopicService, TopicService>();
         }
     }
 }
