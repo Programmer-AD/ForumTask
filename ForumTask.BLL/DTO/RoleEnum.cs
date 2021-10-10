@@ -21,5 +21,21 @@ namespace ForumTask.BLL.DTO {
                 RoleEnum.Admin=>"Admin",
                 _=>"!unknown!"
             };
+        /// <summary>
+        /// Gets roleEnum by role name
+        /// <para>
+        /// If no role with such name, throw <see cref="ArgumentException"/>
+        /// </para>
+        /// </summary>
+        /// <param name="name">Name of rol</param>
+        /// <returns>RoleEnum value</returns>
+        /// <exception cref="ArgumentException"/>
+        public static RoleEnum GetRoleByName(string name)
+            => name.ToLower() switch {
+                "user" => RoleEnum.User,
+                "moderator" => RoleEnum.Moderator,
+                "admin" => RoleEnum.Admin,
+                _ => throw new ArgumentException("There is no role with providden name")
+            };
     }
 }
