@@ -230,6 +230,21 @@
           "lib/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {}
         }
       },
+      "Microsoft.AspNetCore.SpaServices.Extensions/5.0.10": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Physical": "5.0.0"
+        },
+        "compile": {
+          "lib/net5.0/Microsoft.AspNetCore.SpaServices.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Microsoft.AspNetCore.SpaServices.Extensions.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.WebUtilities/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -2231,6 +2246,20 @@
         "lib/netstandard2.1/Microsoft.AspNetCore.Identity.EntityFrameworkCore.xml",
         "microsoft.aspnetcore.identity.entityframeworkcore.5.0.10.nupkg.sha512",
         "microsoft.aspnetcore.identity.entityframeworkcore.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.SpaServices.Extensions/5.0.10": {
+      "sha512": "CIHXYOnEs1P0zJnbh87280waaJ7St3FJqUDG8z4X8MMd/Y77VUog8kHJO/xR/HEf0y60kzpGT9D4NRjTfqIOYQ==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.spaservices.extensions/5.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net5.0/Microsoft.AspNetCore.SpaServices.Extensions.dll",
+        "microsoft.aspnetcore.spaservices.extensions.5.0.10.nupkg.sha512",
+        "microsoft.aspnetcore.spaservices.extensions.nuspec"
       ]
     },
     "Microsoft.AspNetCore.WebUtilities/2.2.0": {
@@ -6813,7 +6842,8 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "ForumTask.BLL >= 1.0.0"
+      "ForumTask.BLL >= 1.0.0",
+      "Microsoft.AspNetCore.SpaServices.Extensions >= 5.0.10"
     ]
   },
   "packageFolders": {
@@ -6862,6 +6892,12 @@
     "frameworks": {
       "net5.0": {
         "targetAlias": "net5.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.SpaServices.Extensions": {
+            "target": "Package",
+            "version": "[5.0.10, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

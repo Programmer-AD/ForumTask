@@ -1,0 +1,24 @@
+﻿using ForumTask.BLL.DTO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ForumTask.PL.Models {
+    public class TopicViewModel {
+        public TopicViewModel() { }
+        public TopicViewModel(TopicDTO dto) {
+            Id = dto.Id;
+            Title = dto.Title;
+            CreateTime = dto.CreateTime;
+            CreatorId = dto.CreatorId;
+            MessageCount = dto.MessageCount;
+        }
+
+        public ulong Id { get; set; }
+        public string Title { get; set; }
+        public DateTime CreateTime { get; set; }
+        public uint? CreatorId { get; set; }
+        public int MessageCount { get; set; }
+    }
+}

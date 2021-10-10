@@ -8,7 +8,7 @@ namespace ForumTask.BLL.DTO {
     public enum RoleEnum {
         User=0, Moderator=1,Admin=2
     }
-    static class RoleEnumConverter {
+    public static class RoleEnumConverter {
         /// <summary>
         /// Gets program role name by enum
         /// </summary>
@@ -20,18 +20,6 @@ namespace ForumTask.BLL.DTO {
                 RoleEnum.Moderator=>"Moderator",
                 RoleEnum.Admin=>"Admin",
                 _=>"!unknown!"
-            };
-        /// <summary>
-        /// Gets roleEnum by role name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static RoleEnum GetRoleByName(string name)
-            => name.ToLower() switch {
-                "user" => RoleEnum.User,
-                "moderator" => RoleEnum.Moderator,
-                "admin" => RoleEnum.Admin,
-                _ => throw new ArgumentException("There is no role with providden name")
             };
     }
 }

@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 namespace ForumTask.BLL.DependencyInjection {
     public static class BllServiceCollectionExtensions {
         public static void AddBll(this IServiceCollection services, IConfiguration config) {
-            services.AddDal(config);
-
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMarkService, MarkService>();
             services.AddScoped<IMessageService, MessageService>();

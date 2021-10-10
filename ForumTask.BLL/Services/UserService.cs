@@ -46,7 +46,7 @@ namespace ForumTask.BLL.Services {
             try {
                 uow.IdentityManager.Create(userName, email, password);
             }catch(DAL.Identity.IdentityException e) {
-                throw new ValidationException(e);
+                throw new IdentityValidationException(e);
             }
         }
 
@@ -60,15 +60,15 @@ namespace ForumTask.BLL.Services {
             }
         }
 
-        public void SetRole(uint userId, RoleEnum role, bool setHasRole, uint callerId) {
+        public void SetRole(uint userId, string roleName, bool setHasRole, uint callerId) {
             var user = uow.IdentityManager.FindById(userId) ??
                 throw new NotFoundException();
             CheckRight(user, callerId);
             try {
                 if (setHasRole)
-                    uow.IdentityManager.AddToRole(user, role.GetRoleName());
+                    uow.IdentityManager.AddToRole(user, roleName);
                 else
-                    uow.IdentityManager.RemoveFromRole(user, role.GetRoleName());
+                    uow.IdentityManager.RemoveFromRole(user, roleName);
             } catch (DAL.Identity.IdentityException) { }
         }
 

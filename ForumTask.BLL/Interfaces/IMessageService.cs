@@ -25,9 +25,13 @@ namespace ForumTask.BLL.Interfaces {
         /// <para>
         /// If author can`t write messages, throw <see cref="AccessDeniedException"/>
         /// </para>
+        /// <para>
+        /// If no topic with such id, throw <see cref="NotFoundException"/>
+        /// </para>
         /// </summary>
         /// <param name="message">Message to add</param>
         /// <exception cref="AccessDeniedException"/>
+        /// <exception cref="NotFoundException"/>
         void Add(MessageDTO message);
         /// <summary>
         /// Edits message text
@@ -73,7 +77,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="topicId">Id of topic from which get messages</param>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of messages</returns>
-        IEnumerable<MessageDTO> GetTopOld(uint topicId, uint page);
+        IEnumerable<MessageDTO> GetTopOld(ulong topicId, uint page);
         /// <summary>
         /// Gets count of messages attached to topic
         /// <para>

@@ -40,6 +40,8 @@ namespace ForumTask.BLL.Services {
             var user = userServ.Get(message.AuthorId.Value);
             if (user.IsBanned)
                 throw new AccessDeniedException("Caller is banned");
+            if (uow.Topics.Get(message.TopicId) is null)
+                throw new NotFoundException();
 
             message.WriteTime = DateTime.UtcNow;
             uow.Messages.Create(message.ToEntity());
@@ -61,7 +63,7 @@ namespace ForumTask.BLL.Services {
         public int GetMessageCount(ulong topicId)
             => uow.Messages.GetMessageCount(topicId);
 
-        public IEnumerable<MessageDTO> GetTopOld(uint topicId, uint page)
+        public IEnumerable<MessageDTO> GetTopOld(ulong topicId, uint page)
             => uow.Messages.GetTopOld(topicId, IMessageService.PageSize, IMessageService.PageSize * (int)page)
             .Select(m => new MessageDTO(m) { Mark = markServ.GetTotal(m.Id) });
     }

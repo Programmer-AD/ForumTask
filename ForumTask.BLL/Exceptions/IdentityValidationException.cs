@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Exceptions {
     [Serializable]
-    public class ValidationException : Exception {
-        public ValidationException() : base("Validation error") { }
-        public ValidationException(DAL.Identity.IdentityException e) : base("Validation error: " + e.Message) {
+    public class IdentityValidationException : Exception {
+        public IdentityValidationException() : base("Validation error") { }
+        public IdentityValidationException(DAL.Identity.IdentityException e) : base("Validation error: " + e.Message) {
             foreach (var errCode in e.IdentityErrorCodes)
                 switch (errCode) {
                     case "DuplicateEmail":
@@ -22,9 +22,9 @@ namespace ForumTask.BLL.Exceptions {
                         break;
                 }
         }
-        public ValidationException(string message) : base("Validation error: " + message) { }
-        public ValidationException(string message, Exception inner) : base("Validation error:" + message, inner) { }
-        protected ValidationException(
+        public IdentityValidationException(string message) : base("Validation error: " + message) { }
+        public IdentityValidationException(string message, Exception inner) : base("Validation error:" + message, inner) { }
+        protected IdentityValidationException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
 

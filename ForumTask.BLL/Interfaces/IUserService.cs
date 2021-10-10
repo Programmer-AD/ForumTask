@@ -11,13 +11,13 @@ namespace ForumTask.BLL.Interfaces {
         /// <summary>
         /// Register new user
         /// <para>
-        /// If provided wrong registration data, throw <see cref="ValidationException"/>
+        /// If provided wrong registration data, throw <see cref="IdentityValidationException"/>
         /// </para>
         /// </summary>
         /// <param name="userName">User name</param>
         /// <param name="email">Email</param>
         /// <param name="password">Password</param>
-        /// <exception cref="ValidationException"/>
+        /// <exception cref="IdentityValidationException"/>
         void Register(string userName, string email, string password);
         /// <summary>
         /// Changes ban status of user with id=<paramref name="userId"/>
@@ -67,13 +67,13 @@ namespace ForumTask.BLL.Interfaces {
         /// If role can`t be attached/detached, throw <see cref="AccessDeniedException"/>
         /// </para>
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="role"></param>
-        /// <param name="callerId"></param>
+        /// <param name="userId">Id of user to act with</param>
+        /// <param name="roleName">Name of role to act with</param>
+        /// <param name="callerId">Id of user who tries to set role</param>
         /// <param name="setHasRole">If true than attaches role, else detach role</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void SetRole(uint userId, RoleEnum role, bool setHasRole, uint callerId);
+        void SetRole(uint userId, string roleName, bool setHasRole, uint callerId);
         /// <summary>
         /// Sign in user
         /// <para>
