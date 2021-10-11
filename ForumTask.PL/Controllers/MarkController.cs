@@ -34,7 +34,7 @@ namespace ForumTask.PL.Controllers {
         }
 
         [HttpDelete("{messageId}")]
-        public IActionResult Update(ulong messageId) {
+        public IActionResult Delete(ulong messageId) {
             markServ.Set(new() { UserId = User.GetId(), MessageId = messageId, Value = 0 });
             return Ok();
         }

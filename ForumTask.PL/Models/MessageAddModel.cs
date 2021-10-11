@@ -9,7 +9,7 @@ namespace ForumTask.PL.Models {
         [Required]
         [MaxLength(5000)]
         public string Text { get; set; }
-        [Required]
+
         public ulong TopicId { get; set; }
     }
 }

@@ -74,5 +74,11 @@ namespace ForumTask.PL.Controllers {
             userServ.SignOut();
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet("current")]
+        public UserViewModel GetCurrentUser() 
+            => new(userServ.Get(User.GetId()))
+        
     }
 }
