@@ -77,8 +77,8 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpGet("current")]
-        public UserViewModel GetCurrentUser() 
-            => new(userServ.Get(User.GetId()))
+        public UserViewModel GetCurrentUser()
+            => new(userServ.Get(User.GetId()));
         
     }
 }
