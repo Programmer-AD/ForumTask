@@ -89,5 +89,17 @@ namespace ForumTask.BLL.Interfaces {
         /// Sign out current user
         /// </summary>
         void SignOut();
+        /// <summary>
+        /// Checks if email address is used
+        /// </summary>
+        /// <param name="email">Email to check</param>
+        /// <returns>Is email used?</returns>
+        bool IsEmailUsed(string email);
+        /// <summary>
+        /// Checks if user name is used
+        /// </summary>
+        /// <param name="userName">Role name to check</param>
+        /// <returns>Is role name used?</returns>
+        bool IsUserNameUsed(string userName);
     }
 }

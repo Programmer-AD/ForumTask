@@ -93,5 +93,17 @@ namespace ForumTask.DAL.Identity {
             t.Wait();
             return t.Result;
         }
+
+        public bool IsEmailUsed(string email) {
+            var t=userMan.FindByEmailAsync(email);
+            t.Wait();
+            return t.Result is not null;
+        }
+
+        public bool IsUserNameUsed(string userName) {
+            var t = userMan.FindByNameAsync(userName);
+            t.Wait();
+            return t.Result is not null;
+        }
     }
 }

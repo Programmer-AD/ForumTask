@@ -27,6 +27,14 @@ namespace ForumTask.PL.Controllers {
         public UserViewModel Get(uint userId)
             => new (userServ.Get(userId));
 
+        [HttpGet("canUse/email/{email}")]
+        public bool CanUseEmail([Required] string email)
+            => userServ.IsEmailUsed(email);
+
+        [HttpGet("canUse/userName/{userName}")]
+        public bool CanUseUserName([Required] string userName)
+            => userServ.IsUserNameUsed(userName);
+
         [HttpPost("register")]
         public IActionResult Register(RegisterModel register) {
             userServ.Register(register.UserName, register.Email, register.Password);

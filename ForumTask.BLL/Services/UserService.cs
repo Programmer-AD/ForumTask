@@ -79,5 +79,11 @@ namespace ForumTask.BLL.Services {
 
         public void SignOut()
             => uow.IdentityManager.SignOut();
+
+        public bool IsEmailUsed(string email)
+            => uow.IdentityManager.IsEmailUsed(email);
+
+        public bool IsUserNameUsed(string userName)
+            => uow.IdentityManager.IsUserNameUsed(userName);
     }
 }
