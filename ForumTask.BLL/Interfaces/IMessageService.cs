@@ -87,5 +87,14 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="topicId">Id of topic which messages are counted</param>
         /// <returns>Count of messages or 0 topic not found</returns>
         int GetMessageCount(ulong topicId);
+        /// <summary>
+        /// Creates message and attaches it to newly created topic
+        /// <para>
+        /// Function for only internal purposes
+        /// </para>
+        /// </summary>
+        /// <param name="message">Message to add</param>
+        /// <param name="topic">Topic to which message wil be attached</param>
+        internal void Add(MessageDTO message,DAL.Entities.Topic topic);
     }
 }

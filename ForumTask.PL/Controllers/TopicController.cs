@@ -34,10 +34,8 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(TopicCreateModel model) {
-            topicServ.Create(model.Title, model.Message, User.GetId());
-            return Ok();
-        }
+        public ulong Create(TopicCreateModel model)
+            => topicServ.Create(model.Title, model.Message, User.GetId());
 
         [Authorize]
         [HttpPut("{topicId}")]

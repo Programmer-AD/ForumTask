@@ -11,5 +11,7 @@ namespace ForumTask.DAL.Interfaces {
         IMessageRepository Messages { get; }
         IMarkRepository Marks { get; }
         IIdentityManager IdentityManager { get; }
+
+        void SaveChanges();
     }
 }

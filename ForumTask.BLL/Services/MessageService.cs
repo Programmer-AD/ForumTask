@@ -45,12 +45,14 @@ namespace ForumTask.BLL.Services {
 
             message.WriteTime = DateTime.UtcNow;
             uow.Messages.Create(message.ToEntity());
+            uow.SaveChanges();
         }
 
         public void Delete(ulong messageId, uint userId) {
             var msg = uow.Messages.Get(messageId) ?? throw new NotFoundException();
             CheckEditAccess(msg.WriteTime, msg.AuthorId, userId, true);
             uow.Messages.Delete(msg);
+            uow.SaveChanges();
         }
 
         public void Edit(ulong messageId, string newText, uint userId) {
@@ -58,6 +60,7 @@ namespace ForumTask.BLL.Services {
             CheckEditAccess(msg.WriteTime, msg.AuthorId, userId, false);
             msg.Text = newText;
             uow.Messages.Update(msg);
+            uow.SaveChanges();
         }
 
         public int GetMessageCount(ulong topicId)
@@ -66,5 +69,11 @@ namespace ForumTask.BLL.Services {
         public IEnumerable<MessageDTO> GetTopOld(ulong topicId, uint page)
             => uow.Messages.GetTopOld(topicId, IMessageService.PageSize, IMessageService.PageSize * (int)page)
             .Select(m => new MessageDTO(m) { Mark = markServ.GetTotal(m.Id) });
+
+        void IMessageService.Add(MessageDTO message, DAL.Entities.Topic topic) {
+            var ent = message.ToEntity();
+            ent.Topic = topic;
+            uow.Messages.Create(ent);
+        }
     }
 }

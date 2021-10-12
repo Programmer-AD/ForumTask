@@ -32,6 +32,7 @@ namespace ForumTask.BLL.Services {
                  throw new NotFoundException();
             CheckRight(user, callerId);
             uow.IdentityManager.Delete(user);
+            uow.SaveChanges();
         }
 
         public UserDTO Get(uint userId) {
@@ -45,6 +46,7 @@ namespace ForumTask.BLL.Services {
         public void Register(string userName, string email, string password) {
             try {
                 uow.IdentityManager.Create(userName, email, password);
+                uow.SaveChanges();
             }catch(DAL.Identity.IdentityException e) {
                 throw new IdentityValidationException(e);
             }
@@ -57,6 +59,7 @@ namespace ForumTask.BLL.Services {
             if (user.IsBanned != banned) {
                 user.IsBanned = banned;
                 uow.IdentityManager.Update(user);
+                uow.SaveChanges();
             }
         }
 
@@ -69,6 +72,7 @@ namespace ForumTask.BLL.Services {
                     uow.IdentityManager.AddToRole(user, roleName);
                 else
                     uow.IdentityManager.RemoveFromRole(user, roleName);
+                uow.SaveChanges();
             } catch (DAL.Identity.IdentityException) { }
         }
 

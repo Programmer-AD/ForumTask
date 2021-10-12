@@ -32,6 +32,7 @@ namespace ForumTask.BLL.Services {
                 else if ((sbyte)dbm.Type != mark.Value)
                     uow.Marks.Update(mark.ToEntity());
             }
+            uow.SaveChanges();
         }
     }
 }

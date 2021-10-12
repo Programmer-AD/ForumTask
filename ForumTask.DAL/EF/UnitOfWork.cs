@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumTask.DAL.EF {
-    class UnitOfWork : IUnitOfWork {
+    class UnitOfWork : IUnitOfWork, IDisposable {
         private ITopicRepository topic;
         public ITopicRepository Topics => topic ??= new TopicRepository(db);
 
@@ -35,5 +35,10 @@ namespace ForumTask.DAL.EF {
 
         public void SaveChanges()
             => db.SaveChanges();
+
+        public void Dispose() {
+            db.Dispose();
+            userManager.Dispose();
+        }
     }
 }

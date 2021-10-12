@@ -25,14 +25,18 @@ namespace ForumTask.BLL.Interfaces {
         /// Creates new topic with title <paramref name="title"/>
         /// and attaches new message with text <paramref name="message"/>
         /// <para>
+        /// If message is null or empty, message doesn`t create and attach
+        /// </para>
+        /// <para>
         /// If user can`t create new topic, throws <see cref="AccessDeniedException"/>
         /// </para>
         /// </summary>
         /// <param name="title">Title of topic</param>
-        /// <param name="message">Text of message to attach</param>
+        /// <param name="message">Text of message to attach or null</param>
         /// <param name="creatorId">Id of user, who creates topic</param>
+        /// <returns>Id of created topic</returns>
         /// <exception cref="AccessDeniedException"/>
-        void Create(string title, string message, uint creatorId);
+        ulong Create(string title, string message, uint creatorId);
         /// <summary>
         /// Deletes topic
         /// <para>

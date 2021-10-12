@@ -36,7 +36,7 @@ namespace ForumTask.BLL.Services {
             }
         }
 
-        public void Create(string title, string message, uint creatorId) {
+        public ulong Create(string title, string message, uint creatorId) {
             var user = userServ.Get(creatorId);
             if (user.IsBanned)
                 throw new AccessDeniedException("Caller is banned");
@@ -47,11 +47,14 @@ namespace ForumTask.BLL.Services {
                 Title = title
             };
             uow.Topics.Create(t);
-            uow.Messages.Create(new() { 
-                AuthorId = creatorId, 
-                Text = message, 
-                WriteTime=t.CreateTime,
-                Topic = t });
+            if (!string.IsNullOrEmpty(message))
+                msgServ.Add(new() { 
+                    AuthorId=creatorId, 
+                    Text=message, 
+                    WriteTime=DateTime.UtcNow,
+                }, t);
+            uow.SaveChanges();
+            return t.Id;
         }
 
         public TopicDTO Get(ulong id) {
@@ -72,11 +75,13 @@ namespace ForumTask.BLL.Services {
             CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, false);
             topic.Title = newTitle;
             uow.Topics.Update(topic);
+            uow.SaveChanges();
         }
         public void Delete(ulong topicId, uint userId) {
             var topic = uow.Topics.Get(topicId) ?? throw new NotFoundException();
             CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, true);
             uow.Topics.Delete(topic);
+            uow.SaveChanges();
         }
     }
 }
