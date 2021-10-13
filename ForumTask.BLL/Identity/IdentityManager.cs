@@ -1,5 +1,5 @@
 ﻿using ForumTask.DAL.Entities;
-using ForumTask.DAL.Interfaces;
+using ForumTask.BLL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumTask.DAL.Identity {
-    class IdentityManager:IIdentityManager {
+namespace ForumTask.BLL.Identity {
+    internal class IdentityManager:IIdentityManager,IDisposable {
         private readonly UserManager<User> userMan;
         private readonly SignInManager<User> signInMan;
 
@@ -104,6 +104,10 @@ namespace ForumTask.DAL.Identity {
             var t = userMan.FindByNameAsync(userName);
             t.Wait();
             return t.Result is not null;
+        }
+
+        public void Dispose() {
+            userMan.Dispose();
         }
     }
 }

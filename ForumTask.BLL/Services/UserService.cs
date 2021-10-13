@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Services {
     class UserService:IUserService {
-        private readonly IUnitOfWork uow;
+        private readonly IIdentityManager man;
 
-        public UserService(IUnitOfWork uow) {
-            this.uow = uow;
+        public UserService(IIdentityManager man) {
+            this.man = man;
         }
 
         private RoleEnum GetMaxRole(DAL.Entities.User user) {
-            var roles = uow.IdentityManager.GetRoles(user);
+            var roles = man.GetRoles(user);
             return roles.Select(s => RoleEnumConverter.GetRoleByName(s)).Max();
         }
 
@@ -28,15 +28,14 @@ namespace ForumTask.BLL.Services {
         }
 
         public void Delete(uint userId, uint callerId) {
-            var user = uow.IdentityManager.FindById(userId) ??
+            var user = man.FindById(userId) ??
                  throw new NotFoundException();
             CheckRight(user, callerId);
-            uow.IdentityManager.Delete(user);
-            uow.SaveChanges();
+            man.Delete(user);
         }
 
         public UserDTO Get(uint userId) {
-            var user = uow.IdentityManager.FindById(userId) ??
+            var user = man.FindById(userId) ??
                 throw new NotFoundException();
             return new(user) {
                 MaxRole = GetMaxRole(user)
@@ -45,49 +44,46 @@ namespace ForumTask.BLL.Services {
 
         public void Register(string userName, string email, string password) {
             try {
-                uow.IdentityManager.Create(userName, email, password);
-                uow.SaveChanges();
-            }catch(DAL.Identity.IdentityException e) {
+                man.Create(userName, email, password);
+            }catch(Identity.IdentityException e) {
                 throw new IdentityValidationException(e);
             }
         }
 
         public void SetBanned(uint userId, bool banned, uint callerId) {
-            var user = uow.IdentityManager.FindById(userId) ??
+            var user = man.FindById(userId) ??
                 throw new NotFoundException();
             CheckRight(user, callerId);
             if (user.IsBanned != banned) {
                 user.IsBanned = banned;
-                uow.IdentityManager.Update(user);
-                uow.SaveChanges();
+                man.Update(user);
             }
         }
 
         public void SetRole(uint userId, string roleName, bool setHasRole, uint callerId) {
-            var user = uow.IdentityManager.FindById(userId) ??
+            var user = man.FindById(userId) ??
                 throw new NotFoundException();
             CheckRight(user, callerId);
             try {
                 if (setHasRole)
-                    uow.IdentityManager.AddToRole(user, roleName);
+                    man.AddToRole(user, roleName);
                 else
-                    uow.IdentityManager.RemoveFromRole(user, roleName);
-                uow.SaveChanges();
-            } catch (DAL.Identity.IdentityException) { }
+                    man.RemoveFromRole(user, roleName);
+            } catch (Identity.IdentityException) { }
         }
 
         public void SignIn(string userName, string password, bool remember) {
-            if (!uow.IdentityManager.TrySignIn(userName, password, remember))
+            if (!man.TrySignIn(userName, password, remember))
                 throw new AccessDeniedException("Wrong user name or password");
         }
 
         public void SignOut()
-            => uow.IdentityManager.SignOut();
+            => man.SignOut();
 
         public bool IsEmailUsed(string email)
-            => uow.IdentityManager.IsEmailUsed(email);
+            => man.IsEmailUsed(email);
 
         public bool IsUserNameUsed(string userName)
-            => uow.IdentityManager.IsUserNameUsed(userName);
+            => man.IsUserNameUsed(userName);
     }
 }

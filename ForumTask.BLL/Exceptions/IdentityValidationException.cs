@@ -8,7 +8,7 @@ namespace ForumTask.BLL.Exceptions {
     [Serializable]
     public class IdentityValidationException : Exception {
         public IdentityValidationException() : base("Validation error") { }
-        public IdentityValidationException(DAL.Identity.IdentityException e) : base("Validation error: " + e.Message) {
+        internal IdentityValidationException(Identity.IdentityException e) : base("Validation error: " + e.Message) {
             foreach (var errCode in e.IdentityErrorCodes)
                 switch (errCode) {
                     case "DuplicateEmail":

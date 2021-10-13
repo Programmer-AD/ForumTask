@@ -5,10 +5,10 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using ForumTask.DAL.Identity;
+using ForumTask.BLL.Identity;
 
-namespace ForumTask.DAL.Interfaces {
-    public interface IIdentityManager{
+namespace ForumTask.BLL.Interfaces {
+    internal interface IIdentityManager{
         /// <summary>
         /// Creates new user using data from arguments
         /// </summary>

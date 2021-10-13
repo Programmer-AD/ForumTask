@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumTask.DAL.Identity {
+namespace ForumTask.BLL.Identity {
 
     [Serializable]
-    public class IdentityException : Exception {
+    internal class IdentityException : Exception {
         public IdentityException() { }
         public IdentityException(IEnumerable<string> errCodes):base(string.Join(", ", errCodes)) {
             IdentityErrorCodes = errCodes;

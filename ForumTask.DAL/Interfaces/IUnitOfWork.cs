@@ -10,7 +10,6 @@ namespace ForumTask.DAL.Interfaces {
         ITopicRepository Topics { get; }
         IMessageRepository Messages { get; }
         IMarkRepository Marks { get; }
-        IIdentityManager IdentityManager { get; }
 
         void SaveChanges();
     }
