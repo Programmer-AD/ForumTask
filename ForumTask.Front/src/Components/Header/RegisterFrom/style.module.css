@@ -1,0 +1,13 @@
+.title{
+    margin: 5px;
+}
+.container{
+    text-align: left;
+}
+.validation{
+    background-color: crimson;
+    border: solid;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: left;
+}

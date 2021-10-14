@@ -26,7 +26,7 @@ namespace ForumTask.DAL.EF {
             builder.Entity<IdentityRole<uint>>().HasData(CreateRole(1,"User"), CreateRole(2,"Moderator"),CreateRole(3,"Admin"));
             PasswordHasher<User> hasher = new();
             builder.Entity<User>().HasData(CreateUser(1,"Admin","admin@forum.here","admin_pass",hasher));
-            builder.Entity<IdentityUserRole<uint>>().HasData(new IdentityUserRole<uint>() { RoleId = 1, UserId=1});
+            builder.Entity<IdentityUserRole<uint>>().HasData(new IdentityUserRole<uint>() {UserId=1, RoleId = 3});
 
             static IdentityRole<uint> CreateRole(uint id, string roleName)
                 => new(roleName) { NormalizedName = roleName.ToUpper(), Id = id };
@@ -39,6 +39,7 @@ namespace ForumTask.DAL.EF {
                     NormalizedEmail = email.ToUpper(),
                     EmailConfirmed = true,
                     RegisterDate = DateTime.UtcNow,
+                    SecurityStamp= Guid.NewGuid().ToString(),
                 };
                 user.PasswordHash = hasher.HashPassword(user, password);
                 return user;

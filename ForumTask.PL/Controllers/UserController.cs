@@ -29,11 +29,11 @@ namespace ForumTask.PL.Controllers {
 
         [HttpGet("canUse/email/{email}")]
         public bool CanUseEmail([Required] string email)
-            => userServ.IsEmailUsed(email);
+            => !userServ.IsEmailUsed(email);
 
         [HttpGet("canUse/userName/{userName}")]
         public bool CanUseUserName([Required] string userName)
-            => userServ.IsUserNameUsed(userName);
+            => !userServ.IsUserNameUsed(userName);
 
         [HttpPost("register")]
         public IActionResult Register(RegisterModel register) {

@@ -10,11 +10,28 @@ export default class ApiAccessor{
         if (params!==null)
             body=JSON.stringify(body);
 
-        let result=await fetch(this.baseUrl+subUrl,{method,body});
+        let result=await fetch(this.baseUrl+subUrl,{
+            method,
+            body,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        
+        let resV=null;
+        try{
+            resV=await result.json();
+        }catch(e){
+            try{
+                resV=await result.text();
+            }catch(e){
+                
+            }
+        }
         if (!result.ok)
-            throw new ApiError(result.status,result.json());
+            throw new ApiError(result.status,resV);
 
-        return result.json();
+        return resV??true;
     }
     async get(subUrl,params=null){
         let query="";

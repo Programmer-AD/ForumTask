@@ -1,12 +1,9 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import AppComponent from './Components/AppComponent.jsx';
+
  
 ReactDOM.render(
-    <Router>
-        <Switch>
-
-        </Switch>
-    </Router>,
+    <AppComponent/>,
     document.getElementById("app")
 )

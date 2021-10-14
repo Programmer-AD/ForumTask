@@ -2,7 +2,7 @@ module.exports = {
     entry: "/app.jsx",
     output:{
         path: __dirname+'/../result/', 
-        filename: "app.js"
+        filename: "app.js",
     },
     module:{
         rules:[ 
