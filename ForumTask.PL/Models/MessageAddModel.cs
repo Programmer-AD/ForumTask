@@ -10,6 +10,6 @@ namespace ForumTask.PL.Models {
         [MaxLength(5000)]
         public string Text { get; set; }
 
-        public ulong TopicId { get; set; }
+        public long TopicId { get; set; }
     }
 }

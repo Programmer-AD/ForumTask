@@ -14,10 +14,10 @@ namespace ForumTask.BLL.Services {
             this.uow = uow;
         }
 
-        public sbyte GetOwn(uint userId, ulong messageId)
+        public sbyte GetOwn(int userId, long messageId)
             =>((sbyte?)uow.Marks.Get(userId, messageId)?.Type) ?? 0;
 
-        public long GetTotal(ulong messageId)
+        public long GetTotal(long messageId)
             => uow.Marks.GetMarkValue(messageId);
 
         public void Set(MarkDTO mark) {

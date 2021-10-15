@@ -1,0 +1,17 @@
+.container{
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: darkcyan;
+}
+.title{
+    text-align: left;
+    font-size: x-large;
+}
+.messages{
+    display: inline-block;
+}
+.date{
+    float: right;
+    display: inline-block;
+}

@@ -36,7 +36,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="creatorId">Id of user, who creates topic</param>
         /// <returns>Id of created topic</returns>
         /// <exception cref="AccessDeniedException"/>
-        ulong Create(string title, string message, uint creatorId);
+        long Create(string title, string message, int creatorId);
         /// <summary>
         /// Deletes topic
         /// <para>
@@ -53,7 +53,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId">Id of user who tries to delete topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        void Delete(ulong topicId, uint userId);
+        void Delete(long topicId, int userId);
         /// <summary>
         /// Edits title of topic
         /// <para>
@@ -71,7 +71,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId">Id of user who tries to rename topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        void Rename(ulong topicId,string newTitle, uint userId);
+        void Rename(long topicId,string newTitle, int userId);
         /// <summary>
         /// Gets topic by id
         /// <para>
@@ -81,7 +81,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="id">Id of topic to get</param>
         /// <returns>Topic with id</returns>
         /// <exception cref="NotFoundException"/>
-        TopicDTO Get(ulong id);
+        TopicDTO Get(long id);
         /// <summary>
         /// Gets {<see cref="PageSize"/>} top new topics
         /// <para>
@@ -91,7 +91,7 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of topics</returns>
-        IEnumerable<TopicDTO> GetTopNew(uint page, string searchTitle="");
+        IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle="");
         /// <summary>
         /// Gets count of pages to show all topics
         /// </summary>

@@ -22,10 +22,10 @@ namespace ForumTask.BLL.DTO {
                 CreateTime=CreateTime
             };
 
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         public string Title { get; set; }
         public DateTime CreateTime { get; set; }
-        public uint? CreatorId { get; set; }
+        public int? CreatorId { get; set; }
 
         public int MessageCount { get; set; }
     }

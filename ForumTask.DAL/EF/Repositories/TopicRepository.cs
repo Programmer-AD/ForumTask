@@ -3,8 +3,11 @@ using ForumTask.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Data.Sql;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Ef = Microsoft.EntityFrameworkCore.EF;
 
 namespace ForumTask.DAL.EF.Repositories {
     class TopicRepository : GenericRepository<Topic>, ITopicRepository {
@@ -15,8 +18,10 @@ namespace ForumTask.DAL.EF.Repositories {
 
         public IEnumerable<Topic> GetTopNew(int count, int offset, string searchTitle="") {
             IQueryable<Topic> col = set;
-            if (!string.IsNullOrEmpty(searchTitle))
-                col = col.Where(t => t.Title.Contains(searchTitle, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(searchTitle)) {
+                searchTitle = $"%{searchTitle}%";
+                col = col.Where(t => Ef.Functions.Like(t.Title,searchTitle));
+            }
             return col.OrderByDescending(t => t.CreateTime).Skip(offset).Take(count);
         }
     }

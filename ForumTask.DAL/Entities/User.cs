@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumTask.DAL.Entities {
-    public class User:IdentityUser<uint> {
+    public class User:IdentityUser<int> {
         public DateTime RegisterDate { get; set; }
         public bool IsBanned { get; set; }
 

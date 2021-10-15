@@ -22,7 +22,7 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="id">id of user to find</param>
         /// <returns>User or null if not found</returns>
-        User FindById(uint id);
+        User FindById(int id);
         /// <summary>
         /// Finds user with providden name
         /// </summary>
@@ -56,7 +56,7 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="id">Id of user to delete</param>
         /// <exception cref="InvalidOperationException"/>
-        void Delete(uint id);
+        void Delete(int id);
         /// <summary>
         /// Adds role with name <paramref name="role"/> to <paramref name="user"/>
         /// <para>

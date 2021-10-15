@@ -15,7 +15,7 @@ namespace ForumTask.PL.Models {
             RoleName = dto.MaxRole.GetRoleName();
         }
 
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
         public DateTime RegisterDate { get; set; }
         public bool IsBanned { get; set; }

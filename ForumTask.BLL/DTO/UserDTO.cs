@@ -24,7 +24,7 @@ namespace ForumTask.BLL.DTO {
                 IsBanned=IsBanned,
             };
 
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public DateTime RegisterDate { get; set; }

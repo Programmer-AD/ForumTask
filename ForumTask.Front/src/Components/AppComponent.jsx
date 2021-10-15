@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Header from './Header/Header.jsx';
 import MainPage from './Pages/MainPage/MainPage.jsx';
 import ProfilePage from './Pages/ProfilePage/ProfilePage.jsx';
@@ -13,19 +13,18 @@ export default class AppComponent extends React.Component{
         super(props);
 
         this.state={user:null};
-        this.getCurrentUser().then((user)=>this.setState({user}));
 
         this.handleUserChanged=this.handleUserChanged.bind(this);
     }
-    async getCurrentUser(){
-        let user=null;
-        try{
-            user=await Api.user.getCurrent();
-        }catch(e){}
-        return user;
+    componentDidMount(){
+        this.loadCurrentUser();
+    }
+    async loadCurrentUser(){
+        await Api.user.getCurrent().then((user)=>this.setState({user}))
+            .catch(()=>this.setState({user:null}));
     }
     handleUserChanged(){
-        this.getCurrentUser().then((user)=>this.setState({user}));
+        this.loadCurrentUser();
     }
     render(){
         return (<>
@@ -33,10 +32,10 @@ export default class AppComponent extends React.Component{
                 <Header user={this.state.user} onUserChanged={this.handleUserChanged} />
                 <div className={css.page_container}>
                     <Switch>
-                        <Route exact path="/" component={MainPage}/>
-                        <Route path="/my" component={ProfilePage} />
-                        <Route path="/profile/:profileId(\d{1,10}" component={ProfilePage} />
-                        <Route path="/topic/:topicId(\d{1,19})" component={TopicPage}/>
+                        <Redirect exact path="/" to="/page-1"/>
+                        <Route path="/page-:page(\d{1,4})" component={(props)=><MainPage user={this.state.user} {...props}/>}/>
+                        <Route path="/profile/:profileId(\d{1,10})" component={(props)=><ProfilePage user={this.state.user} {...props}/>} />
+                        <Route path="/topic/:topicId(\d{1,19})" component={(props)=><TopicPage user={this.state.user} {...props}/>}/>
                         <Route component={NotFoundPage} />
                     </Switch>
                 </div>

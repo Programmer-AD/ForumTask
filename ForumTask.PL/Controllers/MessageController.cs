@@ -24,7 +24,7 @@ namespace ForumTask.PL.Controllers {
         }
 
         [HttpGet("topic{topicId}")]
-        public IEnumerable<MessageViewModel> GetTopOld(ulong topicId, uint page)
+        public IEnumerable<MessageViewModel> GetTopOld(long topicId, int page)
             => messageServ.GetTopOld(topicId, page).Select(dto => new MessageViewModel(dto));
 
         [Authorize]
@@ -36,14 +36,14 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpPut("{messageId}")]
-        public IActionResult Edit(ulong messageId, [MinLength(10)][MaxLength(5000)]string newText) {
+        public IActionResult Edit(long messageId, [MinLength(10)][MaxLength(5000)]string newText) {
             messageServ.Edit(messageId, newText, User.GetId());
             return Ok();
         }
 
         [Authorize]
         [HttpDelete("{messageId}")]
-        public IActionResult Delete(ulong messageId) {
+        public IActionResult Delete(long messageId) {
             messageServ.Delete(messageId, User.GetId());
             return Ok();
         }

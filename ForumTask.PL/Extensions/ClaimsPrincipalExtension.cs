@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumTask.PL.Extensions {
     static class ClaimsPrincipalExtension {
-        public static uint GetId(this ClaimsPrincipal user)
-            => Convert.ToUInt32(user.FindFirstValue(ClaimTypes.NameIdentifier));
+        public static int GetId(this ClaimsPrincipal user)
+            => Convert.ToInt32(user.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 }

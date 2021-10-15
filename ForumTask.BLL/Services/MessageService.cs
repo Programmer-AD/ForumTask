@@ -20,7 +20,7 @@ namespace ForumTask.BLL.Services {
             markServ = mark;
         }
 
-        private void CheckEditAccess(DateTime writeTime, uint? authorId, uint callerId, bool canEditOtherUser) {
+        private void CheckEditAccess(DateTime writeTime, int? authorId, int callerId, bool canEditOtherUser) {
             var user = userServ.Get(callerId);
             if (user.IsBanned)
                 throw new AccessDeniedException("Caller is banned");
@@ -48,14 +48,14 @@ namespace ForumTask.BLL.Services {
             uow.SaveChanges();
         }
 
-        public void Delete(ulong messageId, uint userId) {
+        public void Delete(long messageId, int userId) {
             var msg = uow.Messages.Get(messageId) ?? throw new NotFoundException();
             CheckEditAccess(msg.WriteTime, msg.AuthorId, userId, true);
             uow.Messages.Delete(msg);
             uow.SaveChanges();
         }
 
-        public void Edit(ulong messageId, string newText, uint userId) {
+        public void Edit(long messageId, string newText, int userId) {
             var msg = uow.Messages.Get(messageId) ?? throw new NotFoundException();
             CheckEditAccess(msg.WriteTime, msg.AuthorId, userId, false);
             msg.Text = newText;
@@ -63,12 +63,12 @@ namespace ForumTask.BLL.Services {
             uow.SaveChanges();
         }
 
-        public int GetMessageCount(ulong topicId)
+        public int GetMessageCount(long topicId)
             => uow.Messages.GetMessageCount(topicId);
 
-        public IEnumerable<MessageDTO> GetTopOld(ulong topicId, uint page)
-            => uow.Messages.GetTopOld(topicId, IMessageService.PageSize, IMessageService.PageSize * (int)page)
-            .Select(m => new MessageDTO(m) { Mark = markServ.GetTotal(m.Id) });
+        public IEnumerable<MessageDTO> GetTopOld(long topicId, int page)
+            => uow.Messages.GetTopOld(topicId, IMessageService.PageSize, IMessageService.PageSize * page)
+            .ToList().Select(m => new MessageDTO(m) { Mark = markServ.GetTotal(m.Id) });
 
         void IMessageService.Add(MessageDTO message, DAL.Entities.Topic topic) {
             var ent = message.ToEntity();

@@ -10,24 +10,24 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForumTask.DAL.Migrations
 {
     [DbContext(typeof(ForumContext))]
-    [Migration("20211009200622_IdentityInitValues")]
-    partial class IdentityInitValues
+    [Migration("20211015174725_Recreate")]
+    partial class Recreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Mark", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("MessageId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<long>("MessageId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -41,20 +41,20 @@ namespace ForumTask.DAL.Migrations
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Message", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("AuthorId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TopicId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<long>("TopicId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("WriteTime")
                         .HasColumnType("datetime2");
@@ -70,16 +70,16 @@ namespace ForumTask.DAL.Migrations
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Topic", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("CreatorId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -95,10 +95,10 @@ namespace ForumTask.DAL.Migrations
 
             modelBuilder.Entity("ForumTask.DAL.Entities.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -168,29 +168,30 @@ namespace ForumTask.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "222b7ec7-b5f6-43ed-b9e3-2179458c1169",
+                            ConcurrencyStamp = "b273f5e4-cab3-4fea-8a93-1d8e8e8c373a",
                             Email = "admin@forum.here",
                             EmailConfirmed = true,
                             IsBanned = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FORUM.HERE",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPKwgpDIig+szx2VtSMZroJqGZsyhSZG7jeopsulh5HJAwXVRjHCGSTezkHNjDgQTw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKcjxgSWHJ3w8jZP8uMrwno+Emzr7wcBBLIRv9vurOkeiyNsrvvPTN1asTHY4xD5VQ==",
                             PhoneNumberConfirmed = false,
-                            RegisterDate = new DateTime(2021, 10, 9, 20, 6, 21, 671, DateTimeKind.Utc).AddTicks(1047),
+                            RegisterDate = new DateTime(2021, 10, 15, 17, 47, 25, 22, DateTimeKind.Utc).AddTicks(9343),
+                            SecurityStamp = "60b23f1a-43e8-4892-ac97-cad234517a96",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -216,28 +217,28 @@ namespace ForumTask.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
-                            ConcurrencyStamp = "c3c1d250-4176-4028-8a97-f44898497a9b",
+                            Id = 1,
+                            ConcurrencyStamp = "8b47a6ee-4863-4f5f-842e-1686c0e815ff",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = 2L,
-                            ConcurrencyStamp = "d0d5d46d-34c3-40fd-b7e3-88ff88d36549",
+                            Id = 2,
+                            ConcurrencyStamp = "1904a5ec-3f48-49dd-a594-e946552d24e2",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = 3L,
-                            ConcurrencyStamp = "fe735399-480b-4577-94ed-12b1620ddc6e",
+                            Id = 3,
+                            ConcurrencyStamp = "80eb377c-ffc5-4d80-a9d8-f158300b8bf6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,8 +251,8 @@ namespace ForumTask.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -260,7 +261,7 @@ namespace ForumTask.DAL.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,8 +274,8 @@ namespace ForumTask.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -283,7 +284,7 @@ namespace ForumTask.DAL.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -294,8 +295,8 @@ namespace ForumTask.DAL.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -304,13 +305,13 @@ namespace ForumTask.DAL.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -321,15 +322,15 @@ namespace ForumTask.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1L,
-                            RoleId = 1L
+                            UserId = 1,
+                            RoleId = 3
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -390,16 +391,16 @@ namespace ForumTask.DAL.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<uint>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", null)
                         .WithMany()
@@ -408,7 +409,7 @@ namespace ForumTask.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", null)
                         .WithMany()
@@ -417,9 +418,9 @@ namespace ForumTask.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<uint>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -432,7 +433,7 @@ namespace ForumTask.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<uint>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", null)
                         .WithMany()

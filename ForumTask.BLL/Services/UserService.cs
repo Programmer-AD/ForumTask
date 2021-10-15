@@ -21,20 +21,20 @@ namespace ForumTask.BLL.Services {
             return roles.Select(s => RoleEnumConverter.GetRoleByName(s)).Max();
         }
 
-        private void CheckRight(DAL.Entities.User victim, uint callerId) {
+        private void CheckRight(DAL.Entities.User victim, int callerId) {
             var caller = Get(callerId);
             if (caller.MaxRole <= GetMaxRole(victim))
                 throw new AccessDeniedException("To edit/delete this user your right-level must be greater then of that user");
         }
 
-        public void Delete(uint userId, uint callerId) {
+        public void Delete(int userId, int callerId) {
             var user = man.FindById(userId) ??
                  throw new NotFoundException();
             CheckRight(user, callerId);
             man.Delete(user);
         }
 
-        public UserDTO Get(uint userId) {
+        public UserDTO Get(int userId) {
             var user = man.FindById(userId) ??
                 throw new NotFoundException();
             return new(user) {
@@ -50,7 +50,7 @@ namespace ForumTask.BLL.Services {
             }
         }
 
-        public void SetBanned(uint userId, bool banned, uint callerId) {
+        public void SetBanned(int userId, bool banned, int callerId) {
             var user = man.FindById(userId) ??
                 throw new NotFoundException();
             CheckRight(user, callerId);
@@ -60,7 +60,7 @@ namespace ForumTask.BLL.Services {
             }
         }
 
-        public void SetRole(uint userId, string roleName, bool setHasRole, uint callerId) {
+        public void SetRole(int userId, string roleName, bool setHasRole, int callerId) {
             var user = man.FindById(userId) ??
                 throw new NotFoundException();
             CheckRight(user, callerId);

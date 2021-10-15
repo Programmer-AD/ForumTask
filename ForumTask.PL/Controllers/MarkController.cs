@@ -23,18 +23,18 @@ namespace ForumTask.PL.Controllers {
         }
 
         [HttpGet("{messageId}")]
-        public sbyte Get(ulong messageId) 
+        public sbyte Get(long messageId) 
             => markServ.GetOwn(User.GetId(),messageId);
 
         [HttpPost("{messageId}")]
         [HttpPut("{messageId}")]
-        public IActionResult Set(ulong messageId, sbyte value) {
+        public IActionResult Set(long messageId, sbyte value) {
             markServ.Set(new() { UserId = User.GetId(), MessageId = messageId, Value = value });
             return Ok();
         }
 
         [HttpDelete("{messageId}")]
-        public IActionResult Delete(ulong messageId) {
+        public IActionResult Delete(long messageId) {
             markServ.Set(new() { UserId = User.GetId(), MessageId = messageId, Value = 0 });
             return Ok();
         }

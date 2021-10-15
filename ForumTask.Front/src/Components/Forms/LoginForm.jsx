@@ -1,13 +1,20 @@
 import React from "react";
-import Api from "../../../Api/ApiUnited.js";
-import Button from "../../Common/Button/Button.jsx";
+import Api from "../../Api/ApiUnited.js";
+import Button from "../Common/Button/Button.jsx";
 import css from "./style.module.css";
 
 export default class LoginForm extends React.Component{
     constructor(props){
         super(props);
 
-        this.state={login:"",password:"",remeber:false,authTry:null,validErr:null};
+        this.state={
+            login:"",
+            password:"",
+            remeber:false,
+            authTry:null,
+            validErr:null,
+            success:false
+        };
 
         this.handleChange=this.handleChange.bind(this);
         this.tryLogin=this.tryLogin.bind(this);
@@ -26,10 +33,10 @@ export default class LoginForm extends React.Component{
         }else{
             let st=Api.user.signIn(this.state.login,this.state.password,this.state.remeber);
             st.catch(()=>{
-                this.setState({authTry:null,validErr:"Login or password is incorrect"})
+                this.setState({authTry:null,validErr:"Login or password is incorrect or some error occurred"})
             });
             st.then(()=>{
-                this.setState({authTry:null});
+                this.setState({authTry:null,success:true});
                 this.props.onSuccess?.();
             });
             this.setState({validErr:null,authTry:st,password:""})
@@ -37,6 +44,8 @@ export default class LoginForm extends React.Component{
     }
 
     render(){
+        if (this.state.success)
+            return (<div className={css.success}>Login successfully!</div>);
         return (<>
             <h2 className={css.title}>Login</h2>
             {this.state.validErr===null?null:
@@ -45,10 +54,10 @@ export default class LoginForm extends React.Component{
             </pre>}
             <fieldset className={css.container}>
                 <label htmlFor="login">Login: </label>
-                <input name="login" value={this.state.login} onChange={this.handleChange}/>
+                <input name="login" placeholder="login" value={this.state.login} onChange={this.handleChange}/>
                 <br/>
                 <label htmlFor="password">Password: </label>
-                <input name="password" type="password" value={this.state.password} onChange={this.handleChange}/>
+                <input name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
                 <br/>
                 <input name="remember" type="checkbox" value={this.state.remeber} onChange={this.handleChange}/>
                 <label htmlFor="remeber">Remember me </label>

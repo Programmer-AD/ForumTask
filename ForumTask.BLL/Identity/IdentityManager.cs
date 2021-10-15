@@ -46,13 +46,13 @@ namespace ForumTask.BLL.Identity {
             CallIdentitySync(() => userMan.DeleteAsync(user));
         }
 
-        public void Delete(uint id) {
+        public void Delete(int id) {
             User user = FindById(id)??
                 throw new InvalidOperationException("User with providden id wasn`t found, so can`t be deleted");
             Delete(user);
         }
 
-        public User FindById(uint id) {
+        public User FindById(int id) {
             var t=userMan.FindByIdAsync(id.ToString());
             t.Wait();
             return t.Result;

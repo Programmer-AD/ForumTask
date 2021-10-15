@@ -24,10 +24,10 @@ namespace ForumTask.BLL.DTO {
                 Text=Text
             };
 
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         public string Text { get; set; }
-        public ulong TopicId { get; set; }
-        public uint? AuthorId { get; set; }
+        public long TopicId { get; set; }
+        public int? AuthorId { get; set; }
         public DateTime WriteTime { get; set; }
 
         public long Mark { get; set; }

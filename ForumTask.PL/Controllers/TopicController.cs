@@ -21,7 +21,7 @@ namespace ForumTask.PL.Controllers {
         }
 
         [HttpGet("{topicId}")]
-        public TopicViewModel Get(ulong topicId)
+        public TopicViewModel Get(long topicId)
             => new(topicServ.Get(topicId));
 
         [HttpGet("pageCount")]
@@ -29,24 +29,24 @@ namespace ForumTask.PL.Controllers {
             => topicServ.GetPagesCount();
 
         [HttpGet]
-        public IEnumerable<TopicViewModel> GetTopNew(uint page, string searchTitle = "")
+        public IEnumerable<TopicViewModel> GetTopNew(int page, string searchTitle = "")
             => topicServ.GetTopNew(page, searchTitle).Select(dto => new TopicViewModel(dto));
 
         [Authorize]
         [HttpPost]
-        public ulong Create(TopicCreateModel model)
+        public long Create(TopicCreateModel model)
             => topicServ.Create(model.Title, model.Message, User.GetId());
 
         [Authorize]
         [HttpPut("{topicId}")]
-        public IActionResult Rename(ulong topicId, [MaxLength(60)] string newTitle) {
+        public IActionResult Rename(long topicId, [MaxLength(60)] string newTitle) {
             topicServ.Rename(topicId, newTitle, User.GetId());
             return Ok();
         }
 
         [Authorize]
         [HttpDelete("{topicId}")]
-        public IActionResult Delete(ulong topicId) {
+        public IActionResult Delete(long topicId) {
             topicServ.Delete(topicId, User.GetId());
             return Ok();
         }

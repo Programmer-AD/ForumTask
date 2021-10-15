@@ -50,7 +50,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId"></param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void Edit(ulong messageId, string newText, uint userId);
+        void Edit(long messageId, string newText, int userId);
         /// <summary>
         /// Deletes message
         /// <para>
@@ -67,7 +67,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId"></param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void Delete(ulong messageId, uint userId);
+        void Delete(long messageId, int userId);
         /// <summary>
         /// Gets {<see cref="PageSize"/>} messages in topic ordered by write-time ascending (top old)
         /// <para>
@@ -77,7 +77,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="topicId">Id of topic from which get messages</param>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of messages</returns>
-        IEnumerable<MessageDTO> GetTopOld(ulong topicId, uint page);
+        IEnumerable<MessageDTO> GetTopOld(long topicId, int page);
         /// <summary>
         /// Gets count of messages attached to topic
         /// <para>
@@ -86,7 +86,7 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="topicId">Id of topic which messages are counted</param>
         /// <returns>Count of messages or 0 topic not found</returns>
-        int GetMessageCount(ulong topicId);
+        int GetMessageCount(long topicId);
         /// <summary>
         /// Creates message and attaches it to newly created topic
         /// <para>

@@ -11,3 +11,11 @@
     padding: 5px;
     text-align: left;
 }
+.success{
+    background-color: lightgreen;
+    padding: 20px;
+}
+.textarea{
+    overflow-y:scroll; 
+    resize:none;
+}

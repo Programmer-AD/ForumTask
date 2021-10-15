@@ -20,7 +20,7 @@ namespace ForumTask.BLL.Services {
             userServ = user;
         }
 
-        private void CheckEditAccess(DateTime createTime,uint? creatorId,uint callerId,bool canEditOtherUser) {
+        private void CheckEditAccess(DateTime createTime,int? creatorId,int callerId,bool canEditOtherUser) {
             var user = userServ.Get(callerId);
             if (user.IsBanned)
                 throw new AccessDeniedException("Caller is banned");
@@ -36,7 +36,7 @@ namespace ForumTask.BLL.Services {
             }
         }
 
-        public ulong Create(string title, string message, uint creatorId) {
+        public long Create(string title, string message, int creatorId) {
             var user = userServ.Get(creatorId);
             if (user.IsBanned)
                 throw new AccessDeniedException("Caller is banned");
@@ -57,27 +57,28 @@ namespace ForumTask.BLL.Services {
             return t.Id;
         }
 
-        public TopicDTO Get(ulong id) {
+        public TopicDTO Get(long id) {
             var t = uow.Topics.Get(id)??throw new NotFoundException();
             return new TopicDTO(t) { MessageCount = msgServ.GetMessageCount(id) };
         }
         public int GetPagesCount()
             => uow.Topics.Count() / ITopicService.PageSize;
 
-        public IEnumerable<TopicDTO> GetTopNew(uint page, string searchTitle = "") 
-            =>uow.Topics.GetTopNew(ITopicService.PageSize, (int)page * ITopicService.PageSize, searchTitle)
-                .Select(t => new TopicDTO(t) { 
-                    MessageCount = msgServ.GetMessageCount(t.Id) 
-                });
+        public IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle = "")
+           =>uow.Topics.GetTopNew(ITopicService.PageSize, page * ITopicService.PageSize, searchTitle)
+                .ToList().Select(t => new TopicDTO(t) {
+                     MessageCount = msgServ.GetMessageCount(t.Id)
+                 });
+        
 
-        public void Rename(ulong topicId, string newTitle, uint userId) {
+        public void Rename(long topicId, string newTitle, int userId) {
             var topic = uow.Topics.Get(topicId)?? throw new NotFoundException();
             CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, false);
             topic.Title = newTitle;
             uow.Topics.Update(topic);
             uow.SaveChanges();
         }
-        public void Delete(ulong topicId, uint userId) {
+        public void Delete(long topicId, int userId) {
             var topic = uow.Topics.Get(topicId) ?? throw new NotFoundException();
             CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, true);
             uow.Topics.Delete(topic);

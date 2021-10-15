@@ -12,7 +12,10 @@ export default class TopicApi{
         return await this.api.get("/pageCount");
     }
     async getTopNew(page,searchTitle=""){
-        return await this.api.get("/",{page,searchTitle});
+        let par={page};
+        if (searchTitle!=="")
+            par.searchTitle=searchTitle;
+        return await this.api.get("/",par);
     }
     async create(title,message){
         return await this.api.post("/",{title,message});

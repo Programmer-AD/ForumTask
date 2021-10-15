@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import Api from "../../Api/ApiUnited.js";
 import Button from "../Common/Button/Button.jsx";
 import ModalDialog from "../Common/ModalDialog/ModalDialog.jsx";
-import LoginForm from "./LoginForm/LoginForm.jsx";
-import RegisterForm from "./RegisterFrom/RegisterForm.jsx";
+import LoginForm from "../Forms/LoginForm.jsx";
+import RegisterForm from "../Forms/RegisterForm.jsx";
 import css from "./style.module.css";
 
 export default class Header extends React.Component{
@@ -40,7 +40,7 @@ export default class Header extends React.Component{
             </>);
         }else{
             return (<>
-                <Link to="/me">
+                <Link to={`/profile/${this.props.user.id}`}>
                     <Button>My profile ({this.props.user.userName})</Button>
                 </Link>
                 <Button onClick={this.handleLogout}>Logout</Button>
@@ -61,13 +61,9 @@ export default class Header extends React.Component{
                 {
                     this.state.modalPage===0?
                     <LoginForm onSuccess={()=>{
-                        this.handleClose()
                         this.props.onUserChanged()
                     }}/>
-                    :<RegisterForm onSuccess={()=>{
-                        this.handleClose()
-                        this.props.onUserChanged()
-                    }}/>
+                    :<RegisterForm/>
                 }
             </ModalDialog>
         </div>);

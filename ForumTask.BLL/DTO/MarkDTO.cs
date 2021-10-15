@@ -20,8 +20,8 @@ namespace ForumTask.BLL.DTO {
                 Type = (MarkType)Math.Sign(Value)
             };
 
-        public uint UserId { get; set; }
-        public ulong MessageId { get; set; }
+        public int UserId { get; set; }
+        public long MessageId { get; set; }
         public sbyte Value { get; set; }
     }
 }

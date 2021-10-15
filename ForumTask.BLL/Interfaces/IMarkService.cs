@@ -21,7 +21,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId">User which mark to get</param>
         /// <param name="messageId">Message from which mark to get</param>
         /// <returns>Value of mark or 0 if don`t exist</returns>
-        sbyte GetOwn(uint userId,ulong messageId);
+        sbyte GetOwn(int userId,long messageId);
         /// <summary>
         /// Gets total mark of message with <paramref name="messageId"/>
         /// <para>
@@ -30,6 +30,6 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="messageId">Id of message</param>
         /// <returns>Total mark of message</returns>
-        long GetTotal(ulong messageId);
+        long GetTotal(long messageId);
     }
 }

@@ -18,14 +18,14 @@ namespace ForumTask.DAL.DependencyInjection {
             services.AddDbContext<ForumContext>(opt => opt.UseSqlServer(
                 config.GetConnectionString(ForumContextFactory.ConnectionStringName)));
 
-            services.AddIdentity<User,IdentityRole<uint>>(opt => {
+            services.AddIdentity<User,IdentityRole<int>>(opt => {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireLowercase = false;
 
                 opt.User.RequireUniqueEmail = true;
-            }).AddRoles<IdentityRole<uint>>().AddEntityFrameworkStores<ForumContext>();
+            }).AddRoles<IdentityRole<int>>().AddEntityFrameworkStores<ForumContext>();
 
             services.AddScoped<IUnitOfWork,UnitOfWork>();
         }

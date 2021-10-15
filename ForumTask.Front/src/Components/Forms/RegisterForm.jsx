@@ -1,13 +1,21 @@
 import React from "react";
-import Api from "../../../Api/ApiUnited.js";
-import Button from "../../Common/Button/Button.jsx";
+import Api from "../../Api/ApiUnited.js";
+import Button from "../Common/Button/Button.jsx";
 import css from "./style.module.css";
 
 export default class RegisterForm extends React.Component{
     constructor(props){
         super(props);
 
-        this.state={login:"",email:"",password:"",confirm:"",authTry:null,validErr:null};
+        this.state={
+            login:"",
+            email:"",
+            password:"",
+            confirm:"",
+            authTry:null,
+            validErr:null,
+            success:false
+        };
 
         this.handleChange=this.handleChange.bind(this);
         this.tryRegister=this.tryRegister.bind(this);
@@ -35,10 +43,10 @@ export default class RegisterForm extends React.Component{
         }else{
             let st=Api.user.register(this.state.login,this.state.email,this.state.password);
             st.catch(()=>{
-                this.setState({authTry:null,validErr:"Register data is wrong"})
+                this.setState({authTry:null,validErr:"Register data is wrong or somer error occurred"})
             });
             st.then(()=>{
-                this.setState({authTry:null});
+                this.setState({authTry:null,success:true});
                 this.props.onSuccess?.();
             });
             this.setState({validErr:null,authTry:st})
@@ -46,6 +54,8 @@ export default class RegisterForm extends React.Component{
     }
 
     render(){
+        if (this.state.success)
+            return (<div className={css.success}>Registred successfully!</div>);
         return (<>
             <h2 className={css.title}>Register</h2>
             {this.state.validErr===null?null:
@@ -54,17 +64,16 @@ export default class RegisterForm extends React.Component{
             </pre>}
             <fieldset className={css.container}>
                 <label htmlFor="login">Login: </label>
-                <input name="login" value={this.state.login} onChange={this.handleChange}/>
+                <input name="login" placeholder="login" maxLength="255" value={this.state.login} onChange={this.handleChange}/>
                 <br/>
                 <label htmlFor="email">Email: </label>
-                <input name="email" value={this.state.email} type="email" onChange={this.handleChange}/>
+                <input name="email" placeholder="email" maxLength="255" value={this.state.email} type="email" onChange={this.handleChange}/>
                 <br/>
                 <label htmlFor="password">Password: </label>
-                <input name="password" type="password" value={this.state.password} onChange={this.handleChange}/>
+                <input name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
                 <br/>
-                <label htmlFor="pasword">Confirm password: </label>
-                <input name="confirm" type="password" value={this.state.confirm} onChange={this.handleChange}/>
-                <br/>
+                <label htmlFor="confirm">Confirm password: </label>
+                <input name="confirm" placeholder="Confirm password" type="password" value={this.state.confirm} onChange={this.handleChange}/>
             </fieldset>
             {this.state.authTry===null?<Button onClick={this.tryRegister}>Register</Button>:<span>Trying to register...</span>}
         </>);

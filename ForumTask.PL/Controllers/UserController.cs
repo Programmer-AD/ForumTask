@@ -24,7 +24,7 @@ namespace ForumTask.PL.Controllers {
         }
 
         [HttpGet("{userId}")]
-        public UserViewModel Get(uint userId)
+        public UserViewModel Get(int userId)
             => new (userServ.Get(userId));
 
         [HttpGet("canUse/email/{email}")]
@@ -43,21 +43,21 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpDelete("{userId}")]
-        public IActionResult Delete(uint userId) {
+        public IActionResult Delete(int userId) {
             userServ.Delete(userId, User.GetId());
             return Ok();
         }
 
         [Authorize]
         [HttpPut("{userId}/banned")]
-        public IActionResult SetBanned(uint userId, bool banned) {
+        public IActionResult SetBanned(int userId, bool banned) {
             userServ.SetBanned(userId, banned, User.GetId());
             return Ok();
         }
 
         [Authorize]
         [HttpPut("{userId}/roles")]
-        public IActionResult SetRole(uint userId, [Required] string roleName, bool setHasRole) {
+        public IActionResult SetRole(int userId, [Required] string roleName, bool setHasRole) {
             userServ.SetRole(userId, roleName, setHasRole, User.GetId());
             return Ok();
         }

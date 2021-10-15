@@ -33,7 +33,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="callerId">User who tries to change ban status</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void SetBanned(uint userId, bool banned, uint callerId);
+        void SetBanned(int userId, bool banned, int callerId);
         /// <summary>
         /// Deletes user with id=<paramref name="userId"/>
         /// <para>
@@ -47,7 +47,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="callerId">User who tries to delete</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void Delete(uint userId, uint callerId);
+        void Delete(int userId, int callerId);
         /// <summary>
         /// Gets user by id
         /// <para>
@@ -57,7 +57,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId">Id of user to get</param>
         /// <returns>User with id=<paramref name="userId"/></returns>
         /// <exception cref="NotFoundException"/>
-        UserDTO Get(uint userId);
+        UserDTO Get(int userId);
         /// <summary>
         /// Attach/detach role to/from user depending on <paramref name="setHasRole"/>
         /// <para>
@@ -73,7 +73,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="setHasRole">If true than attaches role, else detach role</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void SetRole(uint userId, string roleName, bool setHasRole, uint callerId);
+        void SetRole(int userId, string roleName, bool setHasRole, int callerId);
         /// <summary>
         /// Sign in user
         /// <para>
