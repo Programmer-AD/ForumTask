@@ -40,7 +40,7 @@ export default class Header extends React.Component{
             </>);
         }else{
             return (<>
-                <Link to={`/profile/${this.props.user.id}`}>
+                <Link to={`/profile-${this.props.user.id}`}>
                     <Button>My profile ({this.props.user.userName})</Button>
                 </Link>
                 <Button onClick={this.handleLogout}>Logout</Button>

@@ -1,0 +1,16 @@
+.arrow{
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    vertical-align: middle;
+}
+.arrow[set_up=true]{
+    background-color: green;
+}
+.arrow[set_down=true]{
+    background-color: darkred;
+}
+.mark{
+    display: inline-block;
+    margin: 5px;
+}

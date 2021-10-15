@@ -51,7 +51,7 @@ export default class MainPage extends React.Component{
         this.setState({showModal:false});
     }
     handleCreated(id){
-        this.props.history.push(`/topic/${id}`);
+        this.props.history.push(`/topic-${id}`);
     }
 
     render(){

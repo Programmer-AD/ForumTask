@@ -29,8 +29,10 @@ namespace ForumTask.BLL.Services {
                 var dbm = uow.Marks.Get(mark.UserId, mark.MessageId);
                 if (dbm is null)
                     uow.Marks.Create(mark.ToEntity());
-                else if ((sbyte)dbm.Type != mark.Value)
-                    uow.Marks.Update(mark.ToEntity());
+                else if ((sbyte)dbm.Type != mark.Value) {
+                    dbm.Type = (DAL.Entities.MarkType)Math.Sign(mark.Value);
+                    uow.Marks.Update(dbm);
+                }
             }
             uow.SaveChanges();
         }

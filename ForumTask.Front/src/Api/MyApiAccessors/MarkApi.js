@@ -9,6 +9,6 @@ export default class MarkApi{
         return await this.api.get(`/${messageId}`);
     }
     async setMark(messageId,value){
-        return await this.api.put(`/${messageId}`,value);
+        return await this.api.put(`/${messageId}/${value}`,null);
     }
 }

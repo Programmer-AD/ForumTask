@@ -26,8 +26,8 @@ namespace ForumTask.PL.Controllers {
         public sbyte Get(long messageId) 
             => markServ.GetOwn(User.GetId(),messageId);
 
-        [HttpPost("{messageId}")]
-        [HttpPut("{messageId}")]
+        [HttpPost("{messageId}/{value}")]
+        [HttpPut("{messageId}/{value}")]
         public IActionResult Set(long messageId, sbyte value) {
             markServ.Set(new() { UserId = User.GetId(), MessageId = messageId, Value = value });
             return Ok();

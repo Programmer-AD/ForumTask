@@ -32,11 +32,11 @@ export default class AppComponent extends React.Component{
                 <Header user={this.state.user} onUserChanged={this.handleUserChanged} />
                 <div className={css.page_container}>
                     <Switch>
-                        <Route path="/" component={(props)=><MainPage user={this.state.user} {...props}/>}/>
+                        <Route exact path="/" component={(props)=><MainPage user={this.state.user} {...props}/>}/>
                         <Route path="/page-:page(\d{1,4})" component={(props)=><MainPage user={this.state.user} {...props}/>}/>
                         <Route path="/topic-:topicId(\d{1,18})" component={(props)=><TopicPage user={this.state.user} {...props}/>}/>
                         <Route path="/topic-:topicId(\d{1,18})/page-:page(\d{1,4})" component={(props)=><TopicPage user={this.state.user} {...props}/>}/>
-                        <Route path="/profile/:profileId(\d{1,10})" component={(props)=><ProfilePage user={this.state.user} {...props}/>} />
+                        <Route path="/profile-:profileId(\d{1,10})" component={(props)=><ProfilePage user={this.state.user} {...props}/>} />
                         <Route component={NotFoundPage} />
                     </Switch>
                 </div>

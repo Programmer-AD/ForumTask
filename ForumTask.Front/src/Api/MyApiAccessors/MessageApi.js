@@ -5,6 +5,9 @@ export default class MessageApi{
     constructor(){
         this.api=new ApiAccessor("/api/message")
     }
+    async getPageCount(topicId){
+        return await this.api.get(`/topic${topicId}/pageCount`);
+    }
     async getTopOld(topicId,page){
         return await this.api.get(`/topic${topicId}`,{page});
     }

@@ -1,68 +1,64 @@
 import React from "react";
-import MessageComponent from "./MessageList/MessageList.jsx";
 import Api from "../../../Api/ApiUnited.js";
 import css from "./style.module.css"
+import MessageList from "./MessageList/MessageList.jsx";
+import NotFoundPage from "../NotFoundPage/NotFoundPage.jsx";
+import TopicView from "./TopicView/TopicView.jsx";
+import PageChooser from "../../Common/PageChooser/PageChooser.jsx";
+import MessageInput from "./MessageInput/MessageInput.jsx";
 
 export default class TopicPage extends React.Component{
     constructor(props){
         super(props);
 
-        let page=this.props.match.params.page??1;
+        let page=this.props.match.params.page??1,topicId=this.props.match.params.topicId;
         if (page==0)
             this.props.history.push("/not-found");
         page--;
         this.state={
+            topic:null,
             list:[],
             pageCount:0,
+            topicId,
             page,
-            showModal:false
+            showModal:false,
+            notFound:false
         };
 
-        this.handleChanged=this.handleChanged.bind(this);
-        this.handleSearch=this.handleSearch.bind(this);
-        this.handleClose=this.handleClose.bind(this);
-        this.handleCreated=this.handleCreated.bind(this);
-        this.handleAdd=this.handleAdd.bind(this);
+        this.handleChange=this.handleChange.bind(this);
     }
-    load(){
-        Api.message.().then((c)=>this.setState({pageCount:c}));
-        Api.topic.getTopNew(this.state.page,this.state.search)
-            .then((list)=>this.setState({list}));
+    loadAll(){
+        Api.topic.get(this.state.topicId).then(
+            (t)=>{
+                this.setState({topic:t});
+                this.reload();
+            }).catch((e)=>{
+                if (e.code===404)
+                    this.setState({notFound:true});
+                else this.loadAll();
+            });
+    }
+    reload(){
+        Api.message.getPageCount(this.state.topicId).then((c)=>this.setState({pageCount:c}));
+        Api.message.getTopOld(this.state.topicId,this.state.page).then((list)=>this.setState({list}));
     }
     componentDidMount(){
-        this.load();
+        this.loadAll();
     }
-
-    handleChanged(search){
-        this.setState({search});
-    }
-    handleSearch(){
-        this.load();
-    }
-    handleAdd(){
-        this.setState({showModal:true});
-    }
-    handleClose(){
-        this.setState({showModal:false});
-    }
-    handleCreated(id){
-        this.props.history.push(`/topic/${id}`);
+    handleChange(){
+        this.reload();
     }
 
     render(){
+        if (this.state.notFound)
+            return <NotFoundPage />
+        if (this.state.topic===null)
+            return <div>Loading...</div>
         return (<>
-            <h1 className={css.title}>Welcome to our forum!</h1>
-            <SearchBar value={this.state.search} onChange={this.handleChanged} onSearch={this.handleSearch} onAdd={this.handleAdd}/>
-            <TopicList list={this.state.list}/>
-            <PageChooser current={this.state.page+1} count={this.state.pageCount} getUrl={(v)=>`/page-${v}`}/>
-
-            <ModalDialog visible={this.state.showModal} onClose={this.handleClose}>
-                {
-                    this.props.user!==null&&!this.props.user.isBanned?
-                    <TopicCreateForm onSuccess={this.handleCreated}/>
-                    :<div>To create a new topic you must login to your account and your account mustn`t be blocked</div>
-                }
-            </ModalDialog>
+            <TopicView value={this.state.topic} user={this.props.user} />
+            <MessageList list={this.state.list} user={this.props.user} onChange={this.handleChange}/>
+            <MessageInput topicId={this.state.topicId} onSend={this.handleChange} user={this.props.user}/>
+            <PageChooser current={this.state.page+1} count={this.state.pageCount} getUrl={(v)=>`/topic-${this.state.topicId}/page-${v}`}/>
         </>);
     }
 } 
