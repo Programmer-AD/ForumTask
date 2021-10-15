@@ -1,0 +1,9 @@
+.container{
+    padding: 20px;
+    text-align: center;
+}
+.element{
+    padding: 5px;
+    margin: 5px;
+    font-size: large;
+}

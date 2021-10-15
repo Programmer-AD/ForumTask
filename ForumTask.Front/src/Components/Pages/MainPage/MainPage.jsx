@@ -5,6 +5,7 @@ import Api from "../../../Api/ApiUnited.js"
 import css from "./style.module.css";
 import ModalDialog from "../../Common/ModalDialog/ModalDialog.jsx";
 import TopicCreateForm from "../../Forms/TopicCreateForm.jsx";
+import PageChooser from "../../Common/PageChooser/PageChooser.jsx";
 
 export default class MainPage extends React.Component{
     constructor(props){
@@ -14,7 +15,13 @@ export default class MainPage extends React.Component{
         if (page==0)
             this.props.history.push("/not-found");
         page--;
-        this.state={list:[],search:"",page,showModal:false};
+        this.state={
+            list:[],
+            search:"",
+            pageCount:0,
+            page,
+            showModal:false
+        };
 
         this.handleChanged=this.handleChanged.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
@@ -23,6 +30,7 @@ export default class MainPage extends React.Component{
         this.handleAdd=this.handleAdd.bind(this);
     }
     load(){
+        Api.topic.getPageCount().then((c)=>this.setState({pageCount:c}));
         Api.topic.getTopNew(this.state.page,this.state.search)
             .then((list)=>this.setState({list}));
     }
@@ -51,6 +59,8 @@ export default class MainPage extends React.Component{
             <h1 className={css.title}>Welcome to our forum!</h1>
             <SearchBar value={this.state.search} onChange={this.handleChanged} onSearch={this.handleSearch} onAdd={this.handleAdd}/>
             <TopicList list={this.state.list}/>
+            <PageChooser current={this.state.page+1} count={this.state.pageCount} getUrl={(v)=>`/page-${v}`}/>
+
             <ModalDialog visible={this.state.showModal} onClose={this.handleClose}>
                 {
                     this.props.user!==null&&!this.props.user.isBanned?

@@ -1,17 +1,26 @@
 .container{
     padding: 10px;
     margin: 5px;
+    border-style:solid;
     border-radius: 5px;
     background-color: darkcyan;
 }
 .title{
     text-align: left;
     font-size: x-large;
+    margin: 5px;
+    overflow-wrap: break-word;
+    font-family: monospace;
+    border-bottom: solid;
 }
-.messages{
-    display: inline-block;
+.infos{
+    text-align: right;
 }
-.date{
-    float: right;
+.info{
     display: inline-block;
+    margin: 0px 5px;
+    padding: 5px;
+    border: groove;
+    background-color: darkgray;
+    border-radius: 10px;
 }

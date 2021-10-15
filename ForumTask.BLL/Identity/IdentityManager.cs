@@ -32,12 +32,13 @@ namespace ForumTask.BLL.Identity {
         }
 
         public void Create(string userName, string email, string password) {
-            CallIdentitySync(()=>userMan.CreateAsync(new User {
+            var user = new User {
                 UserName = userName,
                 Email = email,
                 RegisterDate = DateTime.UtcNow
-            }, password));
-            
+            };
+            CallIdentitySync(()=>userMan.CreateAsync(user, password));
+            AddToRole(user, "User");
         }
 
         public void Delete(User user) {

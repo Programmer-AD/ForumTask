@@ -5,6 +5,7 @@ import css from "./style.module.css"
 export default class TopicList extends React.Component{
     render(){
         return (<div className={css.container}>
+            <h2 className={css.title}>List of topics</h2>
             {
                 this.props.list.length===0?
                 <div className={css.no_topics}>No Topics Found</div>

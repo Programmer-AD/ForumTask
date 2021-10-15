@@ -23,6 +23,10 @@ namespace ForumTask.PL.Controllers {
             messageServ = messageService;
         }
 
+        [HttpGet("topic{topicId}/pageCount")]
+        public int GetPageCount(long topicId)
+            => messageServ.GetMessageCount(topicId);
+
         [HttpGet("topic{topicId}")]
         public IEnumerable<MessageViewModel> GetTopOld(long topicId, int page)
             => messageServ.GetTopOld(topicId, page).Select(dto => new MessageViewModel(dto));
