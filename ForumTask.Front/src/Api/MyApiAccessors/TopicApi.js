@@ -21,7 +21,7 @@ export default class TopicApi{
         return await this.api.post("/",{title,message});
     }
     async rename(topicId,newTitle){
-        return await this.api.put(`/${topicId}`,newTitle);
+        return await this.api.put(`/${topicId}`,{newTitle});
     }
     async delete(topicId){
         return await this.api.delete(`/${topicId}`);

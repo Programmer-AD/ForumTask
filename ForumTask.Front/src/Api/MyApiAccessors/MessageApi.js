@@ -15,7 +15,7 @@ export default class MessageApi{
         return await this.api.post("/",{topicId,text});
     }
     async edit(messageId,newText){
-        return await this.api.put(`/${messageId}`,newText);
+        return await this.api.put(`/${messageId}`,{newText});
     }
     async delete(messageId){
         return await this.api.delete(`/${messageId}`);

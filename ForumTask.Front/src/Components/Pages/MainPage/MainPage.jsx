@@ -63,7 +63,7 @@ export default class MainPage extends React.Component{
 
             <ModalDialog visible={this.state.showModal} onClose={this.handleClose}>
                 {
-                    this.props.user!==null&&!this.props.user.isBanned?
+                    (this.props.user!==null&&!this.props.user.isBanned)?
                     <TopicCreateForm onSuccess={this.handleCreated}/>
                     :<div style={{padding:"10px"}}>To create a new topic you must login to your account and your account mustn`t be blocked</div>
                 }

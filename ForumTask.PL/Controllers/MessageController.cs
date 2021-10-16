@@ -5,7 +5,6 @@ using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ForumTask.PL.Controllers {
@@ -37,8 +36,8 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpPut("{messageId}")]
-        public IActionResult Edit(long messageId, [MinLength(10)][MaxLength(5000)] string newText) {
-            messageServ.Edit(messageId, newText, User.GetId());
+        public IActionResult Edit(long messageId, MessageEditModel model) {
+            messageServ.Edit(messageId, model.NewText, User.GetId());
             return Ok();
         }
 

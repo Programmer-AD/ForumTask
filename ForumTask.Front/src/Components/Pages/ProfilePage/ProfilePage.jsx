@@ -1,6 +1,8 @@
 import React from "react";
 import Api from "../../../Api/ApiUnited";
 import ModalDialog from "../../Common/ModalDialog/ModalDialog.jsx";
+import Button from "../../Common/Button/Button.jsx";
+import NotFoundPage from "../NotFoundPage/NotFoundPage.jsx"
 import css from "./style.module.css";
 
 export default class ProfliePage extends React.Component{
@@ -34,20 +36,21 @@ export default class ProfliePage extends React.Component{
             })
     }
     handleChangeBan(){
+        let userT=this.state.userData;
         this.setState({
             showModal:true,
-            modalText:`Do you really want to ${this.state.userData.isBanned?"Unban":"Ban"} user "${this.state.user.userName}"?`,
+            modalText:`Do you really want to ${userT.isBanned?"Unban":"Ban"} user "${userT.userName}"?`,
             onConfirm:()=>{
-                Api.user.setBanned(this.state.userData.id,!this.state.userData.isBanned)
+                Api.user.setBanned(userT.id,!userT.isBanned)
                 .then(()=>this.load());
             }
         });
     }
     handleChangeRole(){
-        let nrm=this.state.userData.roleName.toLower()==="user";
+        let nrm=this.state.userData.roleName.toLowerCase()==="user";
         this.setState({
             showModal:true,
-            modalText:`Do you really want to set role "${nrm?"Moderator":"User"}" to user "${this.state.user.userName}"?`,
+            modalText:`Do you really want to set role "${nrm?"Moderator":"User"}" to user "${this.state.userData.userName}"?`,
             onConfirm:()=>{
                 Api.user.setRole(this.state.userData.id,"Moderator",nrm)
                 .then(()=>this.load());
@@ -57,10 +60,13 @@ export default class ProfliePage extends React.Component{
     handleDelete(){
         this.setState({
             showModal:true,
-            modalText:`Do you really want to delete your account?`,
+            modalText:`Do you really want to delete this account (${this.state.userData.userName})?`,
             onConfirm:()=>{
                 Api.user.delete(this.state.userData.id)
-                .then(()=>this.load());
+                .then(()=>{
+                    Api.user.signOut();
+                    this.load();
+                });
             }
         });
     }
@@ -78,15 +84,24 @@ export default class ProfliePage extends React.Component{
     }
 
     renderButtons(){
-        let ur=this.props.user.roleName.toLower(),udr=this.state.userData.roleName;
-        if (!this.props.user||(er==="user"||ur===udr))
+        function getRoleId(name){
+            const roles=["user","moderator","admin"];
+            name=name.toLowerCase();
+            return roles.findIndex((v)=>v===name);
+        }
+
+        if (!this.props.user)
             return null;
+
+        let ur=getRoleId(this.props.user.roleName),udr=getRoleId(this.state.userData.roleName);
         let but=[];
-        
         if (this.props.user.id!==this.state.userData.id){
-            but.push(<Button onClick={this.handleChangeBan}>{this.state.userData.isBanned?"Unban":"Ban"}</Button>);
-            if (ur==="admin") but.push(<Button onClick={this.handleChangeRole}>Make {udr==="user"?"moderator":"user"}</Button>);
-        }else but.push(<Button onClick={this.handleDelete}>Delete</Button>);
+            if (ur>0&&udr<ur)
+                but.push(<Button onClick={this.handleChangeBan} key="ban">{this.state.userData.isBanned?"Unban":"Ban"}</Button>);
+            if (ur===2) but.push(<Button onClick={this.handleChangeRole} kaey="role">Make {udr===0?"moderator":"user"}</Button>);
+        }
+        if (this.props.user.id===this.state.userData.id||udr<ur)
+            but.push(<Button onClick={this.handleDelete} key="delete">Delete</Button>);
 
         return (<div>
             {but}

@@ -5,7 +5,6 @@ using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ForumTask.PL.Controllers {
@@ -39,8 +38,8 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpPut("{topicId}")]
-        public IActionResult Rename(long topicId, [MaxLength(60)] string newTitle) {
-            topicServ.Rename(topicId, newTitle, User.GetId());
+        public IActionResult Rename(long topicId, TopicRenameModel rename) {
+            topicServ.Rename(topicId, rename.NewTitle, User.GetId());
             return Ok();
         }
 

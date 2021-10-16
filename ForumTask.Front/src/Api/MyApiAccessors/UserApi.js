@@ -21,7 +21,7 @@ export default class UserApi{
         return await this.api.delete(`/${userId}`);
     }
     async setBanned(userId,banned){
-        return await this.api.put(`/${userId}/banned`,banned);
+        return await this.api.put(`/${userId}/banned/${banned}`,null);
     }
     async setRole(userId,roleName,setHasRole){
         return await this.api.put(`/${userId}/roles`,{roleName,setHasRole});

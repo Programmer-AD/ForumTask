@@ -26,7 +26,8 @@ namespace ForumTask.BLL.Services {
         public void Delete(int userId, int callerId) {
             var user = man.FindById(userId) ??
                  throw new NotFoundException();
-            CheckRight(user, callerId);
+            if (userId!=callerId)
+                CheckRight(user, callerId);
             man.Delete(user);
         }
 

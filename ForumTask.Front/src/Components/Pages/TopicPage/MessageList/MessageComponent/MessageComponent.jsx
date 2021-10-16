@@ -16,7 +16,8 @@ export default class MessageComponent extends React.Component{
     }
 
     componentDidMount(){
-        Api.user.get(this.props.value.authorId).then((a)=>this.setState({author:a}));
+        if (this.props.value.authorId!==null)
+            Api.user.get(this.props.value.authorId).then((a)=>this.setState({author:a}));
     }
     handleMarkChange(){
         this.props.onChange?.();

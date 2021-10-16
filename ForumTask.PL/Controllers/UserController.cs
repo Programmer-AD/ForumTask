@@ -44,7 +44,7 @@ namespace ForumTask.PL.Controllers {
         }
 
         [Authorize]
-        [HttpPut("{userId}/banned")]
+        [HttpPut("{userId}/banned/{banned}")]
         public IActionResult SetBanned(int userId, bool banned) {
             userServ.SetBanned(userId, banned, User.GetId());
             return Ok();
@@ -52,8 +52,8 @@ namespace ForumTask.PL.Controllers {
 
         [Authorize]
         [HttpPut("{userId}/roles")]
-        public IActionResult SetRole(int userId, [Required] string roleName, bool setHasRole) {
-            userServ.SetRole(userId, roleName, setHasRole, User.GetId());
+        public IActionResult SetRole(int userId, UserRoleSetModel model) {
+            userServ.SetRole(userId, model.RoleName, model.SetHasRole, User.GetId());
             return Ok();
         }
 

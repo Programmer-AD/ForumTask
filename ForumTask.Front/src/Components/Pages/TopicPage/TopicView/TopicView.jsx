@@ -13,7 +13,8 @@ export default class TopicView extends React.Component{
     }
 
     componentDidMount(){
-        Api.user.get(this.props.value.creatorId).then((a)=>this.setState({author:a}));
+        if (this.props.value.creatorId!==null)
+            Api.user.get(this.props.value.creatorId).then((a)=>this.setState({author:a}));
     }
     render(){
         return (<div className={css.container}>
