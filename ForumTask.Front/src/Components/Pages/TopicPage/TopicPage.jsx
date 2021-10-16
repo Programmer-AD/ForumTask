@@ -27,7 +27,7 @@ export default class TopicPage extends React.Component{
 
         this.handleChange=this.handleChange.bind(this);
     }
-    loadAll(){
+    loadAll(tc){
         Api.topic.get(this.state.topicId).then(
             (t)=>{
                 this.setState({topic:t});
@@ -35,7 +35,7 @@ export default class TopicPage extends React.Component{
             }).catch((e)=>{
                 if (e.code===404)
                     this.setState({notFound:true});
-                else this.loadAll();
+                else if (tc>0)this.loadAll(tc-1);
             });
     }
     reload(){
@@ -43,7 +43,7 @@ export default class TopicPage extends React.Component{
         Api.message.getTopOld(this.state.topicId,this.state.page).then((list)=>this.setState({list}));
     }
     componentDidMount(){
-        this.loadAll();
+        this.loadAll(5);
     }
     handleChange(){
         this.reload();

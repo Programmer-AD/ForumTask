@@ -1,8 +1,5 @@
 ﻿using ForumTask.BLL.DTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ForumTask.PL.Models {
     public class TopicViewModel {

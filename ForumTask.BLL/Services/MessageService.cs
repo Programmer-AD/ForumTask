@@ -5,16 +5,14 @@ using ForumTask.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Services {
-    class MessageService:IMessageService {
+    class MessageService : IMessageService {
         private readonly IUnitOfWork uow;
         private readonly IUserService userServ;
         private readonly IMarkService markServ;
 
-        public MessageService(IUnitOfWork uow,IUserService user,IMarkService mark) {
+        public MessageService(IUnitOfWork uow, IUserService user, IMarkService mark) {
             this.uow = uow;
             userServ = user;
             markServ = mark;

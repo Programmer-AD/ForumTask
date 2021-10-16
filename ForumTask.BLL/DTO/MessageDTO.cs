@@ -1,9 +1,5 @@
 ﻿using ForumTask.DAL.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.DTO {
     public class MessageDTO {
@@ -17,11 +13,11 @@ namespace ForumTask.BLL.DTO {
         }
         public Message ToEntity()
             => new() {
-                AuthorId=AuthorId,
-                Id=Id,
-                WriteTime=WriteTime,
-                TopicId=TopicId,
-                Text=Text
+                AuthorId = AuthorId,
+                Id = Id,
+                WriteTime = WriteTime,
+                TopicId = TopicId,
+                Text = Text
             };
 
         public long Id { get; set; }

@@ -5,11 +5,9 @@ using ForumTask.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Services {
-    class TopicService:ITopicService {
+    class TopicService : ITopicService {
         private readonly IUnitOfWork uow;
         private readonly IMessageService msgServ;
         private readonly IUserService userServ;
@@ -20,11 +18,11 @@ namespace ForumTask.BLL.Services {
             userServ = user;
         }
 
-        private void CheckEditAccess(DateTime createTime,int? creatorId,int callerId,bool canEditOtherUser) {
+        private void CheckEditAccess(DateTime createTime, int? creatorId, int callerId, bool canEditOtherUser) {
             var user = userServ.Get(callerId);
             if (user.IsBanned)
                 throw new AccessDeniedException("Caller is banned");
-            if ((user.MaxRole == RoleEnum.User||!canEditOtherUser) && (!creatorId.HasValue || creatorId.Value != callerId))
+            if ((user.MaxRole == RoleEnum.User || !canEditOtherUser) && (!creatorId.HasValue || creatorId.Value != callerId))
                 throw new AccessDeniedException("Not enough rights to edit/delete other users topic");
             if (user.MaxRole == RoleEnum.User
                 && (DateTime.UtcNow - createTime).TotalMinutes > ITopicService.EditOrDeleteTime)
@@ -48,31 +46,31 @@ namespace ForumTask.BLL.Services {
             };
             uow.Topics.Create(t);
             if (!string.IsNullOrEmpty(message))
-                msgServ.Add(new() { 
-                    AuthorId=creatorId, 
-                    Text=message, 
-                    WriteTime=DateTime.UtcNow,
+                msgServ.Add(new() {
+                    AuthorId = creatorId,
+                    Text = message,
+                    WriteTime = DateTime.UtcNow,
                 }, t);
             uow.SaveChanges();
             return t.Id;
         }
 
         public TopicDTO Get(long id) {
-            var t = uow.Topics.Get(id)??throw new NotFoundException();
+            var t = uow.Topics.Get(id) ?? throw new NotFoundException();
             return new TopicDTO(t) { MessageCount = msgServ.GetMessageCount(id) };
         }
         public int GetPagesCount()
             => uow.Topics.Count() / ITopicService.PageSize;
 
         public IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle = "")
-           =>uow.Topics.GetTopNew(ITopicService.PageSize, page * ITopicService.PageSize, searchTitle)
+           => uow.Topics.GetTopNew(ITopicService.PageSize, page * ITopicService.PageSize, searchTitle)
                 .ToList().Select(t => new TopicDTO(t) {
-                     MessageCount = msgServ.GetMessageCount(t.Id)
-                 });
-        
+                    MessageCount = msgServ.GetMessageCount(t.Id)
+                });
+
 
         public void Rename(long topicId, string newTitle, int userId) {
-            var topic = uow.Topics.Get(topicId)?? throw new NotFoundException();
+            var topic = uow.Topics.Get(topicId) ?? throw new NotFoundException();
             CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, false);
             topic.Title = newTitle;
             uow.Topics.Update(topic);

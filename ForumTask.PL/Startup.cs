@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ForumTask.DAL.DependencyInjection;
 using ForumTask.BLL.DependencyInjection;
+using ForumTask.DAL.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace ForumTask.PL {
     public class Startup {
@@ -23,13 +19,13 @@ namespace ForumTask.PL {
             services.AddDal(config);
             services.AddBll(config);
 
-            services.AddSpaStaticFiles(conf=> conf.RootPath = "wwwroot");
+            services.AddSpaStaticFiles(conf => conf.RootPath = "wwwroot");
             services.AddControllers();
 
             services.ConfigureApplicationCookie(opt => {
                 opt.Events = new() {
                     OnRedirectToLogin = ctx => {
-                        ctx.Response.StatusCode=401;
+                        ctx.Response.StatusCode = 401;
                         return Task.FromResult(0);
                     }
                 };
@@ -52,9 +48,9 @@ namespace ForumTask.PL {
                 endpoints.MapControllers();
             });
 
-            app.UseSpa(config=> {
+            app.UseSpa(config => {
                 config.Options.SourcePath = "wwwroot";
-                });
+            });
         }
     }
 }

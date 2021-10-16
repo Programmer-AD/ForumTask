@@ -1,14 +1,8 @@
 ﻿using ForumTask.BLL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using ForumTask.PL.Extensions;
 using ForumTask.PL.Filters;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ForumTask.PL.Controllers {
     [Route("api/mark")]
@@ -23,8 +17,8 @@ namespace ForumTask.PL.Controllers {
         }
 
         [HttpGet("{messageId}")]
-        public sbyte Get(long messageId) 
-            => markServ.GetOwn(User.GetId(),messageId);
+        public sbyte Get(long messageId)
+            => markServ.GetOwn(User.GetId(), messageId);
 
         [HttpPost("{messageId}/{value}")]
         [HttpPut("{messageId}/{value}")]

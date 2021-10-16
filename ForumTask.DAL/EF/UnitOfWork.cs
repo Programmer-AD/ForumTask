@@ -1,12 +1,6 @@
 ﻿using ForumTask.DAL.EF.Repositories;
-using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.DAL.EF {
     class UnitOfWork : IUnitOfWork, IDisposable {

@@ -33,7 +33,7 @@ export default class MessageComponent extends React.Component{
                 <span className={css.info}>
                     <MarkSetter user={this.props.user} value={this.props.value.mark} messageId={this.props.value.id} onChange={this.handleMarkChange}/>
                 </span>
-                <span className={css.info}>{new Date(this.props.value.writeTime).toLocaleString()}</span>
+                <span className={css.info}>{new Date(this.props.value.writeTime+"Z").toLocaleString()}</span>
             </div>
         </div>);
     }

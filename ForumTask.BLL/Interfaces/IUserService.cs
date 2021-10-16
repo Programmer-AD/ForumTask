@@ -1,10 +1,6 @@
 ﻿using ForumTask.BLL.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ForumTask.BLL.Exceptions;
+using System;
 
 namespace ForumTask.BLL.Interfaces {
     public interface IUserService {
@@ -66,12 +62,16 @@ namespace ForumTask.BLL.Interfaces {
         /// <para>
         /// If role can`t be attached/detached, throw <see cref="AccessDeniedException"/>
         /// </para>
+        /// <para>
+        /// If trying to set/remove base role "User", throw <see cref="InvalidOperationException"/>
+        /// </para>
         /// </summary>
         /// <param name="userId">Id of user to act with</param>
         /// <param name="roleName">Name of role to act with</param>
         /// <param name="callerId">Id of user who tries to set role</param>
         /// <param name="setHasRole">If true than attaches role, else detach role</param>
         /// <exception cref="NotFoundException"/>
+        /// <exception cref="InvalidOperationException"/>
         /// <exception cref="AccessDeniedException"/>
         void SetRole(int userId, string roleName, bool setHasRole, int callerId);
         /// <summary>

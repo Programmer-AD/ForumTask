@@ -1,24 +1,18 @@
 ﻿using ForumTask.DAL.EF;
 using ForumTask.DAL.Entities;
+using ForumTask.DAL.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Identity.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using ForumTask.DAL.Interfaces;
 
 namespace ForumTask.DAL.DependencyInjection {
     public static class DalServiceCollectionExtensions {
-        public static void AddDal(this IServiceCollection services,IConfiguration config) {
+        public static void AddDal(this IServiceCollection services, IConfiguration config) {
             services.AddDbContext<ForumContext>(opt => opt.UseSqlServer(
                 config.GetConnectionString(ForumContextFactory.ConnectionStringName)));
 
-            services.AddIdentity<User,IdentityRole<int>>(opt => {
+            services.AddIdentity<User, IdentityRole<int>>(opt => {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
@@ -27,7 +21,7 @@ namespace ForumTask.DAL.DependencyInjection {
                 opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole<int>>().AddEntityFrameworkStores<ForumContext>();
 
-            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using ForumTask.DAL.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.DTO {
     public class UserDTO {
@@ -18,10 +14,10 @@ namespace ForumTask.BLL.DTO {
         public User ToEntity()
             => new() {
                 Id = Id,
-                UserName=UserName,
-                Email=Email,
-                RegisterDate=RegisterDate,
-                IsBanned=IsBanned,
+                UserName = UserName,
+                Email = Email,
+                RegisterDate = RegisterDate,
+                IsBanned = IsBanned,
             };
 
         public int Id { get; set; }
@@ -30,6 +26,6 @@ namespace ForumTask.BLL.DTO {
         public DateTime RegisterDate { get; set; }
         public bool IsBanned { get; set; }
 
-        public RoleEnum MaxRole{ get; set; }
+        public RoleEnum MaxRole { get; set; }
     }
 }

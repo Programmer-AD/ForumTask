@@ -1,12 +1,8 @@
 ﻿using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Data.Sql;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Ef = Microsoft.EntityFrameworkCore.EF;
 
 namespace ForumTask.DAL.EF.Repositories {
@@ -16,11 +12,11 @@ namespace ForumTask.DAL.EF.Repositories {
         public int Count()
             => set.Count();
 
-        public IEnumerable<Topic> GetTopNew(int count, int offset, string searchTitle="") {
+        public IEnumerable<Topic> GetTopNew(int count, int offset, string searchTitle = "") {
             IQueryable<Topic> col = set;
             if (!string.IsNullOrEmpty(searchTitle)) {
                 searchTitle = $"%{searchTitle}%";
-                col = col.Where(t => Ef.Functions.Like(t.Title,searchTitle));
+                col = col.Where(t => Ef.Functions.Like(t.Title, searchTitle));
             }
             return col.OrderByDescending(t => t.CreateTime).Skip(offset).Take(count);
         }

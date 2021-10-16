@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -12,7 +8,7 @@ namespace ForumTask.DAL.Entities {
 
         [MaxLength(5000)]
         public string Text { get; set; }
-        
+
         public DateTime WriteTime { get; set; }
 
         public long TopicId { get; set; }

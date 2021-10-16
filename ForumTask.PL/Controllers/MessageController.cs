@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ForumTask.PL.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ForumTask.BLL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using ForumTask.PL.Models;
+﻿using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
+using ForumTask.PL.Filters;
+using ForumTask.PL.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace ForumTask.PL.Controllers {
     [Route("api/message")]
@@ -34,13 +31,13 @@ namespace ForumTask.PL.Controllers {
         [Authorize]
         [HttpPost]
         public IActionResult Add(MessageAddModel model) {
-            messageServ.Add(new() { Text = model.Text, TopicId= model.TopicId, AuthorId = User.GetId() });
+            messageServ.Add(new() { Text = model.Text, TopicId = model.TopicId, AuthorId = User.GetId() });
             return Ok();
         }
 
         [Authorize]
         [HttpPut("{messageId}")]
-        public IActionResult Edit(long messageId, [MinLength(10)][MaxLength(5000)]string newText) {
+        public IActionResult Edit(long messageId, [MinLength(10)][MaxLength(5000)] string newText) {
             messageServ.Edit(messageId, newText, User.GetId());
             return Ok();
         }

@@ -1,14 +1,10 @@
-﻿using ForumTask.DAL.Entities;
+﻿using ForumTask.BLL.Identity;
+using ForumTask.DAL.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using ForumTask.BLL.Identity;
 
 namespace ForumTask.BLL.Interfaces {
-    internal interface IIdentityManager{
+    internal interface IIdentityManager {
         /// <summary>
         /// Creates new user using data from arguments
         /// </summary>

@@ -1,9 +1,4 @@
 ﻿using ForumTask.BLL.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Interfaces {
     public interface IMarkService {
@@ -21,7 +16,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId">User which mark to get</param>
         /// <param name="messageId">Message from which mark to get</param>
         /// <returns>Value of mark or 0 if don`t exist</returns>
-        sbyte GetOwn(int userId,long messageId);
+        sbyte GetOwn(int userId, long messageId);
         /// <summary>
         /// Gets total mark of message with <paramref name="messageId"/>
         /// <para>

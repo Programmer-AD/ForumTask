@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ForumTask.DAL.Entities {
+﻿namespace ForumTask.DAL.Entities {
     public enum MarkType {
-        Negative=-1, Positive=1
+        Negative = -1, Positive = 1
     }
     public class Mark {
         //Will use (userId, messageId) as key

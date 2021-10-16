@@ -1,15 +1,11 @@
 ﻿using ForumTask.BLL.DTO;
-using ForumTask.BLL.Interfaces;
 using ForumTask.BLL.Exceptions;
-using ForumTask.DAL.Interfaces;
+using ForumTask.BLL.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Services {
-    class UserService:IUserService {
+    class UserService : IUserService {
         private readonly IIdentityManager man;
 
         public UserService(IIdentityManager man) {
@@ -45,7 +41,7 @@ namespace ForumTask.BLL.Services {
         public void Register(string userName, string email, string password) {
             try {
                 man.Create(userName, email, password);
-            }catch(Identity.IdentityException e) {
+            } catch (Identity.IdentityException e) {
                 throw new IdentityValidationException(e);
             }
         }
@@ -61,6 +57,8 @@ namespace ForumTask.BLL.Services {
         }
 
         public void SetRole(int userId, string roleName, bool setHasRole, int callerId) {
+            if (roleName.ToLower() == "user")
+                throw new InvalidOperationException();
             var user = man.FindById(userId) ??
                 throw new NotFoundException();
             CheckRight(user, callerId);

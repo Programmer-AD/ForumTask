@@ -2,10 +2,6 @@
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Services {
     class MarkService : IMarkService {
@@ -15,7 +11,7 @@ namespace ForumTask.BLL.Services {
         }
 
         public sbyte GetOwn(int userId, long messageId)
-            =>((sbyte?)uow.Marks.Get(userId, messageId)?.Type) ?? 0;
+            => ((sbyte?)uow.Marks.Get(userId, messageId)?.Type) ?? 0;
 
         public long GetTotal(long messageId)
             => uow.Marks.GetMarkValue(messageId);

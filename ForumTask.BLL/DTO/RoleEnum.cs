@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.DTO {
     public enum RoleEnum {
-        User=0, Moderator=1,Admin=2
+        User = 0, Moderator = 1, Admin = 2
     }
     public static class RoleEnumConverter {
         /// <summary>
@@ -16,10 +12,10 @@ namespace ForumTask.BLL.DTO {
         /// <returns>Role name</returns>
         public static string GetRoleName(this RoleEnum role)
             => role switch {
-                RoleEnum.User=>"User",
-                RoleEnum.Moderator=>"Moderator",
-                RoleEnum.Admin=>"Admin",
-                _=>"!unknown!"
+                RoleEnum.User => "User",
+                RoleEnum.Moderator => "Moderator",
+                RoleEnum.Admin => "Admin",
+                _ => "!unknown!"
             };
         /// <summary>
         /// Gets roleEnum by role name

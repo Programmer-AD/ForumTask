@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ForumTask.PL.Filters;
+﻿using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
-using ForumTask.BLL.Interfaces;
+using ForumTask.PL.Filters;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace ForumTask.PL.Controllers {
@@ -25,7 +20,7 @@ namespace ForumTask.PL.Controllers {
 
         [HttpGet("{userId}")]
         public UserViewModel Get(int userId)
-            => new (userServ.Get(userId));
+            => new(userServ.Get(userId));
 
         [HttpGet("canUse/email/{email}")]
         public bool CanUseEmail([Required] string email)
@@ -79,6 +74,6 @@ namespace ForumTask.PL.Controllers {
         [HttpGet("current")]
         public UserViewModel GetCurrentUser()
             => new(userServ.Get(User.GetId()));
-        
+
     }
 }

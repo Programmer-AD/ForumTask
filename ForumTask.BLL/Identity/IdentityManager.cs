@@ -1,15 +1,13 @@
-﻿using ForumTask.DAL.Entities;
-using ForumTask.BLL.Interfaces;
+﻿using ForumTask.BLL.Interfaces;
+using ForumTask.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumTask.BLL.Identity {
-    internal class IdentityManager:IIdentityManager,IDisposable {
+    internal class IdentityManager : IIdentityManager, IDisposable {
         private readonly UserManager<User> userMan;
         private readonly SignInManager<User> signInMan;
 
@@ -22,7 +20,7 @@ namespace ForumTask.BLL.Identity {
             var t = func();
             t.Wait();
             if (!t.Result.Succeeded)
-                throw new IdentityException(t.Result.Errors.Select(e=>e.Code));
+                throw new IdentityException(t.Result.Errors.Select(e => e.Code));
         }
 
         public void AddToRole(User user, string role) {
@@ -37,7 +35,7 @@ namespace ForumTask.BLL.Identity {
                 Email = email,
                 RegisterDate = DateTime.UtcNow
             };
-            CallIdentitySync(()=>userMan.CreateAsync(user, password));
+            CallIdentitySync(() => userMan.CreateAsync(user, password));
             AddToRole(user, "User");
         }
 
@@ -48,13 +46,13 @@ namespace ForumTask.BLL.Identity {
         }
 
         public void Delete(int id) {
-            User user = FindById(id)??
+            User user = FindById(id) ??
                 throw new InvalidOperationException("User with providden id wasn`t found, so can`t be deleted");
             Delete(user);
         }
 
         public User FindById(int id) {
-            var t=userMan.FindByIdAsync(id.ToString());
+            var t = userMan.FindByIdAsync(id.ToString());
             t.Wait();
             return t.Result;
         }
@@ -96,7 +94,7 @@ namespace ForumTask.BLL.Identity {
         }
 
         public bool IsEmailUsed(string email) {
-            var t=userMan.FindByEmailAsync(email);
+            var t = userMan.FindByEmailAsync(email);
             t.Wait();
             return t.Result is not null;
         }

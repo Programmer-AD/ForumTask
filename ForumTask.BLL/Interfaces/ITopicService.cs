@@ -1,10 +1,6 @@
 ﻿using ForumTask.BLL.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ForumTask.BLL.Exceptions;
+using System.Collections.Generic;
 
 namespace ForumTask.BLL.Interfaces {
     public interface ITopicService {
@@ -71,7 +67,7 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="userId">Id of user who tries to rename topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        void Rename(long topicId,string newTitle, int userId);
+        void Rename(long topicId, string newTitle, int userId);
         /// <summary>
         /// Gets topic by id
         /// <para>
@@ -91,7 +87,7 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of topics</returns>
-        IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle="");
+        IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle = "");
         /// <summary>
         /// Gets count of pages to show all topics
         /// </summary>

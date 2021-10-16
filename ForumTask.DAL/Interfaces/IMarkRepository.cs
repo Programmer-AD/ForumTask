@@ -1,12 +1,7 @@
 ﻿using ForumTask.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.DAL.Interfaces {
-    public interface IMarkRepository:IRepository<Mark> {
+    public interface IMarkRepository : IRepository<Mark> {
         /// <summary>
         /// Count total mark of message
         /// </summary>

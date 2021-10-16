@@ -46,7 +46,7 @@ export default class TopicCreateForm extends React.Component{
 
     render(){
         if (this.state.success)
-            return (<div className={css.success}>Login successfully!</div>);
+            return (<div className={css.success}>Created successfully!</div>);
         return (<>
             <h2 className={css.title}>Create topic</h2>
             {this.state.validErr===null?null:

@@ -1,10 +1,6 @@
 ﻿using ForumTask.BLL.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ForumTask.BLL.Exceptions;
+using System.Collections.Generic;
 
 namespace ForumTask.BLL.Interfaces {
     public interface IMessageService {
@@ -95,6 +91,6 @@ namespace ForumTask.BLL.Interfaces {
         /// </summary>
         /// <param name="message">Message to add</param>
         /// <param name="topic">Topic to which message wil be attached</param>
-        internal void Add(MessageDTO message,DAL.Entities.Topic topic);
+        internal void Add(MessageDTO message, DAL.Entities.Topic topic);
     }
 }

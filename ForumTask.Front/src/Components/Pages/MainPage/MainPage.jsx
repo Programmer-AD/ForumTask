@@ -16,7 +16,7 @@ export default class MainPage extends React.Component{
             this.props.history.push("/not-found");
         page--;
         this.state={
-            list:[],
+            list:null,
             search:"",
             pageCount:0,
             page,
@@ -32,7 +32,7 @@ export default class MainPage extends React.Component{
     load(){
         Api.topic.getPageCount().then((c)=>this.setState({pageCount:c}));
         Api.topic.getTopNew(this.state.page,this.state.search)
-            .then((list)=>this.setState({list}));
+            .then((list)=>this.setState({list}))
     }
     componentDidMount(){
         this.load();
@@ -65,7 +65,7 @@ export default class MainPage extends React.Component{
                 {
                     this.props.user!==null&&!this.props.user.isBanned?
                     <TopicCreateForm onSuccess={this.handleCreated}/>
-                    :<div>To create a new topic you must login to your account and your account mustn`t be blocked</div>
+                    :<div style={{padding:"10px"}}>To create a new topic you must login to your account and your account mustn`t be blocked</div>
                 }
             </ModalDialog>
         </>);

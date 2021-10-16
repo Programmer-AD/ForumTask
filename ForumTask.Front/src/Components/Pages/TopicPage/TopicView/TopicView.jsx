@@ -24,7 +24,7 @@ export default class TopicView extends React.Component{
                     :<Link to={`/profile-${this.state.author.id}`}>{this.state.author.userName}</Link>
                 }</span>
                 <span className={css.info}>Message count: {this.props.value.messageCount}</span>
-                <span className={css.info}>{new Date(this.props.value.createTime).toLocaleString()}</span>
+                <span className={css.info}>{new Date(this.props.value.createTime+"Z").toLocaleString()}</span>
             </div>
         </div>);
     }

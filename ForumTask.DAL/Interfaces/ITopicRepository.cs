@@ -1,12 +1,8 @@
 ﻿using ForumTask.DAL.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.DAL.Interfaces {
-    public interface ITopicRepository:IRepository<Topic> {
+    public interface ITopicRepository : IRepository<Topic> {
         /// <summary>
         /// Order topics by <see cref="Topic.CreateTime"/> desc then skips <paramref name="offset"/> and takes <paramref name="count"/> as result
         /// <para>
@@ -17,7 +13,7 @@ namespace ForumTask.DAL.Interfaces {
         /// <param name="offset">Number of entities to skip</param>
         /// <param name="searchTitle">Title to search</param>
         /// <returns>Ordered collection of topics</returns>
-        IEnumerable<Topic> GetTopNew(int count, int offset, string searchTitle="");
+        IEnumerable<Topic> GetTopNew(int count, int offset, string searchTitle = "");
         /// <summary>
         /// Gets total count of topic
         /// </summary>

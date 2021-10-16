@@ -1,0 +1,39 @@
+.title{
+    margin: 10px;
+    text-align: center;
+}
+.container{
+    background-color: darkcyan;
+    margin: 0% 15%;
+    padding: 10px;
+    border-radius: 5px;
+    border-style: solid;
+}
+.userName{
+    margin: 5px;
+    font-size: x-large;
+    font-family: monospace;
+    text-decoration: underline;
+}
+.info,.banned,.not_banned{
+    display: inline-block;
+    margin: 0px 5px;
+    padding: 5px;
+    border: groove;
+    border-radius: 10px;
+}
+.info{
+    background-color: darkgray;
+}
+.banned{
+    background-color: darkred;
+}
+.not_banned{
+    background-color: darkgreen;
+}
+.modal_message{
+    padding: 20px;
+}
+.modal_buttons{
+    text-align: center;
+}

@@ -1,9 +1,5 @@
 ﻿using ForumTask.DAL.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForumTask.BLL.DTO {
     public class TopicDTO {
@@ -16,10 +12,10 @@ namespace ForumTask.BLL.DTO {
         }
         public Topic ToEntity()
             => new() {
-                Id=Id,
-                CreatorId=CreatorId,
-                Title=Title,
-                CreateTime=CreateTime
+                Id = Id,
+                CreatorId = CreatorId,
+                Title = Title,
+                CreateTime = CreateTime
             };
 
         public long Id { get; set; }
