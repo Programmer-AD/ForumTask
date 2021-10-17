@@ -1,7 +1,7 @@
-﻿using ForumTask.BLL.Exceptions;
+﻿using System;
+using ForumTask.BLL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
 
 namespace ForumTask.PL.Filters {
     /// <summary>

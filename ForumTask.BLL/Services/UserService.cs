@@ -1,11 +1,11 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System;
+using System.Linq;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
-using System;
-using System.Linq;
 
 namespace ForumTask.BLL.Services {
-    class UserService : IUserService {
+    public class UserService : IUserService {
         private readonly IIdentityManager man;
 
         public UserService(IIdentityManager man) {
@@ -26,7 +26,7 @@ namespace ForumTask.BLL.Services {
         public void Delete(int userId, int callerId) {
             var user = man.FindById(userId) ??
                  throw new NotFoundException();
-            if (userId!=callerId)
+            if (userId != callerId)
                 CheckRight(user, callerId);
             man.Delete(user);
         }
@@ -60,8 +60,11 @@ namespace ForumTask.BLL.Services {
         public void SetRole(int userId, string roleName, bool setHasRole, int callerId) {
             if (roleName.ToLower() == "user")
                 throw new InvalidOperationException();
+            if (Get(callerId).MaxRole <= RoleEnumConverter.GetRoleByName(roleName))
+                throw new AccessDeniedException("Cant manage higher or equal roles");
             var user = man.FindById(userId) ??
                 throw new NotFoundException();
+
             CheckRight(user, callerId);
             try {
                 if (setHasRole)

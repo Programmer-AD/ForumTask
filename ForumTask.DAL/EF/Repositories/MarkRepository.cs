@@ -1,6 +1,6 @@
-﻿using ForumTask.DAL.Entities;
+﻿using System.Linq;
+using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
-using System.Linq;
 
 namespace ForumTask.DAL.EF.Repositories {
     class MarkRepository : GenericRepository<Mark>, IMarkRepository {

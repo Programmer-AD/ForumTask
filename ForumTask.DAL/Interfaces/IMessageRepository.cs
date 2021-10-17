@@ -1,5 +1,5 @@
-﻿using ForumTask.DAL.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ForumTask.DAL.Entities;
 
 namespace ForumTask.DAL.Interfaces {
     public interface IMessageRepository : IRepository<Message> {

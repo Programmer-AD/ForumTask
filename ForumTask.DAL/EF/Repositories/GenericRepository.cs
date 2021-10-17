@@ -1,6 +1,6 @@
-﻿using ForumTask.DAL.Interfaces;
+﻿using System;
+using ForumTask.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace ForumTask.DAL.EF.Repositories {
     /// <summary>

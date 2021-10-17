@@ -1,13 +1,13 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ForumTask.BLL.Services {
-    class TopicService : ITopicService {
+    public class TopicService : ITopicService {
         private readonly IUnitOfWork uow;
         private readonly IMessageService msgServ;
         private readonly IUserService userServ;
@@ -27,7 +27,7 @@ namespace ForumTask.BLL.Services {
             if (user.MaxRole == RoleEnum.User
                 && (DateTime.UtcNow - createTime).TotalMinutes > ITopicService.EditOrDeleteTime)
                 throw new AccessDeniedException("Edit/delete time limit exceed");
-            if (creatorId.HasValue) {
+            if (creatorId.HasValue && creatorId.Value != callerId) {
                 var cru = userServ.Get(creatorId.Value);
                 if (cru.MaxRole >= user.MaxRole)
                     throw new AccessDeniedException("Can`t edit/delete topic of user with same or bigger role");
@@ -59,8 +59,10 @@ namespace ForumTask.BLL.Services {
             var t = uow.Topics.Get(id) ?? throw new NotFoundException();
             return new TopicDTO(t) { MessageCount = msgServ.GetMessageCount(id) };
         }
-        public int GetPagesCount()
-            => uow.Topics.Count() / ITopicService.PageSize;
+        public int GetPagesCount() {
+            var cnt = uow.Topics.Count();
+            return cnt == 0 ? 0 : (cnt / ITopicService.PageSize + 1);
+        }
 
         public IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle = "")
            => uow.Topics.GetTopNew(ITopicService.PageSize, page * ITopicService.PageSize, searchTitle)

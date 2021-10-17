@@ -1,10 +1,10 @@
-﻿using ForumTask.BLL.Interfaces;
-using ForumTask.DAL.Entities;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ForumTask.BLL.Interfaces;
+using ForumTask.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace ForumTask.BLL.Identity {
     internal class IdentityManager : IIdentityManager, IDisposable {
@@ -53,12 +53,6 @@ namespace ForumTask.BLL.Identity {
 
         public User FindById(int id) {
             var t = userMan.FindByIdAsync(id.ToString());
-            t.Wait();
-            return t.Result;
-        }
-
-        public User FindByName(string name) {
-            var t = userMan.FindByNameAsync(name);
             t.Wait();
             return t.Result;
         }

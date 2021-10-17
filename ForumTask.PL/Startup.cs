@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ForumTask.BLL.DependencyInjection;
 using ForumTask.DAL.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -5,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace ForumTask.PL {
     public class Startup {

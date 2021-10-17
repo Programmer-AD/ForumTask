@@ -1,8 +1,8 @@
-﻿using ForumTask.DAL.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using Ef = Microsoft.EntityFrameworkCore.EF;
 
 namespace ForumTask.DAL.EF.Repositories {

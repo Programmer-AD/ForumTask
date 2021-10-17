@@ -1,6 +1,6 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System.Collections.Generic;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
-using System.Collections.Generic;
 
 namespace ForumTask.BLL.Interfaces {
     public interface IMessageService {
@@ -81,8 +81,17 @@ namespace ForumTask.BLL.Interfaces {
         /// </para>
         /// </summary>
         /// <param name="topicId">Id of topic which messages are counted</param>
-        /// <returns>Count of messages or 0 topic not found</returns>
+        /// <returns>Count of messages or 0 if topic not found</returns>
         int GetMessageCount(long topicId);
+        /// <summary>
+        /// Gets count of pages to show all messages in topic
+        /// <para>
+        /// If topic not found, returns 0
+        /// </para>
+        /// </summary>
+        /// <param name="topicId">Id of topic whose pages are counted</param>
+        /// <returns>Count of pages or 0 if topic not found</returns>
+        int GetPagesCount(long topicId);
         /// <summary>
         /// Creates message and attaches it to newly created topic
         /// <para>

@@ -1,5 +1,5 @@
-﻿using ForumTask.BLL.DTO;
-using System;
+﻿using System;
+using ForumTask.BLL.DTO;
 
 namespace ForumTask.PL.Models {
     public class MessageViewModel {

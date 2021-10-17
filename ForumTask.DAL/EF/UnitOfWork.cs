@@ -1,6 +1,6 @@
-﻿using ForumTask.DAL.EF.Repositories;
+﻿using System;
+using ForumTask.DAL.EF.Repositories;
 using ForumTask.DAL.Interfaces;
-using System;
 
 namespace ForumTask.DAL.EF {
     class UnitOfWork : IUnitOfWork, IDisposable {

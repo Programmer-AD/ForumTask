@@ -1,11 +1,11 @@
-﻿using ForumTask.BLL.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
 using ForumTask.PL.Filters;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ForumTask.PL.Controllers {
     [Route("api/topic")]

@@ -1,7 +1,7 @@
-﻿using ForumTask.DAL.Entities;
-using ForumTask.DAL.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ForumTask.DAL.Entities;
+using ForumTask.DAL.Interfaces;
 
 namespace ForumTask.DAL.EF.Repositories {
     class MessageRepository : GenericRepository<Message>, IMessageRepository {
@@ -12,6 +12,6 @@ namespace ForumTask.DAL.EF.Repositories {
 
 
         public int GetMessageCount(long topicId)
-            => set.Where(m => m.TopicId == topicId).Count();
+            => set.Count(m => m.TopicId == topicId);
     }
 }

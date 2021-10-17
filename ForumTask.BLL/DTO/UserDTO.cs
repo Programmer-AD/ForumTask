@@ -1,5 +1,5 @@
-﻿using ForumTask.DAL.Entities;
-using System;
+﻿using System;
+using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.DTO {
     public class UserDTO {

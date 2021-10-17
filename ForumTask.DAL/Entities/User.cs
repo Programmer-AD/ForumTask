@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace ForumTask.DAL.Entities {
     public class User : IdentityUser<int> {

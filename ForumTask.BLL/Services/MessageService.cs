@@ -1,13 +1,13 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ForumTask.BLL.Services {
-    class MessageService : IMessageService {
+    public class MessageService : IMessageService {
         private readonly IUnitOfWork uow;
         private readonly IUserService userServ;
         private readonly IMarkService markServ;
@@ -27,7 +27,7 @@ namespace ForumTask.BLL.Services {
             if (user.MaxRole == RoleEnum.User
                 && (DateTime.UtcNow - writeTime).TotalMinutes > ITopicService.EditOrDeleteTime)
                 throw new AccessDeniedException("Edit/delete time limit exceed");
-            if (authorId.HasValue) {
+            if (authorId.HasValue && authorId.Value != callerId) {
                 var cru = userServ.Get(authorId.Value);
                 if (cru.MaxRole >= user.MaxRole)
                     throw new AccessDeniedException("Can`t edit/delete message of user with same or bigger role");
@@ -72,6 +72,11 @@ namespace ForumTask.BLL.Services {
             var ent = message.ToEntity();
             ent.Topic = topic;
             uow.Messages.Create(ent);
+        }
+
+        public int GetPagesCount(long topicId) {
+            var cnt = uow.Messages.GetMessageCount(topicId);
+            return cnt == 0 ? 0 : (cnt / IMessageService.PageSize + 1);
         }
     }
 }

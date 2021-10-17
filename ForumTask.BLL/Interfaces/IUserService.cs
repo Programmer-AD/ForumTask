@@ -1,6 +1,6 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
-using System;
 
 namespace ForumTask.BLL.Interfaces {
     public interface IUserService {

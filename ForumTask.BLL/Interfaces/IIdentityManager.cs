@@ -1,10 +1,10 @@
-﻿using ForumTask.BLL.Identity;
-using ForumTask.DAL.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ForumTask.BLL.Identity;
+using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.Interfaces {
-    internal interface IIdentityManager {
+    public interface IIdentityManager {
         /// <summary>
         /// Creates new user using data from arguments
         /// </summary>
@@ -19,12 +19,6 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="id">id of user to find</param>
         /// <returns>User or null if not found</returns>
         User FindById(int id);
-        /// <summary>
-        /// Finds user with providden name
-        /// </summary>
-        /// <param name="name">Name of user to find</param>
-        /// <returns>User or null if not found</returns>
-        User FindByName(string name);
         /// <summary>
         /// Updates user
         /// <para>

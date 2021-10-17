@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ForumTask.BLL.Identity {
 
     [Serializable]
-    internal class IdentityException : Exception {
+    public class IdentityException : Exception {
         public IdentityException() { }
         public IdentityException(IEnumerable<string> errCodes) : base(string.Join(", ", errCodes)) {
             IdentityErrorCodes = errCodes;

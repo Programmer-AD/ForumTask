@@ -1,6 +1,6 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System.Collections.Generic;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
-using System.Collections.Generic;
 
 namespace ForumTask.BLL.Interfaces {
     public interface ITopicService {

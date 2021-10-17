@@ -1,11 +1,12 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Interfaces;
-using System;
 
 namespace ForumTask.BLL.Services {
-    class MarkService : IMarkService {
+    public class MarkService : IMarkService {
         private readonly IUnitOfWork uow;
+
         public MarkService(IUnitOfWork uow) {
             this.uow = uow;
         }

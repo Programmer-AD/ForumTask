@@ -43,7 +43,7 @@ namespace ForumTask.DAL.Interfaces {
         /// </para>
         /// </summary>
         /// <param name="key">Primary key</param>
-        /// <exception cref="InvalidOperationException">/>
+        /// <exception cref="InvalidOperationException"/>
         /// <exception cref="ArgumentNullException"/>
         void Delete(params object[] key);
 

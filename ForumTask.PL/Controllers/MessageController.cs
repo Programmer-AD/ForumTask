@@ -1,11 +1,11 @@
-﻿using ForumTask.BLL.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
 using ForumTask.PL.Filters;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ForumTask.PL.Controllers {
     [Route("api/message")]
@@ -21,7 +21,7 @@ namespace ForumTask.PL.Controllers {
 
         [HttpGet("topic{topicId}/pageCount")]
         public int GetPageCount(long topicId)
-            => messageServ.GetMessageCount(topicId);
+            => messageServ.GetPagesCount(topicId);
 
         [HttpGet("topic{topicId}")]
         public IEnumerable<MessageViewModel> GetTopOld(long topicId, int page)
