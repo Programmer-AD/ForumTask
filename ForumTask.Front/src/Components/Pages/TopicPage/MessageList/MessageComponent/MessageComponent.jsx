@@ -129,7 +129,7 @@ export default class MessageComponent extends React.Component{
     }
     render(){
         return (<div className={css.container}>
-            <div className={css.text}>{this.props.value.text}</div>
+            <pre className={css.text}>{this.props.value.text}</pre>
             <div className={css.infos}>
                 {this.renderButtons()}
                 <span className={css.info}>Author: {

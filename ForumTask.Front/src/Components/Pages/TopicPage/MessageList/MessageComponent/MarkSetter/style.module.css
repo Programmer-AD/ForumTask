@@ -3,6 +3,9 @@
     height: 20px;
     margin: 5px;
     vertical-align: middle;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: black;
 }
 .arrow[set_up=true]{
     background-color: green;

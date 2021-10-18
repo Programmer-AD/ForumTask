@@ -47,7 +47,7 @@ export default class TopicPage extends React.Component{
         this.loadAll(5);
     }
     handleMessageChange(){
-        this.reload();
+        this.loadAll(3);
     }
     handleTopicChange(){
         this.loadAll(3);
