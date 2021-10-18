@@ -17,8 +17,8 @@ namespace ForumTask.DAL.EF {
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
             builder.Entity<Mark>().HasKey(m => new { m.UserId, m.MessageId });
-            builder.Entity<Topic>().HasOne(t => t.Creator).WithOne().OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<Message>().HasOne(t => t.Author).WithOne().OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Topic>().HasOne(t => t.Creator).WithMany().OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Message>().HasOne(t => t.Author).WithMany().OnDelete(DeleteBehavior.SetNull);
 
             //Initializing identity db
             builder.Entity<IdentityRole<int>>().HasData(CreateRole(1, "User"), CreateRole(2, "Moderator"), CreateRole(3, "Admin"));

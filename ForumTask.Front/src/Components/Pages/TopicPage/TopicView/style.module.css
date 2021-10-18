@@ -24,3 +24,16 @@
     background-color: darkgray;
     border-radius: 10px;
 }
+.edit_title{
+    text-align: left;
+    font-size: large;
+    margin: 5px;
+    overflow-wrap: break-word;
+    font-family: monospace;
+    border-bottom: solid;
+    width: 400px;
+}
+
+.button_container{
+    float: left;
+}

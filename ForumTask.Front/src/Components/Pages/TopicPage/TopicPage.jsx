@@ -25,7 +25,8 @@ export default class TopicPage extends React.Component{
             notFound:false
         };
 
-        this.handleChange=this.handleChange.bind(this);
+        this.handleMessageChange=this.handleMessageChange.bind(this);
+        this.handleTopicChange=this.handleTopicChange.bind(this);
     }
     loadAll(tc){
         Api.topic.get(this.state.topicId).then(
@@ -45,8 +46,11 @@ export default class TopicPage extends React.Component{
     componentDidMount(){
         this.loadAll(5);
     }
-    handleChange(){
+    handleMessageChange(){
         this.reload();
+    }
+    handleTopicChange(){
+        this.loadAll(3);
     }
 
     render(){
@@ -55,9 +59,9 @@ export default class TopicPage extends React.Component{
         if (this.state.topic===null)
             return <div>Loading...</div>
         return (<>
-            <TopicView value={this.state.topic} user={this.props.user} />
-            <MessageList list={this.state.list} user={this.props.user} onChange={this.handleChange}/>
-            <MessageInput topicId={this.state.topicId} onSend={this.handleChange} user={this.props.user}/>
+            <TopicView value={this.state.topic} user={this.props.user} onChange={this.handleTopicChange} />
+            <MessageList list={this.state.list} user={this.props.user} onChange={this.handleMessageChange}/>
+            <MessageInput topicId={this.state.topicId} onSend={this.handleMessageChange} user={this.props.user}/>
             <PageChooser current={this.state.page+1} count={this.state.pageCount} getUrl={(v)=>`/topic-${this.state.topicId}/page-${v}`}/>
         </>);
     }

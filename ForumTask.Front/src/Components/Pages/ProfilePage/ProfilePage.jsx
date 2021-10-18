@@ -84,21 +84,15 @@ export default class ProfliePage extends React.Component{
     }
 
     renderButtons(){
-        function getRoleId(name){
-            const roles=["user","moderator","admin"];
-            name=name.toLowerCase();
-            return roles.findIndex((v)=>v===name);
-        }
-
         if (!this.props.user)
             return null;
 
-        let ur=getRoleId(this.props.user.roleName),udr=getRoleId(this.state.userData.roleName);
+        let ur=Api.getRoleId(this.props.user.roleName),udr=Api.getRoleId(this.state.userData.roleName);
         let but=[];
         if (this.props.user.id!==this.state.userData.id){
             if (ur>0&&udr<ur)
                 but.push(<Button onClick={this.handleChangeBan} key="ban">{this.state.userData.isBanned?"Unban":"Ban"}</Button>);
-            if (ur===2) but.push(<Button onClick={this.handleChangeRole} kaey="role">Make {udr===0?"moderator":"user"}</Button>);
+            if (ur===2) but.push(<Button onClick={this.handleChangeRole} kaey="role">Set role "{udr===0?"Moderator":"User"}"</Button>);
         }
         if (this.props.user.id===this.state.userData.id||udr<ur)
             but.push(<Button onClick={this.handleDelete} key="delete">Delete</Button>);

@@ -7,7 +7,12 @@ const Api={
     mark:new MarkApi(),
     message:new MessageApi(),
     topic:new TopicApi(),
-    user:new UserApi()
+    user:new UserApi(),
+    getRoleId:function(name){
+        const roles=["user","moderator","admin"];
+        name=name.toLowerCase();
+        return roles.findIndex((v)=>v===name);
+    }
 };
 
 export default Api;

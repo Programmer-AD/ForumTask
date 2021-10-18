@@ -6,7 +6,6 @@ namespace ForumTask.PL.Models {
         [MaxLength(60)]
         [MinLength(5)]
         public string Title { get; set; }
-        [Required]
         [MaxLength(5000)]
         public string Message { get; set; }
     }
