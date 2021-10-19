@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
 
@@ -6,8 +7,8 @@ namespace ForumTask.Tests.Fakes.Repositories {
     class FakeMarkRepository : FakeGenericRepository<Mark>, IMarkRepository {
         public FakeMarkRepository(params Mark[] data) : base(data) { }
 
-        public long GetMarkValue(long messageId)
-            => data.Where(m => m.MessageId == messageId).Sum(m => (long)m.Type);
+        public long GetCountOfType(long messageId, sbyte type)
+            => throw new NotImplementedException();
 
         protected override void AssignKey(Mark ent) { }
 

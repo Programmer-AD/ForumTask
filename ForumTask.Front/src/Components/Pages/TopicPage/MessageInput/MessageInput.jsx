@@ -19,13 +19,16 @@ export default class MessageInput extends React.Component{
         this.setState({message:e.target.value});
     }
     handleSend(){
+        if (this.state.message.length===0)
+            alert("Message is required!");
+        if (this.state.message.length>=5000)
+            alert("Message is too long!");
+
         this.setState({sending:true});
-        if (this.state.message.length>0&&this.state.message.length<5000){
-            Api.message.send(this.props.topicId,this.state.message).then(()=>{
-                this.setState({message:""});
-                this.props?.onSend();
-            }).finally(()=>this.setState({sending:false}));
-        }
+        Api.message.send(this.props.topicId,this.state.message).then(()=>{
+            this.setState({message:""});
+            this.props?.onSend();
+        }).finally(()=>this.setState({sending:false}));
     }
     render(){
         if (this.props.user===null)

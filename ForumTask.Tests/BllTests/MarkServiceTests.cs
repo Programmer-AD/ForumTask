@@ -102,24 +102,24 @@ namespace ForumTask.Tests.BllTests {
             Assert.Zero(result);
         }
         #endregion
-        #region Mark.GetTotal
-        [TestCase(1, -1)]
-        [TestCase(2, 2)]
-        public void Mark_GetTotal_ReturnsCorrectIfMessageExist(long id, long expected) {
-            var serv = GetService();
+        //#region Mark.GetTotal
+        //[TestCase(1, -1)]
+        //[TestCase(2, 2)]
+        //public void Mark_GetTotal_ReturnsCorrectIfMessageExist(long id, long expected) {
+        //    var serv = GetService();
 
-            var result = serv.GetTotal(id);
+        //    var result = serv.GetTotal(id);
 
-            Assert.AreEqual(expected, result);
-        }
-        [Test]
-        public void Mark_GetTotal_ReturnsCorrectIfMessageNotExist() {
-            var serv = GetService();
+        //    Assert.AreEqual(expected, result);
+        //}
+        //[Test]
+        //public void Mark_GetTotal_ReturnsCorrectIfMessageNotExist() {
+        //    var serv = GetService();
 
-            var result = serv.GetTotal(100);
+        //    var result = serv.GetTotal(100);
 
-            Assert.Zero(result);
-        }
-        #endregion
+        //    Assert.Zero(result);
+        //}
+        //#endregion
     }
 }

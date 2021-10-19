@@ -21,12 +21,13 @@ export default class TopicPage extends React.Component{
             pageCount:0,
             topicId,
             page,
-            showModal:false,
+            canModal:true,
             notFound:false
         };
 
         this.handleMessageChange=this.handleMessageChange.bind(this);
         this.handleTopicChange=this.handleTopicChange.bind(this);
+        this.handleModal=this.handleModal.bind(this);
     }
     loadAll(tc){
         Api.topic.get(this.state.topicId).then(
@@ -52,6 +53,9 @@ export default class TopicPage extends React.Component{
     handleTopicChange(){
         this.loadAll(3);
     }
+    handleModal(free){
+        this.setState({canModal:free});
+    }
 
     render(){
         if (this.state.notFound)
@@ -59,8 +63,8 @@ export default class TopicPage extends React.Component{
         if (this.state.topic===null)
             return <div>Loading...</div>
         return (<>
-            <TopicView value={this.state.topic} user={this.props.user} onChange={this.handleTopicChange} />
-            <MessageList list={this.state.list} user={this.props.user} onChange={this.handleMessageChange}/>
+            <TopicView value={this.state.topic} user={this.props.user} onChange={this.handleTopicChange} onModal={this.handleModal} canModal={this.state.canModal}/>
+            <MessageList list={this.state.list} user={this.props.user} onChange={this.handleMessageChange} onModal={this.handleModal} canModal={this.state.canModal}/>
             <MessageInput topicId={this.state.topicId} onSend={this.handleMessageChange} user={this.props.user}/>
             <PageChooser current={this.state.page+1} count={this.state.pageCount} getUrl={(v)=>`/topic-${this.state.topicId}/page-${v}`}/>
         </>);

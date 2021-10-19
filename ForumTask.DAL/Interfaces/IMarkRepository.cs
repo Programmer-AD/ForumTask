@@ -3,10 +3,11 @@
 namespace ForumTask.DAL.Interfaces {
     public interface IMarkRepository : IRepository<Mark> {
         /// <summary>
-        /// Count total mark of message
+        /// Count of marks of <paramref name="type"/> attached to <paramref name="messageId"/>
         /// </summary>
         /// <param name="messageId">Id of message which mark is counted</param>
-        /// <returns>Total mark of message</returns>
-        long GetMarkValue(long messageId);
+        /// <param name="type">Type of mark to count</param>
+        /// <returns>Count of marks</returns>
+        long GetCountOfType(long messageId,sbyte type);
     }
 }

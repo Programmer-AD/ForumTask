@@ -10,7 +10,8 @@ namespace ForumTask.PL.Models {
             TopicId = dto.TopicId;
             AuthorId = dto.AuthorId;
             WriteTime = dto.WriteTime;
-            Mark = dto.Mark;
+            PositiveCount = dto.PositiveCount;
+            NegativeCount = dto.NegativeCount;
         }
 
         public long Id { get; set; }
@@ -18,6 +19,7 @@ namespace ForumTask.PL.Models {
         public long TopicId { get; set; }
         public int? AuthorId { get; set; }
         public DateTime WriteTime { get; set; }
-        public long Mark { get; set; }
+        public long PositiveCount { get; set; }
+        public long NegativeCount { get; set; }
     }
 }

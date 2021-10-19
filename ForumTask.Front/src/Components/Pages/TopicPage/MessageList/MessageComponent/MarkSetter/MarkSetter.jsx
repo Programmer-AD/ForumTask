@@ -40,10 +40,10 @@ export default class MarkSetter extends React.Component{
 
     render(){
         if (this.props.user===null)
-            return <span className={css.mark}>{this.props.value}</span>;
+            return <span className={css.mark}>+{this.props.value.positiveCount}:-{this.props.value.negativeCount}</span>;
         return (<span>
             <img src="/images/arrow_up.png" onClick={this.handleUp} className={css.arrow} set_up={(this.state.ownMark===1).toString()}/>
-            <span className={css.mark}>{this.props.value}</span>
+            <span className={css.mark}>+{this.props.value.positiveCount}:-{this.props.value.negativeCount}</span>
             <img src="/images/arrow_down.png" onClick={this.handleDown} className={css.arrow} set_down={(this.state.ownMark===-1).toString()}/>
         </span>)
     }

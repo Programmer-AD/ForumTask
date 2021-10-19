@@ -9,7 +9,8 @@ export default class MessageList extends React.Component{
             {
                 this.props.list.length===0?
                 <div className={css.no_topics}>No Messages Found</div>
-                :this.props.list.map((t)=><MessageComponent key={t.id} value={t} user={this.props.user} onChange={this.props.onChange}/>)
+                :this.props.list.map((t)=><MessageComponent key={t.id} value={t} user={this.props.user} 
+                    onChange={this.props.onChange} canModal={this.props.canModal} onModal={this.props.onModal}/>)
             }
         </div>);
     }

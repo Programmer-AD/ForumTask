@@ -43,21 +43,30 @@ export default class MessageComponent extends React.Component{
     checkTime(openModal=true){
         if (this.state.noTimeLimit)return true;
         if (new Date()-new Date(this.props.value.createTime+"Z")>=5*60*1000){
-            if (openModal)this.setState({editModal:false,deleteModal:false,timeLimitModal:true});
+            if (openModal)this.openTimeModal();
             return false;
         }
         return true;
     }
+    openTimeModal(){
+        this.props.onModal?.(false);
+        this.setState({editModal:false,deleteModal:false,timeLimitModal:true});
+    }
     handleOpenEdit(){
-        if (this.checkTime())
-        this.setState({editModal:true,deleteModal:false,timeLimitModal:false});
+        if (this.checkTime()&&this.props.canModal){
+            this.props.onModal?.(false);
+            this.setState({editModal:true,deleteModal:false,timeLimitModal:false});
+        }
     }
     handleOpenDelete(){
-        if (this.checkTime())
+        if (this.checkTime()&&this.props.canModal){
+            this.props.onModal?.(false);
             this.setState({editModal:false,deleteModal:true,timeLimitModal:false});
+        }
     }
     handleClose(){
-        this.setState({editModal:false,modalText:false,timeLimitModal:false});
+        this.setState({editModal:false,deleteModal:false,timeLimitModal:false});
+        this.props.onModal?.(true);
     }
     handleValueChange(e){
         this.setState({newText:e.target.value});
@@ -137,7 +146,7 @@ export default class MessageComponent extends React.Component{
                     :<Link to={`/profile-${this.state.author.id}`}>{this.state.author.userName}</Link>
                 }</span>
                 <span className={css.info}>
-                    <MarkSetter user={this.props.user} value={this.props.value.mark} messageId={this.props.value.id} onChange={this.handleMarkChange}/>
+                    <MarkSetter user={this.props.user} value={this.props.value} messageId={this.props.value.id} onChange={this.handleMarkChange}/>
                 </span>
                 <span className={css.info}>{new Date(this.props.value.writeTime+"Z").toLocaleString()}</span>
             </div>

@@ -20,11 +20,12 @@ namespace ForumTask.BLL.Interfaces {
         /// <summary>
         /// Gets total mark of message with <paramref name="messageId"/>
         /// <para>
-        /// If there is no message with such id than 0 is returned
+        /// If there is no message with such id or type than 0 is returned
         /// </para>
         /// </summary>
         /// <param name="messageId">Id of message</param>
-        /// <returns>Total mark of message</returns>
-        long GetTotal(long messageId);
+        /// <param name="type">Type of mark</param>
+        /// <returns>Count of marks of type in message</returns>
+        long GetCountOfType(long messageId,sbyte type);
     }
 }

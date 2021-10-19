@@ -26,6 +26,7 @@ namespace ForumTask.BLL.DTO {
         public int? AuthorId { get; set; }
         public DateTime WriteTime { get; set; }
 
-        public long Mark { get; set; }
+        public long PositiveCount { get; set; }
+        public long NegativeCount { get; set; }
     }
 }

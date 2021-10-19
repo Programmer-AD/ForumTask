@@ -66,7 +66,10 @@ namespace ForumTask.BLL.Services {
 
         public IEnumerable<MessageDTO> GetTopOld(long topicId, int page)
             => uow.Messages.GetTopOld(topicId, IMessageService.PageSize, IMessageService.PageSize * page)
-            .ToList().Select(m => new MessageDTO(m) { Mark = markServ.GetTotal(m.Id) });
+            .ToList().Select(m => new MessageDTO(m) {
+                PositiveCount = markServ.GetCountOfType(m.Id, 1),
+                NegativeCount = markServ.GetCountOfType(m.Id, -1)
+            });
 
         void IMessageService.Add(MessageDTO message, DAL.Entities.Topic topic) {
             var ent = message.ToEntity();

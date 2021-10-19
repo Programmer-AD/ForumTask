@@ -11,11 +11,13 @@ namespace ForumTask.BLL.Services {
             this.uow = uow;
         }
 
+        public long GetCountOfType(long messageId, sbyte type)
+            => uow.Marks.GetCountOfType(messageId, type);
+
         public sbyte GetOwn(int userId, long messageId)
             => ((sbyte?)uow.Marks.Get(userId, messageId)?.Type) ?? 0;
 
-        public long GetTotal(long messageId)
-            => uow.Marks.GetMarkValue(messageId);
+        
 
         public void Set(MarkDTO mark) {
             if (mark.Value == 0) {
