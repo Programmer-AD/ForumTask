@@ -25,7 +25,14 @@ namespace ForumTask.PL {
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new() { 
+                    Title = "Forum task api",
+                    Version = "v1",
+                    Description = "API written using ASP.NET Core web api for simple forum",
+                });
+            });
 
             services.ConfigureApplicationCookie(opt => {
                 opt.Events = new() {
@@ -44,12 +51,20 @@ namespace ForumTask.PL {
 
             db.Database.Migrate();
 
+            app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "api/doc/{documentname}/swagger.json";
+            });
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/api/doc/v1/swagger.json", "v1");
+                options.RoutePrefix = "api/doc";
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();
