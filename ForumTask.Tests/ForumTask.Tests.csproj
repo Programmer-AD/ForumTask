@@ -15,11 +15,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>D:\Projects\Visual_Studio\ForumTask\BuildResult\Debug\</OutputPath>
+    <OutputPath>..\BuildResult\Tests\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>D:\Projects\Visual_Studio\ForumTask\BuildResult\Release\</OutputPath>
+    <OutputPath>..\BuildResult\Tests\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
