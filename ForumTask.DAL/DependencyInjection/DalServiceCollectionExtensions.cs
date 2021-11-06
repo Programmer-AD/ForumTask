@@ -10,7 +10,7 @@ namespace ForumTask.DAL.DependencyInjection {
     public static class DalServiceCollectionExtensions {
         public static void AddDal(this IServiceCollection services, IConfiguration config) {
             services.AddDbContext<ForumContext>(opt => opt.UseSqlServer(
-                config.GetConnectionString(ForumContextFactory.ConnectionStringName)));
+                config.GetConnectionString("DbConnection")));
 
             services.AddIdentity<User, IdentityRole<int>>(opt => {
                 opt.Password.RequireDigit = false;

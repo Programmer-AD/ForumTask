@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using ForumTask.BLL.DependencyInjection;
 using ForumTask.DAL.DependencyInjection;
+using ForumTask.DAL.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,6 +24,9 @@ namespace ForumTask.PL {
             services.AddSpaStaticFiles(conf => conf.RootPath = "wwwroot");
             services.AddControllers();
 
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+
             services.ConfigureApplicationCookie(opt => {
                 opt.Events = new() {
                     OnRedirectToLogin = ctx => {
@@ -32,14 +37,19 @@ namespace ForumTask.PL {
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ForumContext db) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
 
+            db.Database.Migrate();
+
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseAuthentication();
             app.UseAuthorization();

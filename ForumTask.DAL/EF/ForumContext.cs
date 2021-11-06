@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ForumTask.DAL.EF {
-    class ForumContext : IdentityDbContext<User, IdentityRole<int>, int> {
+    public class ForumContext : IdentityDbContext<User, IdentityRole<int>, int> {
         public DbSet<Message> Messages { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Mark> Marks { get; set; }
