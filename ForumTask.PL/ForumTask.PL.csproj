@@ -2,8 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<StartupObject>ForumTask.PL.Program</StartupObject>
 		<Authors>Dmytrenko Andrey</Authors>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
