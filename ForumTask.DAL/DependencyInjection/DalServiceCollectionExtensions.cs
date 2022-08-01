@@ -12,20 +12,31 @@ namespace ForumTask.DAL.DependencyInjection
     {
         public static void AddDal(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<ForumContext>(opt => opt.UseSqlServer(
-                config.GetConnectionString("DbConnection")));
+            services.AddDbContext<ForumContext>(GetDbContextConfigurator(config));
+            services.AddScoped<DbContext>(provider => provider.GetService<ForumContext>());
 
-            services.AddIdentity<User, IdentityRole<int>>(opt =>
-            {
-                opt.Password.RequireDigit = false;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireLowercase = false;
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
-                opt.User.RequireUniqueEmail = true;
-            }).AddRoles<IdentityRole<int>>().AddEntityFrameworkStores<ForumContext>();
+            services.AddIdentity<User, IdentityRole<int>>(ConfigureIdentity)
+                .AddRoles<IdentityRole<int>>()
+                .AddEntityFrameworkStores<ForumContext>();
+        }
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+        private static Action<DbContextOptionsBuilder> GetDbContextConfigurator(IConfiguration config)
+        {
+            var connectionString = config.GetConnectionString("DbConnection");
+
+            return options => options.UseSqlServer(connectionString);
+        }
+
+        private static void ConfigureIdentity(IdentityOptions options)
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+
+            options.User.RequireUniqueEmail = true;
         }
     }
 }
