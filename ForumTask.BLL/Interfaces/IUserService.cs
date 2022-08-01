@@ -31,7 +31,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="callerId">User who tries to change ban status</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        Task SetBannedAsync(int userId, bool banned, int callerId);
+        Task SetBannedAsync(long userId, bool banned, long callerId);
 
         /// <summary>
         /// Deletes user with id=<paramref name="userId"/>
@@ -46,7 +46,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="callerId">User who tries to delete</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        Task DeleteAsync(int userId, int callerId);
+        Task DeleteAsync(long userId, long callerId);
 
         /// <summary>
         /// Gets user by id
@@ -57,7 +57,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId">Id of user to get</param>
         /// <returns>User with id=<paramref name="userId"/></returns>
         /// <exception cref="NotFoundException"/>
-        Task<UserDTO> GetAsync(int userId);
+        Task<UserDTO> GetAsync(long userId);
 
         /// <summary>
         /// Attach/detach role to/from user depending on <paramref name="setHasRole"/>
@@ -78,7 +78,7 @@ namespace ForumTask.BLL.Interfaces
         /// <exception cref="NotFoundException"/>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="AccessDeniedException"/>
-        Task SetRoleAsync(int userId, string roleName, bool setHasRole, int callerId);
+        Task SetRoleAsync(long userId, string roleName, bool setHasRole, long callerId);
 
         /// <summary>
         /// Sign in user

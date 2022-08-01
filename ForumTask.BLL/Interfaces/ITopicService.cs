@@ -33,10 +33,10 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="title">Title of topic</param>
         /// <param name="message">Text of message to attach or null</param>
-        /// <param name="creatorId">Id of user, who creates topic</param>
+        /// <param name="callerId">Id of user, who creates topic</param>
         /// <returns>Id of created topic</returns>
         /// <exception cref="AccessDeniedException"/>
-        Task<long> CreateAsync(string title, string message, int creatorId);
+        Task<long> CreateAsync(string title, string message, long callerId);
 
         /// <summary>
         /// Deletes topic
@@ -51,10 +51,10 @@ namespace ForumTask.BLL.Interfaces
         /// </para>
         /// </summary>
         /// <param name="topicId">Topic to delete</param>
-        /// <param name="userId">Id of user who tries to delete topic</param>
+        /// <param name="callerId">Id of user who tries to delete topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        Task DeleteAsync(long topicId, int userId);
+        Task DeleteAsync(long topicId, long callerId);
 
         /// <summary>
         /// Edits title of topic
@@ -70,10 +70,10 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="topicId">Topic to rename</param>
         /// <param name="newTitle">New title of topic</param>
-        /// <param name="userId">Id of user who tries to rename topic</param>
+        /// <param name="callerId">Id of user who tries to rename topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        Task RenameAsync(long topicId, string newTitle, int userId);
+        Task RenameAsync(long topicId, string newTitle, long callerId);
 
         /// <summary>
         /// Gets topic by id

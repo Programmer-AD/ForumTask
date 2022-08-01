@@ -47,10 +47,10 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="messageId"></param>
         /// <param name="newText"></param>
-        /// <param name="userId"></param>
+        /// <param name="callerId"></param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        Task EditAsync(long messageId, string newText, int userId);
+        Task EditAsync(long messageId, string newText, long callerId);
 
         /// <summary>
         /// Deletes message
@@ -65,10 +65,10 @@ namespace ForumTask.BLL.Interfaces
         /// </para>
         /// </summary>
         /// <param name="messageId"></param>
-        /// <param name="userId"></param>
+        /// <param name="callerId"></param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        Task DeleteAsync(long messageId, int userId);
+        Task DeleteAsync(long messageId, long callerId);
 
         /// <summary>
         /// Gets {<see cref="PageSize"/>} messages in topic ordered by write-time ascending (top old)

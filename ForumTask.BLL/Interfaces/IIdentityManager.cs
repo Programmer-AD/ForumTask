@@ -19,7 +19,7 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="id">id of user to find</param>
         /// <returns>User or null if not found</returns>
-        Task<User> FindAsync(int id);
+        Task<User> FindAsync(long id);
 
         /// <summary>
         /// Updates user
