@@ -17,8 +17,8 @@ namespace ForumTask.DAL.DependencyInjection
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
-            services.AddIdentity<User, IdentityRole<int>>(ConfigureIdentity)
-                .AddRoles<IdentityRole<int>>()
+            services.AddIdentity<User, IdentityRole<long>>(ConfigureIdentity)
+                .AddRoles<IdentityRole<long>>()
                 .AddEntityFrameworkStores<ForumContext>();
         }
 
