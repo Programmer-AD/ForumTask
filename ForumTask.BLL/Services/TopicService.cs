@@ -1,29 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
+using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
 
 namespace ForumTask.BLL.Services
 {
     public class TopicService : ITopicService
     {
-        private readonly IUnitOfWork uow;
-        private readonly IMessageService msgServ;
-        private readonly IUserService userServ;
+        private readonly IRepository<Topic> topicRepository;
+        private readonly IMessageService messageService;
+        private readonly IUserService userService;
 
-        public TopicService(IUnitOfWork uow, IMessageService msg, IUserService user)
+        public TopicService(
+            IRepository<Topic> topicRepository,
+            IMessageService messageService,
+            IUserService userService)
         {
-            this.uow = uow;
-            msgServ = msg;
-            userServ = user;
+            this.topicRepository = topicRepository;
+            this.messageService = messageService;
+            this.userService = userService;
         }
 
-        private void CheckEditAccess(DateTime createTime, int? creatorId, int callerId, bool canEditOtherUser)
+        public async Task<long> CreateAsync(string title, string message, long callerId)
         {
-            var user = userServ.Get(callerId);
+            var caller = await userService.GetAsync(callerId);
+
+            if (caller.IsBanned)
+            {
+                throw new AccessDeniedException("Caller is banned");
+            }
+
+            var topic = new Topic()
+            {
+                CreateTime = DateTime.UtcNow,
+                CreatorId = callerId,
+                Title = title
+            };
+
+            await topicRepository.CreateAsync(topic);
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                await messageService.AddAsync(new()
+                {
+                    AuthorId = callerId,
+                    Text = message,
+                    WriteTime = DateTime.UtcNow,
+                }, topic);
+            }
+
+            return topic.Id;
+        }
+
+        public async Task<TopicDTO> GetAsync(long id)
+        {
+            var topic = await GetTopicById(id) ?? throw new NotFoundException();
+
+            var messageCount = await messageService.GetMessageCountAsync(id);
+            var topicDto = new TopicDTO(topic) { MessageCount = messageCount };
+
+            return topicDto;
+        }
+
+        public async Task<int> GetPagesCountAsync()
+        {
+            var count = await topicRepository.CountAsync();
+
+            var result = count == 0 ? 0 : (int)(count / ITopicService.PageSize + 1); ;
+
+            return result;
+        }
+
+        public async Task<IEnumerable<TopicDTO>> GetTopNewAsync(int page, string searchTitle = "")
+        {
+            var topics = await topicRepository.GetAllAsync(
+                predicate: x => x.Title.Contains(searchTitle),
+                orderFunc: x => x.OrderByDescending(x => x.CreateTime),
+                skipCount: page * ITopicService.PageSize,
+                takeCount: ITopicService.PageSize);
+
+            var topicDtos = topics.Select(x => new TopicDTO(x)).ToArray();
+
+            foreach (var topicDto in topicDtos)
+            {
+                topicDto.MessageCount = await messageService.GetMessageCountAsync(topicDto.Id);
+            }
+
+            return topicDtos;
+        }
+
+        public async Task RenameAsync(long topicId, string newTitle, long callerId)
+        {
+            var topic = await GetTopicById(topicId) ?? throw new NotFoundException();
+
+            await CheckEditAccessAsync(topic.CreateTime, topic.CreatorId, callerId, false);
+
+            topic.Title = newTitle;
+            await topicRepository.UpdateAsync(topic);
+        }
+
+        public async Task DeleteAsync(long topicId, long callerId)
+        {
+            var topic = await GetTopicById(topicId) ?? throw new NotFoundException();
+
+            await CheckEditAccessAsync(topic.CreateTime, topic.CreatorId, callerId, true);
+
+            await topicRepository.DeleteAsync(topic);
+        }
+
+        private Task<Topic> GetTopicById(long topicId)
+        {
+            return topicRepository.GetAsync(x => x.Id == topicId);
+        }
+
+        private async Task CheckEditAccessAsync(DateTime createTime, long? creatorId, long callerId, bool canEditOtherUser)
+        {
+            var user = await userService.GetAsync(callerId);
             if (user.IsBanned)
             {
                 throw new AccessDeniedException("Caller is banned");
@@ -42,77 +135,13 @@ namespace ForumTask.BLL.Services
 
             if (creatorId.HasValue && creatorId.Value != callerId)
             {
-                var cru = userServ.Get(creatorId.Value);
-                if (cru.MaxRole >= user.MaxRole)
+                var creator = await userService.GetAsync(creatorId.Value);
+
+                if (creator.MaxRole >= user.MaxRole)
                 {
                     throw new AccessDeniedException("Can`t edit/delete topic of user with same or bigger role");
                 }
             }
-        }
-
-        public long Create(string title, string message, int creatorId)
-        {
-            var user = userServ.Get(creatorId);
-            if (user.IsBanned)
-            {
-                throw new AccessDeniedException("Caller is banned");
-            }
-
-            var t = new DAL.Entities.Topic()
-            {
-                CreateTime = DateTime.UtcNow,
-                CreatorId = creatorId,
-                Title = title
-            };
-            uow.Topics.Create(t);
-            if (!string.IsNullOrEmpty(message))
-            {
-                msgServ.Add(new()
-                {
-                    AuthorId = creatorId,
-                    Text = message,
-                    WriteTime = DateTime.UtcNow,
-                }, t);
-            }
-
-            uow.SaveChanges();
-            return t.Id;
-        }
-
-        public TopicDTO Get(long id)
-        {
-            var t = uow.Topics.Get(id) ?? throw new NotFoundException();
-            return new TopicDTO(t) { MessageCount = msgServ.GetMessageCount(id) };
-        }
-        public int GetPagesCount()
-        {
-            int cnt = uow.Topics.Count();
-            return cnt == 0 ? 0 : (cnt / ITopicService.PageSize + 1);
-        }
-
-        public IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle = "")
-        {
-            return uow.Topics.GetTopNew(ITopicService.PageSize, page * ITopicService.PageSize, searchTitle)
-                        .ToList().Select(t => new TopicDTO(t)
-                        {
-                            MessageCount = msgServ.GetMessageCount(t.Id)
-                        });
-        }
-
-        public void Rename(long topicId, string newTitle, int userId)
-        {
-            var topic = uow.Topics.Get(topicId) ?? throw new NotFoundException();
-            CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, false);
-            topic.Title = newTitle;
-            uow.Topics.Update(topic);
-            uow.SaveChanges();
-        }
-        public void Delete(long topicId, int userId)
-        {
-            var topic = uow.Topics.Get(topicId) ?? throw new NotFoundException();
-            CheckEditAccess(topic.CreateTime, topic.CreatorId, userId, true);
-            uow.Topics.Delete(topic);
-            uow.SaveChanges();
         }
     }
 }

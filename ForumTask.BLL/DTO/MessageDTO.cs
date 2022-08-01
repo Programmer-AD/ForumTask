@@ -1,5 +1,4 @@
-﻿using System;
-using ForumTask.DAL.Entities;
+﻿using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.DTO
 {
@@ -29,7 +28,7 @@ namespace ForumTask.BLL.DTO
         public long Id { get; set; }
         public string Text { get; set; }
         public long TopicId { get; set; }
-        public int? AuthorId { get; set; }
+        public long? AuthorId { get; set; }
         public DateTime WriteTime { get; set; }
 
         public long PositiveCount { get; set; }
