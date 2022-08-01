@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
 
@@ -8,125 +6,136 @@ namespace ForumTask.BLL.Services
 {
     public class UserService : IUserService
     {
-        private readonly IIdentityManager man;
+        private readonly IIdentityManager identityManager;
 
-        public UserService(IIdentityManager man)
+        public UserService(IIdentityManager identityManager)
         {
-            this.man = man;
+            this.identityManager = identityManager;
         }
 
-        private RoleEnum GetMaxRole(DAL.Entities.User user)
+        public async Task DeleteAsync(long userId, long callerId)
         {
-            var roles = man.GetRoles(user);
-            return roles.Select(s => RoleEnumConverter.GetRoleByName(s)).Max();
-        }
+            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
 
-        private void CheckRight(DAL.Entities.User victim, int callerId)
-        {
-            var caller = Get(callerId);
-            if (caller.MaxRole <= GetMaxRole(victim))
-            {
-                throw new AccessDeniedException("To edit/delete this user your right-level must be greater then of that user");
-            }
-        }
-
-        public void Delete(int userId, int callerId)
-        {
-            var user = man.FindById(userId) ??
-                 throw new NotFoundException();
             if (userId != callerId)
             {
-                CheckRight(user, callerId);
+                await CheckRightAsync(user, callerId);
             }
 
-            man.Delete(user);
+            await identityManager.DeleteAsync(user);
         }
 
-        public UserDTO Get(int userId)
+        public async Task<UserDTO> GetAsync(long userId)
         {
-            var user = man.FindById(userId) ??
-                throw new NotFoundException();
-            return new(user)
+            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
+
+            var userDto = new UserDTO(user)
             {
-                MaxRole = GetMaxRole(user)
+                MaxRole = await GetMaxRoleAsync(user)
             };
+
+            return userDto;
         }
 
-        public void Register(string userName, string email, string password)
+        public async Task RegisterAsync(string userName, string email, string password)
         {
             try
             {
-                man.Create(userName, email, password);
+                await identityManager.CreateAsync(userName, email, password);
             }
-            catch (Identity.IdentityException e)
+            catch (Identity.IdentityException exception)
             {
-                throw new IdentityValidationException(e);
+                throw new IdentityValidationException(exception);
             }
         }
 
-        public void SetBanned(int userId, bool banned, int callerId)
+        public async Task SetBannedAsync(long userId, bool banned, long callerId)
         {
-            var user = man.FindById(userId) ??
-                throw new NotFoundException();
-            CheckRight(user, callerId);
+            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
+
+            await CheckRightAsync(user, callerId);
+
             if (user.IsBanned != banned)
             {
                 user.IsBanned = banned;
-                man.Update(user);
+
+                await identityManager.UpdateAsync(user);
             }
         }
 
-        public void SetRole(int userId, string roleName, bool setHasRole, int callerId)
+        public async Task SetRoleAsync(long userId, string roleName, bool setHasRole, long callerId)
         {
             if (roleName.ToLower() == "user")
             {
                 throw new InvalidOperationException();
             }
 
-            if (Get(callerId).MaxRole <= RoleEnumConverter.GetRoleByName(roleName))
+            var caller = await GetAsync(callerId);
+
+            if (caller.MaxRole <= RoleEnumConverter.GetRoleByName(roleName))
             {
                 throw new AccessDeniedException("Cant manage higher or equal roles");
             }
 
-            var user = man.FindById(userId) ??
-                throw new NotFoundException();
+            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
 
-            CheckRight(user, callerId);
+            await CheckRightAsync(user, callerId);
+
             try
             {
                 if (setHasRole)
                 {
-                    man.AddToRole(user, roleName);
+                    await identityManager.AddToRoleAsync(user, roleName);
                 }
                 else
                 {
-                    man.RemoveFromRole(user, roleName);
+                    await identityManager.RemoveFromRoleAsync(user, roleName);
                 }
             }
             catch (Identity.IdentityException) { }
         }
 
-        public void SignIn(string userName, string password, bool remember)
+        public async Task SignInAsync(string userName, string password, bool remember)
         {
-            if (!man.TrySignIn(userName, password, remember))
+            var signedIn = await identityManager.TrySignInAsync(userName, password, remember);
+
+            if (!signedIn)
             {
                 throw new AccessDeniedException("Wrong user name or password");
             }
         }
 
-        public void SignOut()
+        public Task SignOutAsync()
         {
-            man.SignOut();
+            return identityManager.SignOutAsync();
         }
 
-        public bool IsEmailUsed(string email)
+        public Task<bool> IsEmailUsedAsync(string email)
         {
-            return man.IsEmailUsed(email);
+            return identityManager.IsEmailUsedAsync(email);
         }
 
-        public bool IsUserNameUsed(string userName)
+        public Task<bool> IsUserNameUsedAsync(string userName)
         {
-            return man.IsUserNameUsed(userName);
+            return identityManager.IsUserNameUsedAsync(userName);
+        }
+
+
+        private async Task<RoleEnum> GetMaxRoleAsync(DAL.Entities.User user)
+        {
+            var roles = await identityManager.GetRolesAsync(user);
+            return roles.Select(s => RoleEnumConverter.GetRoleByName(s)).Max();
+        }
+
+        private async Task CheckRightAsync(DAL.Entities.User victim, long callerId)
+        {
+            var caller = await GetAsync(callerId);
+            var victimMaxRole = await GetMaxRoleAsync(victim);
+
+            if (caller.MaxRole <= victimMaxRole)
+            {
+                throw new AccessDeniedException("To edit/delete this user your right-level must be greater then of that user");
+            }
         }
     }
 }
