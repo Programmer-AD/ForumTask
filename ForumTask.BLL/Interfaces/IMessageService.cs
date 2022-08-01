@@ -2,8 +2,10 @@
 using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 
-namespace ForumTask.BLL.Interfaces {
-    public interface IMessageService {
+namespace ForumTask.BLL.Interfaces
+{
+    public interface IMessageService
+    {
         /// <summary>
         /// Count of messages that will be shown on page
         /// </summary>

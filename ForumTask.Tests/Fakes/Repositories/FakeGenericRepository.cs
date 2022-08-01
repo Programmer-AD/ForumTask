@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using ForumTask.DAL.Interfaces;
 
-namespace ForumTask.Tests.Fakes.Repositories {
-    abstract class FakeGenericRepository<T> : IRepository<T> {
+namespace ForumTask.Tests.Fakes.Repositories
+{
+    internal abstract class FakeGenericRepository<T> : IRepository<T>
+    {
         protected readonly List<T> data;
 
-        public FakeGenericRepository(params T[] data) {
+        public FakeGenericRepository(params T[] data)
+        {
             this.data = data.ToList();
         }
 
@@ -37,46 +40,73 @@ namespace ForumTask.Tests.Fakes.Repositories {
         /// <param name="ent">Entity to which key must be setted</param>
         protected abstract void AssignKey(T ent);
 
-        protected void CheckKey(object[] key) {
+        protected void CheckKey(object[] key)
+        {
             if (key is null)
+            {
                 throw new ArgumentNullException(nameof(key));
+            }
+
             if (!IsKeyCorrect(key))
+            {
                 throw new ArgumentException("Key is wrong");
+            }
         }
 
-        protected T Find(T ent) {
+        protected T Find(T ent)
+        {
             if (ent is null)
+            {
                 throw new ArgumentNullException(nameof(ent));
+            }
+
             return data.Find(ent2 => IsSameObjectKeyPredicate(ent, ent2));
         }
         public bool Contains(T ent)
-            => Find(ent) is not null;
+        {
+            return Find(ent) is not null;
+        }
 
-        public void Create(T ent) {
+        public void Create(T ent)
+        {
             if (Contains(ent))
+            {
                 throw new InvalidOperationException("Object already in list");
+            }
+
             AssignKey(ent);
             data.Add(ent);
         }
 
         public void Delete(params object[] key)
-            => Delete(Get(key));
+        {
+            Delete(Get(key));
+        }
 
-        public void Delete(T ent) {
+        public void Delete(T ent)
+        {
             if (ent is null || !Contains(ent))
+            {
                 throw new InvalidOperationException("No such object in list");
+            }
+
             data.Remove(ent);
         }
 
-        public T Get(params object[] key) {
+        public T Get(params object[] key)
+        {
             CheckKey(key);
             return data.Find(ent => IsKeyOfObjectPredicate(key, ent));
         }
 
-        public void Update(T ent) {
-            T el = Find(ent);
+        public void Update(T ent)
+        {
+            var el = Find(ent);
             if (el is null)
+            {
                 throw new InvalidOperationException("No such object in list");
+            }
+
             data.Remove(el);
             data.Add(ent);
         }

@@ -6,13 +6,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ForumTask.DAL.DependencyInjection {
-    public static class DalServiceCollectionExtensions {
-        public static void AddDal(this IServiceCollection services, IConfiguration config) {
+namespace ForumTask.DAL.DependencyInjection
+{
+    public static class DalServiceCollectionExtensions
+    {
+        public static void AddDal(this IServiceCollection services, IConfiguration config)
+        {
             services.AddDbContext<ForumContext>(opt => opt.UseSqlServer(
                 config.GetConnectionString("DbConnection")));
 
-            services.AddIdentity<User, IdentityRole<int>>(opt => {
+            services.AddIdentity<User, IdentityRole<int>>(opt =>
+            {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;

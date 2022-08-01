@@ -4,17 +4,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ForumTask.DAL.EF {
-    public class ForumContext : IdentityDbContext<User, IdentityRole<int>, int> {
+namespace ForumTask.DAL.EF
+{
+    public class ForumContext : IdentityDbContext<User, IdentityRole<int>, int>
+    {
         public DbSet<Message> Messages { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Mark> Marks { get; set; }
 
-        public ForumContext(DbContextOptions<ForumContext> options) : base(options) {
+        public ForumContext(DbContextOptions<ForumContext> options) : base(options)
+        {
 
         }
 
-        protected override void OnModelCreating(ModelBuilder builder) {
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
             base.OnModelCreating(builder);
             builder.Entity<Mark>().HasKey(m => new { m.UserId, m.MessageId });
             builder.Entity<Topic>().HasOne(t => t.Creator).WithMany().OnDelete(DeleteBehavior.SetNull);
@@ -27,9 +31,14 @@ namespace ForumTask.DAL.EF {
             builder.Entity<IdentityUserRole<int>>().HasData(new IdentityUserRole<int>() { UserId = 1, RoleId = 3 });
 
             static IdentityRole<int> CreateRole(int id, string roleName)
-                => new(roleName) { NormalizedName = roleName.ToUpper(), Id = id };
-            static User CreateUser(int id, string userName, string email, string password, PasswordHasher<User> hasher) {
-                User user = new(userName) {
+            {
+                return new(roleName) { NormalizedName = roleName.ToUpper(), Id = id };
+            }
+
+            static User CreateUser(int id, string userName, string email, string password, PasswordHasher<User> hasher)
+            {
+                User user = new(userName)
+                {
                     Id = id,
                     UserName = userName,
                     NormalizedUserName = userName.ToUpper(),

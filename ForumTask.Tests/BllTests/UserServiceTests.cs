@@ -5,31 +5,43 @@ using ForumTask.BLL.Services;
 using ForumTask.Tests.Fakes;
 using NUnit.Framework;
 
-namespace ForumTask.Tests.BllTests {
-    public class UserServiceTests {
+namespace ForumTask.Tests.BllTests
+{
+    public class UserServiceTests
+    {
         #region Init funcs
         private static FakeIdentityManager GetIdentityManager()
-            => new(
-                new() {
-                    User = new() {
-                        Id = 1,
-                        IsBanned = false,
-                    },
-                    Roles = new() { RoleEnum.User }
-                }, new() {
-                    User = new() {
-                        Id = 2,
-                        IsBanned = false,
-                    },
-                    Roles = new() { RoleEnum.User, RoleEnum.Moderator }
-                }, new() {
-                    User = new() {
-                        Id = 3,
-                        IsBanned = false,
-                    },
-                    Roles = new() { RoleEnum.Admin }
-                });
-        private static UserService GetService(FakeIdentityManager man = null) {
+        {
+            return new(
+                        new()
+                        {
+                            User = new()
+                            {
+                                Id = 1,
+                                IsBanned = false,
+                            },
+                            Roles = new() { RoleEnum.User }
+                        }, new()
+                        {
+                            User = new()
+                            {
+                                Id = 2,
+                                IsBanned = false,
+                            },
+                            Roles = new() { RoleEnum.User, RoleEnum.Moderator }
+                        }, new()
+                        {
+                            User = new()
+                            {
+                                Id = 3,
+                                IsBanned = false,
+                            },
+                            Roles = new() { RoleEnum.Admin }
+                        });
+        }
+
+        private static UserService GetService(FakeIdentityManager man = null)
+        {
             man ??= GetIdentityManager();
 
             return new UserService(man);
@@ -37,7 +49,8 @@ namespace ForumTask.Tests.BllTests {
         #endregion
         #region UserService.SetRole
         [Test]
-        public void UserService_SetRole_RoleAttached() {
+        public void UserService_SetRole_RoleAttached()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 3;
@@ -47,7 +60,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.AreEqual(2, man.GetRoles(new() { Id = uid }).Count);
         }
         [Test]
-        public void UserService_SetRole_RoleDetached() {
+        public void UserService_SetRole_RoleDetached()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 2, cid = 3;
@@ -57,7 +71,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.AreEqual(1, man.GetRoles(new() { Id = uid }).Count);
         }
         [Test]
-        public void UserService_SetRole_RoleAttachedWhenHas() {
+        public void UserService_SetRole_RoleAttachedWhenHas()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 2, cid = 3;
@@ -67,7 +82,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.AreEqual(2, man.GetRoles(new() { Id = uid }).Count);
         }
         [Test]
-        public void UserService_SetRole_RoleDetachedWhenHasnt() {
+        public void UserService_SetRole_RoleDetachedWhenHasnt()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 3;
@@ -77,7 +93,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.AreEqual(1, man.GetRoles(new() { Id = uid }).Count);
         }
         [Test]
-        public void UserService_SetRole_ThrowInvalidOperationWhenTryToAttachRoleUser() {
+        public void UserService_SetRole_ThrowInvalidOperationWhenTryToAttachRoleUser()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 3;
@@ -85,7 +102,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.Throws<InvalidOperationException>(() => serv.SetRole(uid, "User", true, cid));
         }
         [Test]
-        public void UserService_SetRole_ThrowInvalidOperationWhenTryToDettachRoleUser() {
+        public void UserService_SetRole_ThrowInvalidOperationWhenTryToDettachRoleUser()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 3;
@@ -93,7 +111,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.Throws<InvalidOperationException>(() => serv.SetRole(uid, "User", false, cid));
         }
         [Test]
-        public void UserService_SetRole_ThrowNotFoundWhenUserNotFound() {
+        public void UserService_SetRole_ThrowNotFoundWhenUserNotFound()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 100, cid = 3;
@@ -101,7 +120,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.Throws<NotFoundException>(() => serv.SetRole(uid, "Moderator", true, cid));
         }
         [Test]
-        public void UserService_SetRole_ThrowAccessDeniedWhenCallerModerator() {
+        public void UserService_SetRole_ThrowAccessDeniedWhenCallerModerator()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 2;
@@ -109,7 +129,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.Throws<AccessDeniedException>(() => serv.SetRole(uid, "Moderator", true, cid));
         }
         [Test]
-        public void UserService_SetRole_ThrowAccessDeniedWhenCallerUser() {
+        public void UserService_SetRole_ThrowAccessDeniedWhenCallerUser()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 1;
@@ -117,7 +138,8 @@ namespace ForumTask.Tests.BllTests {
             Assert.Throws<AccessDeniedException>(() => serv.SetRole(uid, "Moderator", true, cid));
         }
         [Test]
-        public void UserService_SetRole_ThrowAccessDeniedWhenTryToSetGreatterOrOwnRole() {
+        public void UserService_SetRole_ThrowAccessDeniedWhenTryToSetGreatterOrOwnRole()
+        {
             var man = GetIdentityManager();
             var serv = GetService(man);
             int uid = 1, cid = 3;

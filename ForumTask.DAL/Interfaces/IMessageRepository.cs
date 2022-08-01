@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using ForumTask.DAL.Entities;
 
-namespace ForumTask.DAL.Interfaces {
-    public interface IMessageRepository : IRepository<Message> {
+namespace ForumTask.DAL.Interfaces
+{
+    public interface IMessageRepository : IRepository<Message>
+    {
         /// <summary>
         /// Picks messages attached to <paramref name="topicId"/> orders them by <see cref="Message.WriteTime"/> asc
         /// skips <paramref name="offset"/> and then takes <paramref name="count"/>

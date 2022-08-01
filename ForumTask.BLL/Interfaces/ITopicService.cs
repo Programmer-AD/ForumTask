@@ -2,8 +2,10 @@
 using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 
-namespace ForumTask.BLL.Interfaces {
-    public interface ITopicService {
+namespace ForumTask.BLL.Interfaces
+{
+    public interface ITopicService
+    {
         /// <summary>
         /// Count of topics that will be shown on page
         /// Must be >0

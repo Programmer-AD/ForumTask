@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using ForumTask.BLL.Identity;
 using ForumTask.DAL.Entities;
 
-namespace ForumTask.BLL.Interfaces {
-    public interface IIdentityManager {
+namespace ForumTask.BLL.Interfaces
+{
+    public interface IIdentityManager
+    {
         /// <summary>
         /// Creates new user using data from arguments
         /// </summary>

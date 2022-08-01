@@ -1,10 +1,13 @@
 ﻿using System;
 using ForumTask.BLL.DTO;
 
-namespace ForumTask.PL.Models {
-    public class UserViewModel {
+namespace ForumTask.PL.Models
+{
+    public class UserViewModel
+    {
         public UserViewModel() { }
-        public UserViewModel(UserDTO dto) {
+        public UserViewModel(UserDTO dto)
+        {
             Id = dto.Id;
             UserName = dto.UserName;
             RegisterDate = dto.RegisterDate;

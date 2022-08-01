@@ -2,8 +2,10 @@
 using ForumTask.DAL.EF.Repositories;
 using ForumTask.DAL.Interfaces;
 
-namespace ForumTask.DAL.EF {
-    class UnitOfWork : IUnitOfWork, IDisposable {
+namespace ForumTask.DAL.EF
+{
+    internal class UnitOfWork : IUnitOfWork, IDisposable
+    {
         private ITopicRepository topic;
         public ITopicRepository Topics => topic ??= new TopicRepository(db);
 
@@ -15,14 +17,18 @@ namespace ForumTask.DAL.EF {
 
         private readonly ForumContext db;
 
-        public UnitOfWork(ForumContext context) {
+        public UnitOfWork(ForumContext context)
+        {
             db = context;
         }
 
         public void SaveChanges()
-            => db.SaveChanges();
+        {
+            db.SaveChanges();
+        }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             db.Dispose();
         }
     }

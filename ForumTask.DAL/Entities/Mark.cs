@@ -1,8 +1,11 @@
-﻿namespace ForumTask.DAL.Entities {
-    public enum MarkType {
+﻿namespace ForumTask.DAL.Entities
+{
+    public enum MarkType
+    {
         Negative = -1, Positive = 1
     }
-    public class Mark {
+    public class Mark
+    {
         //Will use (userId, messageId) as key
         public MarkType Type { get; set; }
 

@@ -9,24 +9,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace ForumTask.PL {
-    public class Startup {
+namespace ForumTask.PL
+{
+    public class Startup
+    {
         private readonly IConfiguration config;
 
-        public Startup(IConfiguration config) {
+        public Startup(IConfiguration config)
+        {
             this.config = config;
         }
 
-        public void ConfigureServices(IServiceCollection services) {
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddDal(config);
             services.AddBll(config);
 
             services.AddSpaStaticFiles(conf => conf.RootPath = "wwwroot");
             services.AddControllers();
 
-            services.ConfigureApplicationCookie(opt => {
-                opt.Events = new() {
-                    OnRedirectToLogin = ctx => {
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.Events = new()
+                {
+                    OnRedirectToLogin = ctx =>
+                    {
                         ctx.Response.StatusCode = 401;
                         return Task.CompletedTask;
                     }
@@ -34,8 +41,10 @@ namespace ForumTask.PL {
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ForumContext db) {
-            if (env.IsDevelopment()) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ForumContext db)
+        {
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
 
@@ -49,11 +58,13 @@ namespace ForumTask.PL {
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
             });
 
-            app.UseSpa(config => {
+            app.UseSpa(config =>
+            {
                 config.Options.SourcePath = "wwwroot";
             });
         }

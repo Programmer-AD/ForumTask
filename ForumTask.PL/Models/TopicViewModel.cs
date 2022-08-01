@@ -1,10 +1,13 @@
 ﻿using System;
 using ForumTask.BLL.DTO;
 
-namespace ForumTask.PL.Models {
-    public class TopicViewModel {
+namespace ForumTask.PL.Models
+{
+    public class TopicViewModel
+    {
         public TopicViewModel() { }
-        public TopicViewModel(TopicDTO dto) {
+        public TopicViewModel(TopicDTO dto)
+        {
             Id = dto.Id;
             Title = dto.Title;
             CreateTime = dto.CreateTime;

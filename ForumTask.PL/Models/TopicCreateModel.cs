@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ForumTask.PL.Models {
-    public class TopicCreateModel {
+namespace ForumTask.PL.Models
+{
+    public class TopicCreateModel
+    {
         [Required]
         [MaxLength(60)]
         [MinLength(5)]

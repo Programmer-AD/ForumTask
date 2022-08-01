@@ -1,9 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ForumTask.DAL.Migrations {
-    public partial class OnDelSetNull : Migration {
-        protected override void Up(MigrationBuilder migrationBuilder) {
+namespace ForumTask.DAL.Migrations
+{
+    public partial class OnDelSetNull : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.DropForeignKey(
                 name: "FK_Messages_AspNetUsers_AuthorId",
                 table: "Messages");
@@ -68,7 +71,8 @@ namespace ForumTask.DAL.Migrations {
                 onDelete: ReferentialAction.SetNull);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder) {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.DropForeignKey(
                 name: "FK_Messages_AspNetUsers_AuthorId",
                 table: "Messages");

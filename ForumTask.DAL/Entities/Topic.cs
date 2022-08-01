@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ForumTask.DAL.Entities {
-    public class Topic {
+namespace ForumTask.DAL.Entities
+{
+    public class Topic
+    {
         public long Id { get; set; }
 
         [Required]

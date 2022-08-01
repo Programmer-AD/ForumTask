@@ -1,7 +1,9 @@
 ﻿using ForumTask.BLL.DTO;
 
-namespace ForumTask.BLL.Interfaces {
-    public interface IMarkService {
+namespace ForumTask.BLL.Interfaces
+{
+    public interface IMarkService
+    {
         /// <summary>
         /// <para>
         /// If <see cref="MarkDTO.Value"/> is 0, then deletes mark,
@@ -26,6 +28,6 @@ namespace ForumTask.BLL.Interfaces {
         /// <param name="messageId">Id of message</param>
         /// <param name="type">Type of mark</param>
         /// <returns>Count of marks of type in message</returns>
-        long GetCountOfType(long messageId,sbyte type);
+        long GetCountOfType(long messageId, sbyte type);
     }
 }

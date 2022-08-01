@@ -1,10 +1,13 @@
 ﻿using System;
 using ForumTask.DAL.Entities;
 
-namespace ForumTask.BLL.DTO {
-    public class MessageDTO {
+namespace ForumTask.BLL.DTO
+{
+    public class MessageDTO
+    {
         public MessageDTO() { }
-        public MessageDTO(Message msg) {
+        public MessageDTO(Message msg)
+        {
             Id = msg.Id;
             Text = msg.Text;
             TopicId = msg.TopicId;
@@ -12,13 +15,16 @@ namespace ForumTask.BLL.DTO {
             WriteTime = msg.WriteTime;
         }
         public Message ToEntity()
-            => new() {
+        {
+            return new()
+            {
                 AuthorId = AuthorId,
                 Id = Id,
                 WriteTime = WriteTime,
                 TopicId = TopicId,
                 Text = Text
             };
+        }
 
         public long Id { get; set; }
         public string Text { get; set; }

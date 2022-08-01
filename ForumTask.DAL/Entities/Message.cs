@@ -2,8 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace ForumTask.DAL.Entities {
-    public class Message {
+namespace ForumTask.DAL.Entities
+{
+    public class Message
+    {
         public long Id { get; set; }
 
         [MaxLength(5000)]

@@ -1,12 +1,17 @@
 ﻿using System;
 
-namespace ForumTask.BLL.Exceptions {
+namespace ForumTask.BLL.Exceptions
+{
     [Serializable]
-    public class IdentityValidationException : Exception {
+    public class IdentityValidationException : Exception
+    {
         public IdentityValidationException() : base("Validation error") { }
-        internal IdentityValidationException(Identity.IdentityException e) : base("Validation error: " + e.Message) {
-            foreach (var errCode in e.IdentityErrorCodes)
-                switch (errCode) {
+        internal IdentityValidationException(Identity.IdentityException e) : base("Validation error: " + e.Message)
+        {
+            foreach (string errCode in e.IdentityErrorCodes)
+            {
+                switch (errCode)
+                {
                     case "DuplicateEmail":
                         DuplicateEmail = true;
                         break;
@@ -17,6 +22,7 @@ namespace ForumTask.BLL.Exceptions {
                         PasswordTooShort = true;
                         break;
                 }
+            }
         }
         public IdentityValidationException(string message) : base("Validation error: " + message) { }
         public IdentityValidationException(string message, Exception inner) : base("Validation error:" + message, inner) { }

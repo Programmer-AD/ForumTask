@@ -2,8 +2,10 @@
 using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 
-namespace ForumTask.BLL.Interfaces {
-    public interface IUserService {
+namespace ForumTask.BLL.Interfaces
+{
+    public interface IUserService
+    {
         /// <summary>
         /// Register new user
         /// <para>

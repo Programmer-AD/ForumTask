@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace ForumTask.DAL.Interfaces {
-    public interface IRepository<T> {
+namespace ForumTask.DAL.Interfaces
+{
+    public interface IRepository<T>
+    {
         /// <summary>
         /// Creates/adds/inserts entity
         /// <para>

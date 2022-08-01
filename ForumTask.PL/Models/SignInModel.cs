@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ForumTask.PL.Models {
-    public class SignInModel {
+namespace ForumTask.PL.Models
+{
+    public class SignInModel
+    {
         [Required]
         [MaxLength(256)]
         public string UserName { get; set; }

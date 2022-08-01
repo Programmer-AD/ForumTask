@@ -1,8 +1,10 @@
 ﻿using ForumTask.DAL.Interfaces;
 using ForumTask.Tests.Fakes.Repositories;
 
-namespace ForumTask.Tests.Fakes {
-    class FakeUnitOfWork : IUnitOfWork {
+namespace ForumTask.Tests.Fakes
+{
+    internal class FakeUnitOfWork : IUnitOfWork
+    {
         private ITopicRepository topic;
         public ITopicRepository Topics => topic ??= new FakeTopicRepository();
 
@@ -12,17 +14,21 @@ namespace ForumTask.Tests.Fakes {
         private IMarkRepository mark;
         public IMarkRepository Marks => mark ??= new FakeMarkRepository();
 
-        public void SaveChanges() {
+        public void SaveChanges()
+        {
             ChangesSaved = true;
         }
 
         public bool ChangesSaved { get; private set; }
-        public void ResetSave() {
+        public void ResetSave()
+        {
             ChangesSaved = false;
         }
 
-        public void SetRepository<T>(IRepository<T> rep) {
-            switch (rep) {
+        public void SetRepository<T>(IRepository<T> rep)
+        {
+            switch (rep)
+            {
                 case ITopicRepository r:
                     topic = r;
                     break;

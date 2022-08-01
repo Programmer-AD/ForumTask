@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using ForumTask.DAL.Entities;
 
-namespace ForumTask.DAL.Interfaces {
-    public interface ITopicRepository : IRepository<Topic> {
+namespace ForumTask.DAL.Interfaces
+{
+    public interface ITopicRepository : IRepository<Topic>
+    {
         /// <summary>
         /// Order topics by <see cref="Topic.CreateTime"/> desc then skips <paramref name="offset"/> and takes <paramref name="count"/> as result
         /// <para>

@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ForumTask.PL.Models {
-    public class RegisterModel {
+namespace ForumTask.PL.Models
+{
+    public class RegisterModel
+    {
         [Required]
         [MaxLength(256)]
         public string UserName { get; set; }

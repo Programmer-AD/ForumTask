@@ -1,10 +1,13 @@
 ﻿using System;
 using ForumTask.DAL.Entities;
 
-namespace ForumTask.BLL.DTO {
-    public class UserDTO {
+namespace ForumTask.BLL.DTO
+{
+    public class UserDTO
+    {
         public UserDTO() { }
-        public UserDTO(User user) {
+        public UserDTO(User user)
+        {
             Id = user.Id;
             UserName = user.UserName;
             Email = user.Email;
@@ -12,13 +15,16 @@ namespace ForumTask.BLL.DTO {
             IsBanned = user.IsBanned;
         }
         public User ToEntity()
-            => new() {
+        {
+            return new()
+            {
                 Id = Id,
                 UserName = UserName,
                 Email = Email,
                 RegisterDate = RegisterDate,
                 IsBanned = IsBanned,
             };
+        }
 
         public int Id { get; set; }
         public string UserName { get; set; }

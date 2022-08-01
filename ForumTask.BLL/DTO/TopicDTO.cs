@@ -1,22 +1,28 @@
 ﻿using System;
 using ForumTask.DAL.Entities;
 
-namespace ForumTask.BLL.DTO {
-    public class TopicDTO {
+namespace ForumTask.BLL.DTO
+{
+    public class TopicDTO
+    {
         public TopicDTO() { }
-        public TopicDTO(Topic topic) {
+        public TopicDTO(Topic topic)
+        {
             Id = topic.Id;
             Title = topic.Title;
             CreateTime = topic.CreateTime;
             CreatorId = topic.CreatorId;
         }
         public Topic ToEntity()
-            => new() {
+        {
+            return new()
+            {
                 Id = Id,
                 CreatorId = CreatorId,
                 Title = Title,
                 CreateTime = CreateTime
             };
+        }
 
         public long Id { get; set; }
         public string Title { get; set; }

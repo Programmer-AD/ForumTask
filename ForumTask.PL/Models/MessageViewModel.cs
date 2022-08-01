@@ -1,10 +1,13 @@
 ﻿using System;
 using ForumTask.BLL.DTO;
 
-namespace ForumTask.PL.Models {
-    public class MessageViewModel {
+namespace ForumTask.PL.Models
+{
+    public class MessageViewModel
+    {
         public MessageViewModel() { }
-        public MessageViewModel(MessageDTO dto) {
+        public MessageViewModel(MessageDTO dto)
+        {
             Id = dto.Id;
             Text = dto.Text;
             TopicId = dto.TopicId;
