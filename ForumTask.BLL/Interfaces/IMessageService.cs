@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 
 namespace ForumTask.BLL.Interfaces
@@ -10,6 +9,7 @@ namespace ForumTask.BLL.Interfaces
         /// Count of messages that will be shown on page
         /// </summary>
         public const int PageSize = 20;
+
         /// <summary>
         /// Time after creation in minutes in which Message can be edited/deleted by user
         /// </summary>
@@ -18,6 +18,7 @@ namespace ForumTask.BLL.Interfaces
         /// if they were different one action can use another for same result
         /// </remarks>
         public const double EditOrDeleteTime = 5;
+
         /// <summary>
         /// Adds new message
         /// <para>
@@ -30,7 +31,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="message">Message to add</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        void Add(MessageDTO message);
+        Task AddAsync(MessageDTO message);
+
         /// <summary>
         /// Edits message text
         /// <para>
@@ -48,7 +50,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId"></param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void Edit(long messageId, string newText, int userId);
+        Task EditAsync(long messageId, string newText, int userId);
+
         /// <summary>
         /// Deletes message
         /// <para>
@@ -65,7 +68,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId"></param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void Delete(long messageId, int userId);
+        Task DeleteAsync(long messageId, int userId);
+
         /// <summary>
         /// Gets {<see cref="PageSize"/>} messages in topic ordered by write-time ascending (top old)
         /// <para>
@@ -75,7 +79,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="topicId">Id of topic from which get messages</param>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of messages</returns>
-        IEnumerable<MessageDTO> GetTopOld(long topicId, int page);
+        Task<IEnumerable<MessageDTO>> GetTopOldAsync(long topicId, int page);
+
         /// <summary>
         /// Gets count of messages attached to topic
         /// <para>
@@ -84,7 +89,8 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="topicId">Id of topic which messages are counted</param>
         /// <returns>Count of messages or 0 if topic not found</returns>
-        int GetMessageCount(long topicId);
+        Task<int> GetMessageCountAsync(long topicId);
+
         /// <summary>
         /// Gets count of pages to show all messages in topic
         /// <para>
@@ -93,7 +99,8 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="topicId">Id of topic whose pages are counted</param>
         /// <returns>Count of pages or 0 if topic not found</returns>
-        int GetPagesCount(long topicId);
+        Task<int> GetPagesCountAsync(long topicId);
+
         /// <summary>
         /// Creates message and attaches it to newly created topic
         /// <para>
@@ -102,6 +109,6 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="message">Message to add</param>
         /// <param name="topic">Topic to which message wil be attached</param>
-        internal void Add(MessageDTO message, DAL.Entities.Topic topic);
+        internal Task AddAsync(MessageDTO message, DAL.Entities.Topic topic);
     }
 }

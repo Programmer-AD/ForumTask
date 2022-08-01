@@ -1,5 +1,4 @@
-﻿using System;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 
 namespace ForumTask.BLL.Interfaces
@@ -16,7 +15,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="email">Email</param>
         /// <param name="password">Password</param>
         /// <exception cref="IdentityValidationException"/>
-        void Register(string userName, string email, string password);
+        Task RegisterAsync(string userName, string email, string password);
+
         /// <summary>
         /// Changes ban status of user with id=<paramref name="userId"/>
         /// <para>
@@ -31,7 +31,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="callerId">User who tries to change ban status</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void SetBanned(int userId, bool banned, int callerId);
+        Task SetBannedAsync(int userId, bool banned, int callerId);
+
         /// <summary>
         /// Deletes user with id=<paramref name="userId"/>
         /// <para>
@@ -45,7 +46,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="callerId">User who tries to delete</param>
         /// <exception cref="NotFoundException"/>
         /// <exception cref="AccessDeniedException"/>
-        void Delete(int userId, int callerId);
+        Task DeleteAsync(int userId, int callerId);
+
         /// <summary>
         /// Gets user by id
         /// <para>
@@ -55,7 +57,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId">Id of user to get</param>
         /// <returns>User with id=<paramref name="userId"/></returns>
         /// <exception cref="NotFoundException"/>
-        UserDTO Get(int userId);
+        Task<UserDTO> GetAsync(int userId);
+
         /// <summary>
         /// Attach/detach role to/from user depending on <paramref name="setHasRole"/>
         /// <para>
@@ -75,7 +78,8 @@ namespace ForumTask.BLL.Interfaces
         /// <exception cref="NotFoundException"/>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="AccessDeniedException"/>
-        void SetRole(int userId, string roleName, bool setHasRole, int callerId);
+        Task SetRoleAsync(int userId, string roleName, bool setHasRole, int callerId);
+
         /// <summary>
         /// Sign in user
         /// <para>
@@ -86,22 +90,25 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="password">Password in text form</param>
         /// <param name="remember">Save cookie after browser closed?</param>
         /// <exception cref="AccessDeniedException"/>
-        void SignIn(string userName, string password, bool remember);
+        Task SignInAsync(string userName, string password, bool remember);
+
         /// <summary>
         /// Sign out current user
         /// </summary>
-        void SignOut();
+        Task SignOutAsync();
+
         /// <summary>
         /// Checks if email address is used
         /// </summary>
         /// <param name="email">Email to check</param>
         /// <returns>Is email used?</returns>
-        bool IsEmailUsed(string email);
+        Task<bool> IsEmailUsedAsync(string email);
+
         /// <summary>
         /// Checks if user name is used
         /// </summary>
         /// <param name="userName">Role name to check</param>
         /// <returns>Is role name used?</returns>
-        bool IsUserNameUsed(string userName);
+        Task<bool> IsUserNameUsedAsync(string userName);
     }
 }

@@ -11,14 +11,16 @@ namespace ForumTask.BLL.Interfaces
         /// </para>
         /// </summary>
         /// <param name="mark">Mark to set</param>
-        void Set(MarkDTO mark);
+        Task SetAsync(MarkDTO mark);
+
         /// <summary>
         /// Gets value of user mark
         /// </summary>
         /// <param name="userId">User which mark to get</param>
         /// <param name="messageId">Message from which mark to get</param>
         /// <returns>Value of mark or 0 if don`t exist</returns>
-        sbyte GetOwn(int userId, long messageId);
+        Task GetOwnAsync(int userId, long messageId);
+
         /// <summary>
         /// Gets total mark of message with <paramref name="messageId"/>
         /// <para>
@@ -28,6 +30,6 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="messageId">Id of message</param>
         /// <param name="type">Type of mark</param>
         /// <returns>Count of marks of type in message</returns>
-        long GetCountOfType(long messageId, sbyte type);
+        Task GetCountOfTypeAsync(long messageId, sbyte type);
     }
 }

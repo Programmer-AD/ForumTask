@@ -11,6 +11,7 @@ namespace ForumTask.BLL.Interfaces
         /// Must be >0
         /// </summary>
         public const int PageSize = 10;
+
         /// <summary>
         /// Time after creation in minutes in which Topic can be renamed/deleted by user
         /// </summary>
@@ -19,6 +20,7 @@ namespace ForumTask.BLL.Interfaces
         /// if they were different one action can use another for same result
         /// </remarks>
         public const double EditOrDeleteTime = 5;
+
         /// <summary>
         /// Creates new topic with title <paramref name="title"/>
         /// and attaches new message with text <paramref name="message"/>
@@ -34,7 +36,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="creatorId">Id of user, who creates topic</param>
         /// <returns>Id of created topic</returns>
         /// <exception cref="AccessDeniedException"/>
-        long Create(string title, string message, int creatorId);
+        Task<long> CreateAsync(string title, string message, int creatorId);
+
         /// <summary>
         /// Deletes topic
         /// <para>
@@ -51,7 +54,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId">Id of user who tries to delete topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        void Delete(long topicId, int userId);
+        Task DeleteAsync(long topicId, int userId);
+
         /// <summary>
         /// Edits title of topic
         /// <para>
@@ -69,7 +73,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId">Id of user who tries to rename topic</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        void Rename(long topicId, string newTitle, int userId);
+        Task RenameAsync(long topicId, string newTitle, int userId);
+
         /// <summary>
         /// Gets topic by id
         /// <para>
@@ -79,7 +84,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="id">Id of topic to get</param>
         /// <returns>Topic with id</returns>
         /// <exception cref="NotFoundException"/>
-        TopicDTO Get(long id);
+        Task<TopicDTO> GetAsync(long id);
+
         /// <summary>
         /// Gets {<see cref="PageSize"/>} top new topics
         /// <para>
@@ -89,11 +95,12 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of topics</returns>
-        IEnumerable<TopicDTO> GetTopNew(int page, string searchTitle = "");
+        Task<IEnumerable<TopicDTO>> GetTopNewAsync(int page, string searchTitle = "");
+
         /// <summary>
         /// Gets count of pages to show all topics
         /// </summary>
         /// <returns>Count of pages</returns>
-        int GetPagesCount();
+        Task<int> GetPagesCountAsync();
     }
 }

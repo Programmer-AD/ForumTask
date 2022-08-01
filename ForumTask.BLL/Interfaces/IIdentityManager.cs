@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ForumTask.BLL.Identity;
+﻿using ForumTask.BLL.Identity;
 using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.Interfaces
@@ -14,13 +12,15 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="email">Email of new user</param>
         /// <param name="password">Password of new user</param>
         /// <exception cref="IdentityException"/>
-        void Create(string userName, string email, string password);
+        Task CreateAsync(string userName, string email, string password);
+
         /// <summary>
         /// Finds user with providden Id
         /// </summary>
         /// <param name="id">id of user to find</param>
         /// <returns>User or null if not found</returns>
-        User FindById(int id);
+        Task<User> FindAsync(int id);
+
         /// <summary>
         /// Updates user
         /// <para>
@@ -30,7 +30,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="user">User to update</param>
         /// <exception cref="IdentityException"/>
         /// <exception cref="ArgumentNullException"/>
-        void Update(User user);
+        Task UpdateAsync(User user);
+
         /// <summary>
         /// Deletes user
         /// <para>
@@ -39,16 +40,8 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="user">User to delete</param>
         /// <exception cref="ArgumentNullException"/>
-        void Delete(User user);
-        /// <summary>
-        /// Updates user
-        /// <para>
-        /// If user with <paramref name="id"/> not foun, throws <see cref="InvalidOperationException"/>
-        /// </para>
-        /// </summary>
-        /// <param name="id">Id of user to delete</param>
-        /// <exception cref="InvalidOperationException"/>
-        void Delete(int id);
+        Task DeleteAsync(User user);
+
         /// <summary>
         /// Adds role with name <paramref name="role"/> to <paramref name="user"/>
         /// <para>
@@ -62,7 +55,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="role"></param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="IdentityException"/>
-        void AddToRole(User user, string role);
+        Task AddToRoleAsync(User user, string role);
+
         /// <summary>
         /// Removes role with name <paramref name="role"/> from <paramref name="user"/>
         /// <para>
@@ -76,7 +70,8 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="role"></param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="IdentityException"/>
-        void RemoveFromRole(User user, string role);
+        Task RemoveFromRoleAsync(User user, string role);
+
         /// <summary>
         /// Tries to sign in using <paramref name="userName"/> and <paramref name="password"/>
         /// </summary>
@@ -84,11 +79,13 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="password">Password</param>
         /// <param name="remember">Save cookie after browser closed?</param>
         /// <returns>Is signed in?</returns>
-        bool TrySignIn(string userName, string password, bool remember);
+        Task<bool> TrySignInAsync(string userName, string password, bool remember);
+
         /// <summary>
         /// Sign out of current account
         /// </summary>
-        void SignOut();
+        Task SignOutAsync();
+
         /// <summary>
         /// Get list of role name attached to <paramref name="user"/>
         /// <para>
@@ -98,18 +95,20 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="user">User whose roles must be getted</param>
         /// <returns>List of role names</returns>
         /// <exception cref="ArgumentNullException"/>
-        IList<string> GetRoles(User user);
+        Task<IEnumerable<string>> GetRolesAsync(User user);
+
         /// <summary>
         /// Checks if email address is used
         /// </summary>
         /// <param name="email">Email to check</param>
         /// <returns>Is email used?</returns>
-        bool IsEmailUsed(string email);
+        Task<bool> IsEmailUsedAsync(string email);
+
         /// <summary>
         /// Checks if user name is used
         /// </summary>
         /// <param name="userName">Role name to check</param>
         /// <returns>Is role name used?</returns>
-        bool IsUserNameUsed(string userName);
+        Task<bool> IsUserNameUsedAsync(string userName);
     }
 }
