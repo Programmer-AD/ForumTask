@@ -24,21 +24,11 @@ namespace ForumTask.PL {
             services.AddSpaStaticFiles(conf => conf.RootPath = "wwwroot");
             services.AddControllers();
 
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new() { 
-                    Title = "Forum task api",
-                    Version = "v1",
-                    Description = "API written using ASP.NET Core web api for simple forum",
-                });
-            });
-
             services.ConfigureApplicationCookie(opt => {
                 opt.Events = new() {
                     OnRedirectToLogin = ctx => {
                         ctx.Response.StatusCode = 401;
-                        return Task.FromResult(0);
+                        return Task.CompletedTask;
                     }
                 };
             });
@@ -55,16 +45,6 @@ namespace ForumTask.PL {
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-
-            app.UseSwagger(options =>
-            {
-                options.RouteTemplate = "api/doc/{documentname}/swagger.json";
-            });
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/api/doc/v1/swagger.json", "v1");
-                options.RoutePrefix = "api/doc";
-            });
 
             app.UseAuthentication();
             app.UseAuthorization();

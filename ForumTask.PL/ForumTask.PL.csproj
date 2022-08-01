@@ -1,31 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <StartupObject>ForumTask.PL.Program</StartupObject>
-    <Authors>Dmytrenko Andrey</Authors>
-  </PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>..\BuildResult\Debug\</OutputPath>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<StartupObject>ForumTask.PL.Program</StartupObject>
+		<Authors>Dmytrenko Andrey</Authors>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputPath>..\BuildResult\Release\</OutputPath>
-	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ForumTask.BLL\ForumTask.BLL.csproj" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ForumTask.BLL\ForumTask.BLL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.7" />
+	</ItemGroup>
 
 </Project>
