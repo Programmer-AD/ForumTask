@@ -1,34 +1,30 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace ForumTask.BLL.Exceptions
 {
-    [Serializable]
     public class IdentityValidationException : Exception
     {
-        public IdentityValidationException() : base("Validation error") { }
-        internal IdentityValidationException(IdentityException e) : base("Validation error: " + e.Message)
+        private const string ExceptionMessage = "Validation error! ";
+
+        public IdentityValidationException() : base(ExceptionMessage) { }
+        public IdentityValidationException(IdentityException exception) : base(ExceptionMessage + exception.Message)
         {
-            foreach (string errCode in e.IdentityErrorCodes)
+            foreach (string errorCode in exception.IdentityErrorCodes)
             {
-                switch (errCode)
+                switch (errorCode)
                 {
-                    case "DuplicateEmail":
+                    case nameof(IdentityErrorDescriber.DuplicateEmail):
                         DuplicateEmail = true;
                         break;
-                    case "DuplicateUserName":
+                    case nameof(IdentityErrorDescriber.DuplicateUserName):
                         DuplicateUserName = true;
                         break;
-                    case "PasswordTooShort":
+                    case nameof(IdentityErrorDescriber.PasswordTooShort):
                         PasswordTooShort = true;
                         break;
                 }
             }
         }
-        public IdentityValidationException(string message) : base("Validation error: " + message) { }
-        public IdentityValidationException(string message, Exception inner) : base("Validation error:" + message, inner) { }
-        protected IdentityValidationException(
-            System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
 
         public bool DuplicateEmail { get; }
         public bool DuplicateUserName { get; }
