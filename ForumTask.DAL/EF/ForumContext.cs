@@ -35,7 +35,7 @@ namespace ForumTask.DAL.EF
 
         private static void SeedUserRoleRelations(ModelBuilder builder)
         {
-            const int adminRoleId = 3;
+            const long adminRoleId = 3;
 
             var userRoleRelation = new IdentityUserRole<long>() { UserId = adminUserId, RoleId = adminRoleId };
 
@@ -59,7 +59,7 @@ namespace ForumTask.DAL.EF
             builder.Entity<User>().HasData(adminUser);
         }
 
-        private static User CreateUser(int id, string userName, string email, string password, PasswordHasher<User> hasher)
+        private static User CreateUser(long id, string userName, string email, string password, PasswordHasher<User> hasher)
         {
             var user = new User()
             {
@@ -78,7 +78,7 @@ namespace ForumTask.DAL.EF
             return user;
         }
 
-        private static IdentityRole<int> CreateRole(int id, string roleName)
+        private static IdentityRole<long> CreateRole(long id, string roleName)
         {
             return new(roleName) { Id = id, NormalizedName = roleName.ToUpper() };
         }
