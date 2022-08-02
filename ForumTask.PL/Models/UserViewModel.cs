@@ -12,10 +12,10 @@ namespace ForumTask.PL.Models
             UserName = dto.UserName;
             RegisterDate = dto.RegisterDate;
             IsBanned = dto.IsBanned;
-            RoleName = dto.MaxRole.GetRoleName();
+            RoleName = dto.MaxRole.ToString();
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string UserName { get; set; }
         public DateTime RegisterDate { get; set; }
         public bool IsBanned { get; set; }

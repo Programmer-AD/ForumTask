@@ -1,18 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ForumTask.DAL.Entities;
 
 namespace ForumTask.PL.Models
 {
     public class RegisterModel
     {
         [Required]
-        [MaxLength(256)]
+        [MaxLength(EntityConstants.User_UserName_MaxLength)]
         public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
-        [MaxLength(256)]
+        [MaxLength(EntityConstants.User_Email_MaxLength)]
         public string Email { get; set; }
-        [MinLength(6)]
-        [MaxLength(32)]
+
+        [MinLength(EntityConstants.User_Password_MinLength)]
+        [MaxLength(EntityConstants.User_Password_MaxLength)]
         public string Password { get; set; }
     }
 }

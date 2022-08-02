@@ -1,14 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ForumTask.DAL.Entities;
 
 namespace ForumTask.PL.Models
 {
     public class TopicCreateModel
     {
         [Required]
-        [MaxLength(60)]
-        [MinLength(5)]
+        [MinLength(EntityConstants.Topic_Title_MinLength)]
+        [MaxLength(EntityConstants.Topic_Title_MaxLength)]
         public string Title { get; set; }
-        [MaxLength(5000)]
+
+        [MaxLength(EntityConstants.Message_Text_MaxLength)]
         public string Message { get; set; }
     }
 }
