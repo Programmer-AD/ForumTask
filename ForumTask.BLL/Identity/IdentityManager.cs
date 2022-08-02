@@ -1,45 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ForumTask.BLL.Interfaces;
+﻿using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace ForumTask.BLL.Identity
 {
-    internal class IdentityManager : IIdentityManager, IDisposable
+    internal class IdentityManager : IIdentityManager
     {
-        private readonly UserManager<User> userMan;
-        private readonly SignInManager<User> signInMan;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
         public IdentityManager(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            userMan = userManager;
-            signInMan = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
-        private static void CallIdentitySync(Func<Task<IdentityResult>> func)
+        public Task AddToRoleAsync(User user, string role)
         {
-            var t = func();
-            t.Wait();
-            if (!t.Result.Succeeded)
-            {
-                throw new IdentityException(t.Result.Errors.Select(e => e.Code));
-            }
+            return userManager.AddToRoleAsync(user, role);
         }
 
-        public void AddToRole(User user, string role)
-        {
-            if (user is null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            CallIdentitySync(() => userMan.AddToRoleAsync(user, role));
-        }
-
-        public void Create(string userName, string email, string password)
+        public async Task CreateAsync(string userName, string email, string password)
         {
             var user = new User
             {
@@ -47,95 +28,67 @@ namespace ForumTask.BLL.Identity
                 Email = email,
                 RegisterDate = DateTime.UtcNow
             };
-            CallIdentitySync(() => userMan.CreateAsync(user, password));
-            AddToRole(user, "User");
+
+            await userManager.CreateAsync(user, password);
+
+            await AddToRoleAsync(user, "User");
         }
 
-        public void Delete(User user)
+        public Task DeleteAsync(User user)
         {
-            if (user is null)
+            return userManager.DeleteAsync(user);
+        }
+
+        public Task<User> FindAsync(long id)
+        {
+            return userManager.FindByIdAsync(id.ToString());
+        }
+
+        public Task RemoveFromRoleAsync(User user, string role)
+        {
+            return userManager.RemoveFromRoleAsync(user, role);
+        }
+
+        public Task<bool> TrySignInAsync(string userName, string password, bool remember)
+        {
+            return signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
+        }
+
+        public Task SignOutAsync()
+        {
+            return signInManager.SignOutAsync();
+        }
+
+        public Task UpdateAsync(User user)
+        {
+            return userManager.UpdateAsync(user);
+        }
+
+        public Task<IEnumerable<string>> GetRolesAsync(User user)
+        {
+            return userManager.GetRolesAsync(user).ContinueWith(x => (IEnumerable<string>)x.Result);
+        }
+
+        public async Task<bool> IsEmailUsedAsync(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            return user != null;
+        }
+
+        public async Task<bool> IsUserNameUsedAsync(string userName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+
+            return user != null;
+        }
+
+        private static void AssertSucceeded(IdentityResult identityResult)
+        {
+            if (!identityResult.Succeeded)
             {
-                throw new ArgumentNullException(nameof(user));
+                throw new IdentityException(identityResult.Errors.Select(e => e.Code));
             }
-
-            CallIdentitySync(() => userMan.DeleteAsync(user));
-        }
-
-        public void Delete(int id)
-        {
-            var user = FindById(id) ??
-                throw new InvalidOperationException("User with providden id wasn`t found, so can`t be deleted");
-            Delete(user);
-        }
-
-        public User FindById(int id)
-        {
-            var t = userMan.FindByIdAsync(id.ToString());
-            t.Wait();
-            return t.Result;
-        }
-
-        public void RemoveFromRole(User user, string role)
-        {
-            if (user is null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            CallIdentitySync(() => userMan.RemoveFromRoleAsync(user, role));
-        }
-
-        public bool TrySignIn(string userName, string password, bool remember)
-        {
-            var t = signInMan.PasswordSignInAsync(userName, password, remember, false);
-            t.Wait();
-            return t.Result.Succeeded;
-        }
-
-        public void SignOut()
-        {
-            signInMan.SignOutAsync().Wait();
-        }
-
-        public void Update(User user)
-        {
-            if (user is null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            CallIdentitySync(() => userMan.UpdateAsync(user));
-        }
-
-        public IList<string> GetRoles(User user)
-        {
-            if (user is null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            var t = userMan.GetRolesAsync(user);
-            t.Wait();
-            return t.Result;
-        }
-
-        public bool IsEmailUsed(string email)
-        {
-            var t = userMan.FindByEmailAsync(email);
-            t.Wait();
-            return t.Result is not null;
-        }
-
-        public bool IsUserNameUsed(string userName)
-        {
-            var t = userMan.FindByNameAsync(userName);
-            t.Wait();
-            return t.Result is not null;
-        }
-
-        public void Dispose()
-        {
-            userMan.Dispose();
         }
     }
 }

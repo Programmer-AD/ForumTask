@@ -39,7 +39,7 @@ namespace ForumTask.DAL.EF
         {
             var queryable = GetConfiguredQueryable(predicate, orderFunc, skipCount, takeCount);
 
-            return queryable.ToListAsync().ContinueWith(x => (IEnumerable<T>)x);
+            return queryable.ToListAsync().ContinueWith(x => (IEnumerable<T>)x.Result);
         }
 
         public Task<long> CountAsync(
