@@ -1,42 +1,46 @@
-﻿using ForumTask.BLL.Interfaces;
+﻿using ForumTask.BLL.DTO;
+using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
-using ForumTask.PL.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumTask.PL.Controllers
 {
-    [Route("api/mark")]
-    [ApiController]
+    [Route("api/mark"), ApiController]
     [Authorize]
-    [ModelValidFilter]
     public class MarkController : ControllerBase
     {
-        private readonly IMarkService markServ;
+        private readonly IMarkService markService;
 
         public MarkController(IMarkService markService)
         {
-            markServ = markService;
+            this.markService = markService;
         }
 
         [HttpGet("{messageId}")]
-        public sbyte Get(long messageId)
+        public Task<sbyte> GetAsync(long messageId)
         {
-            return markServ.GetOwnAsync(User.GetId(), messageId);
+            return markService.GetOwnAsync(User.GetId(), messageId);
         }
 
         [HttpPost("{messageId}/{value}")]
         [HttpPut("{messageId}/{value}")]
-        public IActionResult Set(long messageId, sbyte value)
+        public async Task<IActionResult> SetAsync(long messageId, sbyte value)
         {
-            markServ.SetAsync(new() { UserId = User.GetId(), MessageId = messageId, Value = value });
+            var markDto = new MarkDto() { UserId = User.GetId(), MessageId = messageId, Value = value };
+
+            await markService.SetAsync(markDto);
+
             return Ok();
         }
 
         [HttpDelete("{messageId}")]
-        public IActionResult Delete(long messageId)
+        public async Task<IActionResult> DeleteAsync(long messageId)
         {
-            markServ.SetAsync(new() { UserId = User.GetId(), MessageId = messageId, Value = 0 });
+            var markDto = new MarkDto() { UserId = User.GetId(), MessageId = messageId, Value = 0 };
+
+            await markService.SetAsync(markDto);
+
             return Ok();
         }
     }

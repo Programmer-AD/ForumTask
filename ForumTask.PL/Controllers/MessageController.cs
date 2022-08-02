@@ -1,60 +1,64 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
-using ForumTask.PL.Filters;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumTask.PL.Controllers
 {
-    [Route("api/message")]
-    [ApiController]
-    [ModelValidFilter]
-    [BllExceptionFilter]
+    [Route("api/message"), ApiController]
     public class MessageController : ControllerBase
     {
-        private readonly IMessageService messageServ;
+        private readonly IMessageService messageService;
 
         public MessageController(IMessageService messageService)
         {
-            messageServ = messageService;
+            this.messageService = messageService;
         }
 
         [HttpGet("topic{topicId}/pageCount")]
-        public int GetPageCount(long topicId)
+        public Task<int> GetPageCount(long topicId)
         {
-            return messageServ.GetPagesCountAsync(topicId);
+            return messageService.GetPagesCountAsync(topicId);
         }
 
         [HttpGet("topic{topicId}")]
-        public IEnumerable<MessageViewModel> GetTopOld(long topicId, int page)
+        public async Task<IEnumerable<MessageViewModel>> GetTopOldAsync(long topicId, int page)
         {
-            return messageServ.GetTopOld(topicId, page).Select(dto => new MessageViewModel(dto));
+            var messageDtos = await messageService.GetTopOldAsync(topicId, page);
+
+            var messageViewModels = messageDtos.Select(dto => new MessageViewModel(dto));
+
+            return messageViewModels;
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Add(MessageAddModel model)
+        public async Task<IActionResult> AddAsync(MessageAddModel model)
         {
-            messageServ.AddAsync(new() { Text = model.Text, TopicId = model.TopicId, AuthorId = User.GetId() });
+            var messageDto = new MessageDto() { Text = model.Text, TopicId = model.TopicId, AuthorId = User.GetId() };
+
+            await messageService.AddAsync(messageDto);
+
             return Ok();
         }
 
         [Authorize]
         [HttpPut("{messageId}")]
-        public IActionResult Edit(long messageId, MessageEditModel model)
+        public async Task<IActionResult> EditAsync(long messageId, MessageEditModel model)
         {
-            messageServ.EditAsync(messageId, model.NewText, User.GetId());
+            await messageService.EditAsync(messageId, model.NewText, User.GetId());
+
             return Ok();
         }
 
         [Authorize]
         [HttpDelete("{messageId}")]
-        public IActionResult Delete(long messageId)
+        public async Task<IActionResult> DeleteAsync(long messageId)
         {
-            messageServ.Delete(messageId, User.GetId());
+            await messageService.DeleteAsync(messageId, User.GetId());
+
             return Ok();
         }
     }

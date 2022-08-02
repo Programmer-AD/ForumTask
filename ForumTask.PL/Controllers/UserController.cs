@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
-using ForumTask.PL.Filters;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,86 +9,98 @@ namespace ForumTask.PL.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    [ModelValidFilter]
-    [BllExceptionFilter]
     public class UserController : ControllerBase
     {
-        private readonly IUserService userServ;
+        private readonly IUserService userService;
 
         public UserController(IUserService userService)
         {
-            userServ = userService;
+            this.userService = userService;
         }
 
         [HttpGet("{userId}")]
-        public UserViewModel Get(int userId)
+        public async Task<UserViewModel> GetAsync(int userId)
         {
-            return new(userServ.GetAsync(userId));
+            var userDto = await userService.GetAsync(userId);
+
+            var userViewModel = new UserViewModel(userDto);
+
+            return userViewModel;
         }
 
         [HttpGet("canUse/email/{email}")]
-        public bool CanUseEmail([Required] string email)
+        public Task<bool> CanUseEmailAsync([Required] string email)
         {
-            return !userServ.IsEmailUsedAsync(email);
+            return userService.IsEmailUsedAsync(email).ContinueWith(x => !x.Result);
         }
 
         [HttpGet("canUse/userName/{userName}")]
-        public bool CanUseUserName([Required] string userName)
+        public Task<bool> CanUseUserNameAsync([Required] string userName)
         {
-            return !userServ.IsUserNameUsedAsync(userName);
+            return userService.IsUserNameUsedAsync(userName).ContinueWith(x => !x.Result);
         }
 
         [HttpPost("register")]
-        public IActionResult Register(RegisterModel register)
+        public async Task<IActionResult> RegisterAsync(RegisterModel register)
         {
-            userServ.RegisterAsync(register.UserName, register.Email, register.Password);
+            await userService.RegisterAsync(register.UserName, register.Email, register.Password);
+
             return Ok();
         }
 
         [Authorize]
         [HttpDelete("{userId}")]
-        public IActionResult Delete(int userId)
+        public async Task<IActionResult> DeleteAsync(int userId)
         {
-            userServ.DeleteAsync(userId, User.GetId());
+            await userService.DeleteAsync(userId, User.GetId());
+
             return Ok();
         }
 
         [Authorize]
         [HttpPut("{userId}/banned/{banned}")]
-        public IActionResult SetBanned(int userId, bool banned)
+        public async Task<IActionResult> SetBannedAsync(int userId, bool banned)
         {
-            userServ.SetBannedAsync(userId, banned, User.GetId());
+            await userService.SetBannedAsync(userId, banned, User.GetId());
+
             return Ok();
         }
 
         [Authorize]
         [HttpPut("{userId}/roles")]
-        public IActionResult SetRole(int userId, UserRoleSetModel model)
+        public async Task<IActionResult> SetRoleAsync(int userId, UserRoleSetModel model)
         {
-            userServ.SetRoleAsync(userId, model.RoleName, model.SetHasRole, User.GetId());
+            await userService.SetRoleAsync(userId, model.RoleName, model.SetHasRole, User.GetId());
+
             return Ok();
         }
 
         [HttpPost("signIn")]
-        public IActionResult SignIn(SignInModel model)
+        public async Task<IActionResult> SignInAsync(SignInModel model)
         {
-            userServ.SignInAsync(model.UserName, model.Password, model.Remember);
+            await userService.SignInAsync(model.UserName, model.Password, model.Remember);
+
             return Ok();
         }
 
         [Authorize]
         [HttpPost("signOut")]
-        public new IActionResult SignOut()
+        public async Task<IActionResult> SignOutAsync()
         {
-            userServ.SignOutAsync();
+            await userService.SignOutAsync();
+
             return Ok();
         }
 
         [Authorize]
         [HttpGet("current")]
-        public UserViewModel GetCurrentUser()
+        public async Task<UserViewModel> GetCurrentUserAsync()
         {
-            return new(userServ.GetAsync(User.GetId()));
+            var userDto = await userService.GetAsync(User.GetId());
+
+            var userViewModel = new UserViewModel(userDto);
+
+            return userViewModel;
         }
     }
 }

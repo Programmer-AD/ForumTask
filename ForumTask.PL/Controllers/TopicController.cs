@@ -1,65 +1,69 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ForumTask.BLL.Interfaces;
+﻿using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
-using ForumTask.PL.Filters;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumTask.PL.Controllers
 {
-    [Route("api/topic")]
-    [ApiController]
-    [ModelValidFilter]
-    [BllExceptionFilter]
+    [Route("api/topic"), ApiController]
     public class TopicController : ControllerBase
     {
-        private readonly ITopicService topicServ;
+        private readonly ITopicService topicService;
 
         public TopicController(ITopicService topicService)
         {
-            topicServ = topicService;
+            this.topicService = topicService;
         }
 
         [HttpGet("{topicId}")]
-        public TopicViewModel Get(long topicId)
+        public async Task<TopicViewModel> GetAsync(long topicId)
         {
-            return new(topicServ.GetAsync(topicId));
+            var topicDto = await topicService.GetAsync(topicId);
+
+            var topicViewModel = new TopicViewModel(topicDto);
+
+            return topicViewModel;
         }
 
         [HttpGet("pageCount")]
-        public int GetPageCount()
+        public Task<int> GetPageCountAsync()
         {
-            return topicServ.GetPagesCountAsync();
+            return topicService.GetPagesCountAsync();
         }
 
         [HttpGet]
-        public IEnumerable<TopicViewModel> GetTopNew(int page, string searchTitle = "")
+        public async Task<IEnumerable<TopicViewModel>> GetTopNewAsync(int page, string searchTitle = "")
         {
-            return topicServ.GetTopNewAsync(page, searchTitle).Select(dto => new TopicViewModel(dto));
+            var topicDtos = await topicService.GetTopNewAsync(page, searchTitle);
+
+            var topicViewModels = topicDtos.Select(dto => new TopicViewModel(dto));
+
+            return topicViewModels;
         }
 
         [Authorize]
         [HttpPost]
-        public long Create(TopicCreateModel model)
+        public Task<long> CreateAsync(TopicCreateModel model)
         {
-            return topicServ.CreateAsync(model.Title, model.Message, User.GetId());
+            return topicService.CreateAsync(model.Title, model.Message, User.GetId());
         }
 
         [Authorize]
         [HttpPut("{topicId}")]
-        public IActionResult Rename(long topicId, TopicRenameModel rename)
+        public async Task<IActionResult> RenameAsync(long topicId, TopicRenameModel rename)
         {
-            topicServ.RenameAsync(topicId, rename.NewTitle, User.GetId());
+            await topicService.RenameAsync(topicId, rename.NewTitle, User.GetId());
+
             return Ok();
         }
 
         [Authorize]
         [HttpDelete("{topicId}")]
-        public IActionResult Delete(long topicId)
+        public async Task<IActionResult> DeleteAsync(long topicId)
         {
-            topicServ.DeleteAsync(topicId, User.GetId());
+            await topicService.DeleteAsync(topicId, User.GetId());
+
             return Ok();
         }
     }
