@@ -1,29 +1,102 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
+using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
 
 namespace ForumTask.BLL.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly IUnitOfWork uow;
-        private readonly IUserService userServ;
-        private readonly IMarkService markServ;
+        private readonly IRepository<Message> messageRepository;
+        private readonly IRepository<Topic> topicRepository;
+        private readonly IRepository<Mark> markRepository;
+        private readonly IUserService userService;
 
-        public MessageService(IUnitOfWork uow, IUserService user, IMarkService mark)
+        public MessageService(
+            IRepository<Message> messageRepository,
+            IRepository<Topic> topicRepository,
+            IRepository<Mark> markRepository,
+            IUserService userService)
         {
-            this.uow = uow;
-            userServ = user;
-            markServ = mark;
+            this.messageRepository = messageRepository;
+            this.topicRepository = topicRepository;
+            this.markRepository = markRepository;
+            this.userService = userService;
         }
 
-        private void CheckEditAccess(DateTime writeTime, int? authorId, int callerId, bool canEditOtherUser)
+        public async Task AddAsync(MessageDTO message)
         {
-            var user = userServ.Get(callerId);
+            var user = await userService.GetAsync(message.AuthorId.Value);
+            if (user.IsBanned)
+            {
+                throw new AccessDeniedException("Caller is banned");
+            }
+
+            var topic = await topicRepository.GetAsync(x => x.Id == message.TopicId) ?? throw new NotFoundException();
+
+            message.WriteTime = DateTime.UtcNow;
+            await messageRepository.CreateAsync(message.ToEntity());
+        }
+
+        public async Task DeleteAsync(long messageId, long callerId)
+        {
+            var message = await GetMessageById(messageId);
+
+            await CheckEditAccessAsync(message.WriteTime, message.AuthorId, callerId, true);
+
+            await messageRepository.DeleteAsync(message);
+        }
+
+        public async Task EditAsync(long messageId, string newText, long callerId)
+        {
+            var message = await GetMessageById(messageId);
+
+            await CheckEditAccessAsync(message.WriteTime, message.AuthorId, callerId, true);
+
+            message.Text = newText;
+            await messageRepository.UpdateAsync(message);
+        }
+
+        public async Task<IEnumerable<MessageDTO>> GetTopOldAsync(long topicId, int page)
+        {
+            var messages = await messageRepository.GetAllAsync(
+                predicate: x => x.TopicId == topicId,
+                orderFunc: x => x.OrderBy(x => x.WriteTime),
+                skipCount: IMessageService.PageSize * page,
+                takeCount: IMessageService.PageSize);
+
+            var messageDtos = messages.Select(x => new MessageDTO(x)).ToArray();
+
+            foreach (var messageDto in messageDtos)
+            {
+                messageDto.PositiveCount = await GetCountOfMarksAsync(messageDto.Id, MarkType.Positive);
+                messageDto.NegativeCount = await GetCountOfMarksAsync(messageDto.Id, MarkType.Negative);
+            }
+
+            return messageDtos;
+        }
+
+        public async Task<int> GetPagesCountAsync(long topicId)
+        {
+            var count = await messageRepository.CountAsync(x => x.TopicId == topicId);
+
+            var result = count == 0 ? 0 : (int)(count / IMessageService.PageSize + 1);
+
+            return result;
+        }
+
+        private async Task<Message> GetMessageById(long messageId)
+        {
+            var message = await messageRepository.GetAsync(x => x.Id == messageId) ?? throw new NotFoundException();
+
+            return message;
+        }
+
+        private async Task CheckEditAccessAsync(DateTime writeTime, long? authorId, long callerId, bool canEditOtherUser)
+        {
+            var user = await userService.GetAsync(callerId);
+
             if (user.IsBanned)
             {
                 throw new AccessDeniedException("Caller is banned");
@@ -42,75 +115,18 @@ namespace ForumTask.BLL.Services
 
             if (authorId.HasValue && authorId.Value != callerId)
             {
-                var cru = userServ.Get(authorId.Value);
-                if (cru.MaxRole >= user.MaxRole)
+                var author = await userService.GetAsync(authorId.Value);
+
+                if (author.MaxRole >= user.MaxRole)
                 {
                     throw new AccessDeniedException("Can`t edit/delete message of user with same or bigger role");
                 }
             }
         }
 
-        public void Add(MessageDTO message)
+        private Task<long> GetCountOfMarksAsync(long messageId, MarkType markType)
         {
-            var user = userServ.Get(message.AuthorId.Value);
-            if (user.IsBanned)
-            {
-                throw new AccessDeniedException("Caller is banned");
-            }
-
-            if (uow.Topics.Get(message.TopicId) is null)
-            {
-                throw new NotFoundException();
-            }
-
-            message.WriteTime = DateTime.UtcNow;
-            uow.Messages.Create(message.ToEntity());
-            uow.SaveChanges();
-        }
-
-        public void Delete(long messageId, int userId)
-        {
-            var msg = uow.Messages.Get(messageId) ?? throw new NotFoundException();
-            CheckEditAccess(msg.WriteTime, msg.AuthorId, userId, true);
-            uow.Messages.Delete(msg);
-            uow.SaveChanges();
-        }
-
-        public void Edit(long messageId, string newText, int userId)
-        {
-            var msg = uow.Messages.Get(messageId) ?? throw new NotFoundException();
-            CheckEditAccess(msg.WriteTime, msg.AuthorId, userId, false);
-            msg.Text = newText;
-            uow.Messages.Update(msg);
-            uow.SaveChanges();
-        }
-
-        public int GetMessageCount(long topicId)
-        {
-            return uow.Messages.GetMessageCount(topicId);
-        }
-
-        public IEnumerable<MessageDTO> GetTopOld(long topicId, int page)
-        {
-            return uow.Messages.GetTopOld(topicId, IMessageService.PageSize, IMessageService.PageSize * page)
-                    .ToList().Select(m => new MessageDTO(m)
-                    {
-                        PositiveCount = markServ.GetCountOfType(m.Id, 1),
-                        NegativeCount = markServ.GetCountOfType(m.Id, -1)
-                    });
-        }
-
-        void IMessageService.Add(MessageDTO message, DAL.Entities.Topic topic)
-        {
-            var ent = message.ToEntity();
-            ent.Topic = topic;
-            uow.Messages.Create(ent);
-        }
-
-        public int GetPagesCount(long topicId)
-        {
-            int cnt = uow.Messages.GetMessageCount(topicId);
-            return cnt == 0 ? 0 : (cnt / IMessageService.PageSize + 1);
+            return markRepository.CountAsync(x => x.MessageId == messageId && x.Type == markType);
         }
     }
 }

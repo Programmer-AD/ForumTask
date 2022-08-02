@@ -9,20 +9,20 @@ namespace ForumTask.BLL.Services
     public class TopicService : ITopicService
     {
         private readonly IRepository<Topic> topicRepository;
-        private readonly IMessageService messageService;
+        private readonly IRepository<Message> messageRepository;
         private readonly IUserService userService;
 
         public TopicService(
             IRepository<Topic> topicRepository,
-            IMessageService messageService,
+            IRepository<Message> messageRepository,
             IUserService userService)
         {
             this.topicRepository = topicRepository;
-            this.messageService = messageService;
+            this.messageRepository = messageRepository;
             this.userService = userService;
         }
 
-        public async Task<long> CreateAsync(string title, string message, long callerId)
+        public async Task<long> CreateAsync(string title, string messageText, long callerId)
         {
             var caller = await userService.GetAsync(callerId);
 
@@ -40,14 +40,17 @@ namespace ForumTask.BLL.Services
 
             await topicRepository.CreateAsync(topic);
 
-            if (!string.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(messageText))
             {
-                await messageService.AddAsync(new()
+                var message = new Message()
                 {
                     AuthorId = callerId,
-                    Text = message,
+                    Text = messageText,
                     WriteTime = DateTime.UtcNow,
-                }, topic);
+                    Topic = topic
+                };
+
+                await messageRepository.CreateAsync(message);
             }
 
             return topic.Id;
@@ -55,9 +58,9 @@ namespace ForumTask.BLL.Services
 
         public async Task<TopicDTO> GetAsync(long id)
         {
-            var topic = await GetTopicById(id) ?? throw new NotFoundException();
+            var topic = await GetTopicByIdAsync(id);
 
-            var messageCount = await messageService.GetMessageCountAsync(id);
+            var messageCount = await GetMessageCountAsync(id);
             var topicDto = new TopicDTO(topic) { MessageCount = messageCount };
 
             return topicDto;
@@ -84,7 +87,7 @@ namespace ForumTask.BLL.Services
 
             foreach (var topicDto in topicDtos)
             {
-                topicDto.MessageCount = await messageService.GetMessageCountAsync(topicDto.Id);
+                topicDto.MessageCount = await GetMessageCountAsync(topicDto.Id);
             }
 
             return topicDtos;
@@ -92,7 +95,7 @@ namespace ForumTask.BLL.Services
 
         public async Task RenameAsync(long topicId, string newTitle, long callerId)
         {
-            var topic = await GetTopicById(topicId) ?? throw new NotFoundException();
+            var topic = await GetTopicByIdAsync(topicId);
 
             await CheckEditAccessAsync(topic.CreateTime, topic.CreatorId, callerId, false);
 
@@ -102,16 +105,23 @@ namespace ForumTask.BLL.Services
 
         public async Task DeleteAsync(long topicId, long callerId)
         {
-            var topic = await GetTopicById(topicId) ?? throw new NotFoundException();
+            var topic = await GetTopicByIdAsync(topicId);
 
             await CheckEditAccessAsync(topic.CreateTime, topic.CreatorId, callerId, true);
 
             await topicRepository.DeleteAsync(topic);
         }
 
-        private Task<Topic> GetTopicById(long topicId)
+        private async Task<Topic> GetTopicByIdAsync(long topicId)
         {
-            return topicRepository.GetAsync(x => x.Id == topicId);
+            var topic = await topicRepository.GetAsync(x => x.Id == topicId) ?? throw new NotFoundException();
+
+            return topic;
+        }
+
+        private Task<long> GetMessageCountAsync(long topicId)
+        {
+            return messageRepository.CountAsync(x => x.TopicId == topicId);
         }
 
         private async Task CheckEditAccessAsync(DateTime createTime, long? creatorId, long callerId, bool canEditOtherUser)

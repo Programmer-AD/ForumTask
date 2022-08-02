@@ -20,16 +20,5 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="messageId">Message from which mark to get</param>
         /// <returns>Value of mark or 0 if don`t exist</returns>
         Task GetOwnAsync(long userId, long messageId);
-
-        /// <summary>
-        /// Gets total mark of message with <paramref name="messageId"/>
-        /// <para>
-        /// If there is no message with such id or type than 0 is returned
-        /// </para>
-        /// </summary>
-        /// <param name="messageId">Id of message</param>
-        /// <param name="type">Type of mark</param>
-        /// <returns>Count of marks of type in message</returns>
-        Task GetCountOfTypeAsync(long messageId, sbyte type);
     }
 }
