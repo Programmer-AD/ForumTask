@@ -112,7 +112,7 @@ namespace ForumTask.BLL.Services
 
         public async Task SignInAsync(string userName, string password, bool remember)
         {
-            var signedIn = await signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
+            bool signedIn = await signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
 
             if (!signedIn)
             {

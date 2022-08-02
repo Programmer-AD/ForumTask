@@ -24,7 +24,7 @@ namespace ForumTask.DAL.DependencyInjection
 
         private static Action<DbContextOptionsBuilder> GetDbContextConfigurator(IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DbConnection");
+            string connectionString = config.GetConnectionString("DbConnection");
 
             return options => options.UseSqlServer(connectionString);
         }

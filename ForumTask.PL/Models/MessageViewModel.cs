@@ -1,5 +1,4 @@
-﻿using System;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 
 namespace ForumTask.PL.Models
 {

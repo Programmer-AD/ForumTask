@@ -79,9 +79,9 @@ namespace ForumTask.BLL.Services
 
         public async Task<int> GetPagesCountAsync(long topicId)
         {
-            var count = await messageRepository.CountAsync(x => x.TopicId == topicId);
+            long count = await messageRepository.CountAsync(x => x.TopicId == topicId);
 
-            var result = count == 0 ? 0 : (int)(count / IMessageService.PageSize + 1);
+            int result = count == 0 ? 0 : (int)(count / IMessageService.PageSize + 1);
 
             return result;
         }

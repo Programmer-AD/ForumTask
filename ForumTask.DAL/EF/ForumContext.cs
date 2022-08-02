@@ -44,7 +44,7 @@ namespace ForumTask.DAL.EF
 
         private static void SeedRoles(ModelBuilder builder)
         {
-            var roleNames = new[] { RoleNames.User, RoleNames.Moderator, RoleNames.Admin };
+            string[] roleNames = new[] { RoleNames.User, RoleNames.Moderator, RoleNames.Admin };
             var roles = roleNames.Select((roleName, i) => CreateRole(i + 1, roleName));
 
             builder.Entity<IdentityRole<long>>().HasData(roles);

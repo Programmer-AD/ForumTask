@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 
 namespace ForumTask.BLL.Interfaces

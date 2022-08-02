@@ -60,7 +60,7 @@ namespace ForumTask.BLL.Services
         {
             var topic = await GetTopicByIdAsync(id);
 
-            var messageCount = await GetMessageCountAsync(id);
+            long messageCount = await GetMessageCountAsync(id);
             var topicDto = new TopicDto(topic) { MessageCount = messageCount };
 
             return topicDto;
@@ -68,9 +68,9 @@ namespace ForumTask.BLL.Services
 
         public async Task<int> GetPagesCountAsync()
         {
-            var count = await topicRepository.CountAsync();
+            long count = await topicRepository.CountAsync();
 
-            var result = count == 0 ? 0 : (int)(count / ITopicService.PageSize + 1); ;
+            int result = count == 0 ? 0 : (int)(count / ITopicService.PageSize + 1); ;
 
             return result;
         }
