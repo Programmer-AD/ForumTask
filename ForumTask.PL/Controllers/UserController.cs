@@ -19,7 +19,7 @@ namespace ForumTask.PL.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<UserViewModel> GetAsync(int userId)
+        public async Task<UserViewModel> GetAsync(long userId)
         {
             var userDto = await userService.GetAsync(userId);
 
@@ -50,7 +50,7 @@ namespace ForumTask.PL.Controllers
 
         [Authorize]
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteAsync(int userId)
+        public async Task<IActionResult> DeleteAsync(long userId)
         {
             await userService.DeleteAsync(userId, User.GetId());
 
@@ -59,7 +59,7 @@ namespace ForumTask.PL.Controllers
 
         [Authorize]
         [HttpPut("{userId}/banned/{banned}")]
-        public async Task<IActionResult> SetBannedAsync(int userId, bool banned)
+        public async Task<IActionResult> SetBannedAsync(long userId, bool banned)
         {
             await userService.SetBannedAsync(userId, banned, User.GetId());
 
@@ -68,7 +68,7 @@ namespace ForumTask.PL.Controllers
 
         [Authorize]
         [HttpPut("{userId}/roles")]
-        public async Task<IActionResult> SetRoleAsync(int userId, UserRoleSetModel model)
+        public async Task<IActionResult> SetRoleAsync(long userId, UserRoleSetModel model)
         {
             await userService.SetRoleAsync(userId, model.RoleName, model.SetHasRole, User.GetId());
 
