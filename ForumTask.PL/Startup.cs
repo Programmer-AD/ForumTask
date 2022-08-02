@@ -1,13 +1,8 @@
-using System.Threading.Tasks;
 using ForumTask.BLL.DependencyInjection;
 using ForumTask.DAL.DependencyInjection;
 using ForumTask.DAL.EF;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using ForumTask.PL.Filters;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace ForumTask.PL
 {
@@ -25,8 +20,12 @@ namespace ForumTask.PL
             services.AddDal(config);
             services.AddBll(config);
 
-            services.AddSpaStaticFiles(conf => conf.RootPath = "wwwroot");
-            services.AddControllers();
+            services.AddSpaStaticFiles(config => config.RootPath = "wwwroot");
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<ExceptionHandlerFilterAttribute>();
+                options.Filters.Add<ChangeSaverFilterAttribute>();
+            });
 
             services.ConfigureApplicationCookie(opt =>
             {

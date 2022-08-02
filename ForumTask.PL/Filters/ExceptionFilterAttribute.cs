@@ -1,20 +1,20 @@
-﻿using System;
-using ForumTask.BLL.Exceptions;
+﻿using ForumTask.BLL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ForumTask.PL.Filters
 {
     /// <summary>
-    /// Handles exception of BLL services and sets specific status codes and results
+    /// Handles exceptions and sets specific status codes and results
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-    public class BllExceptionFilter : Attribute, IExceptionFilter
+    public class ExceptionHandlerFilterAttribute : Attribute, IAsyncExceptionFilter
     {
-        public void OnException(ExceptionContext context)
+        public Task OnExceptionAsync(ExceptionContext context)
         {
             short statusCode = 500;
             object result = null;
+
             switch (context.Exception)
             {
                 case AccessDeniedException e:
@@ -30,8 +30,11 @@ namespace ForumTask.PL.Filters
                     result = new { e.PasswordTooShort, e.DuplicateUserName, e.DuplicateEmail };
                     break;
             }
+
             context.ExceptionHandled = true;
             context.Result = new ObjectResult(result) { StatusCode = statusCode };
+
+            return Task.CompletedTask;
         }
     }
 }
