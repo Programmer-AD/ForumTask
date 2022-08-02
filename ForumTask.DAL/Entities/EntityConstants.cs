@@ -15,7 +15,5 @@
 
         public const int User_Password_MinLength = 6;
         public const int User_Password_MaxLength = 32;
-
-
     }
 }

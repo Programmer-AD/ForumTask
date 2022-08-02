@@ -35,6 +35,7 @@ namespace ForumTask.DAL.DependencyInjection
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireUppercase = false;
             options.Password.RequireLowercase = false;
+            options.Password.RequiredLength = EntityConstants.User_Password_MinLength;
 
             options.User.RequireUniqueEmail = true;
         }
