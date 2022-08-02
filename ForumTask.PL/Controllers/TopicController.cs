@@ -25,33 +25,33 @@ namespace ForumTask.PL.Controllers
         [HttpGet("{topicId}")]
         public TopicViewModel Get(long topicId)
         {
-            return new(topicServ.Get(topicId));
+            return new(topicServ.GetAsync(topicId));
         }
 
         [HttpGet("pageCount")]
         public int GetPageCount()
         {
-            return topicServ.GetPagesCount();
+            return topicServ.GetPagesCountAsync();
         }
 
         [HttpGet]
         public IEnumerable<TopicViewModel> GetTopNew(int page, string searchTitle = "")
         {
-            return topicServ.GetTopNew(page, searchTitle).Select(dto => new TopicViewModel(dto));
+            return topicServ.GetTopNewAsync(page, searchTitle).Select(dto => new TopicViewModel(dto));
         }
 
         [Authorize]
         [HttpPost]
         public long Create(TopicCreateModel model)
         {
-            return topicServ.Create(model.Title, model.Message, User.GetId());
+            return topicServ.CreateAsync(model.Title, model.Message, User.GetId());
         }
 
         [Authorize]
         [HttpPut("{topicId}")]
         public IActionResult Rename(long topicId, TopicRenameModel rename)
         {
-            topicServ.Rename(topicId, rename.NewTitle, User.GetId());
+            topicServ.RenameAsync(topicId, rename.NewTitle, User.GetId());
             return Ok();
         }
 
@@ -59,7 +59,7 @@ namespace ForumTask.PL.Controllers
         [HttpDelete("{topicId}")]
         public IActionResult Delete(long topicId)
         {
-            topicServ.Delete(topicId, User.GetId());
+            topicServ.DeleteAsync(topicId, User.GetId());
             return Ok();
         }
     }

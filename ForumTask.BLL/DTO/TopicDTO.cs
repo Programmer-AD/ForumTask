@@ -1,12 +1,11 @@
-﻿using System;
-using ForumTask.DAL.Entities;
+﻿using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.DTO
 {
-    public class TopicDTO
+    public class TopicDto
     {
-        public TopicDTO() { }
-        public TopicDTO(Topic topic)
+        public TopicDto() { }
+        public TopicDto(Topic topic)
         {
             Id = topic.Id;
             Title = topic.Title;

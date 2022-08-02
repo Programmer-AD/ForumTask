@@ -56,12 +56,12 @@ namespace ForumTask.BLL.Services
             return topic.Id;
         }
 
-        public async Task<TopicDTO> GetAsync(long id)
+        public async Task<TopicDto> GetAsync(long id)
         {
             var topic = await GetTopicByIdAsync(id);
 
             var messageCount = await GetMessageCountAsync(id);
-            var topicDto = new TopicDTO(topic) { MessageCount = messageCount };
+            var topicDto = new TopicDto(topic) { MessageCount = messageCount };
 
             return topicDto;
         }
@@ -75,7 +75,7 @@ namespace ForumTask.BLL.Services
             return result;
         }
 
-        public async Task<IEnumerable<TopicDTO>> GetTopNewAsync(int page, string searchTitle = "")
+        public async Task<IEnumerable<TopicDto>> GetTopNewAsync(int page, string searchTitle = "")
         {
             var topics = await topicRepository.GetAllAsync(
                 predicate: x => x.Title.Contains(searchTitle),
@@ -83,7 +83,7 @@ namespace ForumTask.BLL.Services
                 skipCount: page * ITopicService.PageSize,
                 takeCount: ITopicService.PageSize);
 
-            var topicDtos = topics.Select(x => new TopicDTO(x)).ToArray();
+            var topicDtos = topics.Select(x => new TopicDto(x)).ToArray();
 
             foreach (var topicDto in topicDtos)
             {

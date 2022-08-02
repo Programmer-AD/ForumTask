@@ -122,7 +122,7 @@ namespace ForumTask.Tests.BllTests
 
             serv.Delete(mesId, uid);
 
-            Assert.IsNull(uow.Messages.Get(mesId));
+            Assert.IsNull(uow.Messages.GetAsync(mesId));
         }
         [Test]
         public void MessageService_Delete_ThrowAccessDenniedWhenTimeLimitExceed()
@@ -163,7 +163,7 @@ namespace ForumTask.Tests.BllTests
 
             serv.Delete(mesId, uid);
 
-            Assert.IsNull(uow.Messages.Get(mesId));
+            Assert.IsNull(uow.Messages.GetAsync(mesId));
         }
         [Test]
         public void MessageService_Delete_ModeratorCanDeleteOwnWhenTimeLimitExceed()
@@ -175,7 +175,7 @@ namespace ForumTask.Tests.BllTests
 
             serv.Delete(mesId, uid);
 
-            Assert.IsNull(uow.Messages.Get(mesId));
+            Assert.IsNull(uow.Messages.GetAsync(mesId));
         }
         [Test]
         public void MessageService_Delete_ModeratorCanDeleteMessageOfDeletedUsers()
@@ -187,7 +187,7 @@ namespace ForumTask.Tests.BllTests
 
             serv.Delete(mesId, uid);
 
-            Assert.IsNull(uow.Messages.Get(mesId));
+            Assert.IsNull(uow.Messages.GetAsync(mesId));
         }
         [TestCase(4, 4)]
         [TestCase(5, 3)]
@@ -207,7 +207,7 @@ namespace ForumTask.Tests.BllTests
 
             serv.Delete(mesId, uid);
 
-            Assert.IsNull(uow.Messages.Get(mesId));
+            Assert.IsNull(uow.Messages.GetAsync(mesId));
         }
         [Test]
         public void MessageService_Delete_ThrowNotFoundWhenTryDeleteNotExist([Range(1, 5)] int uid)

@@ -80,10 +80,10 @@ namespace ForumTask.Tests.Fakes.Repositories
 
         public void Delete(params object[] key)
         {
-            Delete(Get(key));
+            DeleteAsync(GetAsync(key));
         }
 
-        public void Delete(T ent)
+        public void DeleteAsync(T ent)
         {
             if (ent is null || !Contains(ent))
             {
@@ -93,7 +93,7 @@ namespace ForumTask.Tests.Fakes.Repositories
             data.Remove(ent);
         }
 
-        public T Get(params object[] key)
+        public T GetAsync(params object[] key)
         {
             CheckKey(key);
             return data.Find(ent => IsKeyOfObjectPredicate(key, ent));

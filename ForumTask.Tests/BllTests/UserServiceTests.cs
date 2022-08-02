@@ -55,7 +55,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 3;
 
-            serv.SetRole(uid, "Moderator", true, cid);
+            serv.SetRoleAsync(uid, "Moderator", true, cid);
 
             Assert.AreEqual(2, man.GetRoles(new() { Id = uid }).Count);
         }
@@ -66,7 +66,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 2, cid = 3;
 
-            serv.SetRole(uid, "Moderator", false, cid);
+            serv.SetRoleAsync(uid, "Moderator", false, cid);
 
             Assert.AreEqual(1, man.GetRoles(new() { Id = uid }).Count);
         }
@@ -77,7 +77,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 2, cid = 3;
 
-            serv.SetRole(uid, "Moderator", true, cid);
+            serv.SetRoleAsync(uid, "Moderator", true, cid);
 
             Assert.AreEqual(2, man.GetRoles(new() { Id = uid }).Count);
         }
@@ -88,7 +88,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 3;
 
-            serv.SetRole(uid, "Moderator", false, cid);
+            serv.SetRoleAsync(uid, "Moderator", false, cid);
 
             Assert.AreEqual(1, man.GetRoles(new() { Id = uid }).Count);
         }
@@ -99,7 +99,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 3;
 
-            Assert.Throws<InvalidOperationException>(() => serv.SetRole(uid, "User", true, cid));
+            Assert.Throws<InvalidOperationException>(() => serv.SetRoleAsync(uid, "User", true, cid));
         }
         [Test]
         public void UserService_SetRole_ThrowInvalidOperationWhenTryToDettachRoleUser()
@@ -108,7 +108,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 3;
 
-            Assert.Throws<InvalidOperationException>(() => serv.SetRole(uid, "User", false, cid));
+            Assert.Throws<InvalidOperationException>(() => serv.SetRoleAsync(uid, "User", false, cid));
         }
         [Test]
         public void UserService_SetRole_ThrowNotFoundWhenUserNotFound()
@@ -117,7 +117,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 100, cid = 3;
 
-            Assert.Throws<NotFoundException>(() => serv.SetRole(uid, "Moderator", true, cid));
+            Assert.Throws<NotFoundException>(() => serv.SetRoleAsync(uid, "Moderator", true, cid));
         }
         [Test]
         public void UserService_SetRole_ThrowAccessDeniedWhenCallerModerator()
@@ -126,7 +126,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 2;
 
-            Assert.Throws<AccessDeniedException>(() => serv.SetRole(uid, "Moderator", true, cid));
+            Assert.Throws<AccessDeniedException>(() => serv.SetRoleAsync(uid, "Moderator", true, cid));
         }
         [Test]
         public void UserService_SetRole_ThrowAccessDeniedWhenCallerUser()
@@ -135,7 +135,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 1;
 
-            Assert.Throws<AccessDeniedException>(() => serv.SetRole(uid, "Moderator", true, cid));
+            Assert.Throws<AccessDeniedException>(() => serv.SetRoleAsync(uid, "Moderator", true, cid));
         }
         [Test]
         public void UserService_SetRole_ThrowAccessDeniedWhenTryToSetGreatterOrOwnRole()
@@ -144,7 +144,7 @@ namespace ForumTask.Tests.BllTests
             var serv = GetService(man);
             int uid = 1, cid = 3;
 
-            Assert.Throws<AccessDeniedException>(() => serv.SetRole(uid, "Admin", true, cid));
+            Assert.Throws<AccessDeniedException>(() => serv.SetRoleAsync(uid, "Admin", true, cid));
         }
         #endregion
     }

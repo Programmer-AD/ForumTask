@@ -6,7 +6,7 @@ namespace ForumTask.PL.Models
     public class MessageViewModel
     {
         public MessageViewModel() { }
-        public MessageViewModel(MessageDTO dto)
+        public MessageViewModel(MessageDto dto)
         {
             Id = dto.Id;
             Text = dto.Text;

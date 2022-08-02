@@ -2,10 +2,10 @@
 
 namespace ForumTask.BLL.DTO
 {
-    public class MessageDTO
+    public class MessageDto
     {
-        public MessageDTO() { }
-        public MessageDTO(Message msg)
+        public MessageDto() { }
+        public MessageDto(Message msg)
         {
             Id = msg.Id;
             Text = msg.Text;

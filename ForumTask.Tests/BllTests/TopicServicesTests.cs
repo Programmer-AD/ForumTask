@@ -54,10 +54,10 @@ namespace ForumTask.Tests.BllTests
             var uow = new FakeUnitOfWork();
             var serv = GetService(uow);
 
-            long id = serv.Create("Title", "Message", 1);
+            long id = serv.CreateAsync("Title", "Message", 1);
 
-            Assert.IsNotNull(uow.Topics.Get(1L));
-            Assert.IsNotNull(uow.Messages.Get(1L));
+            Assert.IsNotNull(uow.Topics.GetAsync(1L));
+            Assert.IsNotNull(uow.Messages.GetAsync(1L));
         }
         [Test]
         public void TopicService_Create_TopicWithoutMessageCreatesWhenMessageIsNull()
@@ -65,10 +65,10 @@ namespace ForumTask.Tests.BllTests
             var uow = new FakeUnitOfWork();
             var serv = GetService(uow);
 
-            long id = serv.Create("Title", null, 1);
+            long id = serv.CreateAsync("Title", null, 1);
 
-            Assert.IsNotNull(uow.Topics.Get(1L));
-            Assert.IsNull(uow.Messages.Get(1L));
+            Assert.IsNotNull(uow.Topics.GetAsync(1L));
+            Assert.IsNull(uow.Messages.GetAsync(1L));
         }
         [Test]
         public void TopicService_Create_TopicWithoutMessageCreatesWhenMessageIsEmpty()
@@ -76,10 +76,10 @@ namespace ForumTask.Tests.BllTests
             var uow = new FakeUnitOfWork();
             var serv = GetService(uow);
 
-            long id = serv.Create("Title", "", 1);
+            long id = serv.CreateAsync("Title", "", 1);
 
-            Assert.IsNotNull(uow.Topics.Get(1L));
-            Assert.IsNull(uow.Messages.Get(1L));
+            Assert.IsNotNull(uow.Topics.GetAsync(1L));
+            Assert.IsNull(uow.Messages.GetAsync(1L));
         }
         [Test]
         public void TopicService_Create_ThrowAccessDeniedIfUserBanned()
@@ -87,7 +87,7 @@ namespace ForumTask.Tests.BllTests
             var uow = new FakeUnitOfWork();
             var serv = GetService(uow);
 
-            Assert.Throws<AccessDeniedException>(() => serv.Create("Title", "Message", 2));
+            Assert.Throws<AccessDeniedException>(() => serv.CreateAsync("Title", "Message", 2));
         }
         #endregion
     }

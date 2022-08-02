@@ -84,7 +84,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="id">Id of topic to get</param>
         /// <returns>Topic with id</returns>
         /// <exception cref="NotFoundException"/>
-        Task<TopicDTO> GetAsync(long id);
+        Task<TopicDto> GetAsync(long id);
 
         /// <summary>
         /// Gets {<see cref="PageSize"/>} top new topics
@@ -95,7 +95,7 @@ namespace ForumTask.BLL.Interfaces
         /// </summary>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of topics</returns>
-        Task<IEnumerable<TopicDTO>> GetTopNewAsync(int page, string searchTitle = "");
+        Task<IEnumerable<TopicDto>> GetTopNewAsync(int page, string searchTitle = "");
 
         /// <summary>
         /// Gets count of pages to show all topics

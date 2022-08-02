@@ -1,12 +1,11 @@
-﻿using System;
-using ForumTask.DAL.Entities;
+﻿using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.DTO
 {
-    public class MarkDTO
+    public class MarkDto
     {
-        public MarkDTO() { }
-        public MarkDTO(Mark mark)
+        public MarkDto() { }
+        public MarkDto(Mark mark)
         {
             UserId = mark.UserId;
             MessageId = mark.MessageId;
@@ -22,7 +21,7 @@ namespace ForumTask.BLL.DTO
             };
         }
 
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public long MessageId { get; set; }
         public sbyte Value { get; set; }
     }

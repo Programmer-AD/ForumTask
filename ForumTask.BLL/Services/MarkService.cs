@@ -21,7 +21,7 @@ namespace ForumTask.BLL.Services
             return ((sbyte?)mark?.Type) ?? 0;
         }
 
-        public async Task SetAsync(MarkDTO markDto)
+        public async Task SetAsync(MarkDto markDto)
         {
             var mark = await GetMarkByKeys(markDto.UserId, markDto.UserId);
 

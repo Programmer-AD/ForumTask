@@ -57,7 +57,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId">Id of user to get</param>
         /// <returns>User with id=<paramref name="userId"/></returns>
         /// <exception cref="NotFoundException"/>
-        Task<UserDTO> GetAsync(long userId);
+        Task<UserDto> GetAsync(long userId);
 
         /// <summary>
         /// Attach/detach role to/from user depending on <paramref name="setHasRole"/>

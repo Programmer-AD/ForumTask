@@ -1,12 +1,11 @@
-﻿using System;
-using ForumTask.DAL.Entities;
+﻿using ForumTask.DAL.Entities;
 
 namespace ForumTask.BLL.DTO
 {
-    public class UserDTO
+    public class UserDto
     {
-        public UserDTO() { }
-        public UserDTO(User user)
+        public UserDto() { }
+        public UserDto(User user)
         {
             Id = user.Id;
             UserName = user.UserName;
@@ -26,7 +25,7 @@ namespace ForumTask.BLL.DTO
             };
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public DateTime RegisterDate { get; set; }

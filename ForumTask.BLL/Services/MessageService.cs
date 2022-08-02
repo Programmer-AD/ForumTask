@@ -25,7 +25,7 @@ namespace ForumTask.BLL.Services
             this.userService = userService;
         }
 
-        public async Task AddAsync(MessageDTO message)
+        public async Task AddAsync(MessageDto message)
         {
             var user = await userService.GetAsync(message.AuthorId.Value);
             if (user.IsBanned)
@@ -58,7 +58,7 @@ namespace ForumTask.BLL.Services
             await messageRepository.UpdateAsync(message);
         }
 
-        public async Task<IEnumerable<MessageDTO>> GetTopOldAsync(long topicId, int page)
+        public async Task<IEnumerable<MessageDto>> GetTopOldAsync(long topicId, int page)
         {
             var messages = await messageRepository.GetAllAsync(
                 predicate: x => x.TopicId == topicId,
@@ -66,7 +66,7 @@ namespace ForumTask.BLL.Services
                 skipCount: IMessageService.PageSize * page,
                 takeCount: IMessageService.PageSize);
 
-            var messageDtos = messages.Select(x => new MessageDTO(x)).ToArray();
+            var messageDtos = messages.Select(x => new MessageDto(x)).ToArray();
 
             foreach (var messageDto in messageDtos)
             {

@@ -22,21 +22,21 @@ namespace ForumTask.PL.Controllers
         [HttpGet("{messageId}")]
         public sbyte Get(long messageId)
         {
-            return markServ.GetOwn(User.GetId(), messageId);
+            return markServ.GetOwnAsync(User.GetId(), messageId);
         }
 
         [HttpPost("{messageId}/{value}")]
         [HttpPut("{messageId}/{value}")]
         public IActionResult Set(long messageId, sbyte value)
         {
-            markServ.Set(new() { UserId = User.GetId(), MessageId = messageId, Value = value });
+            markServ.SetAsync(new() { UserId = User.GetId(), MessageId = messageId, Value = value });
             return Ok();
         }
 
         [HttpDelete("{messageId}")]
         public IActionResult Delete(long messageId)
         {
-            markServ.Set(new() { UserId = User.GetId(), MessageId = messageId, Value = 0 });
+            markServ.SetAsync(new() { UserId = User.GetId(), MessageId = messageId, Value = 0 });
             return Ok();
         }
     }

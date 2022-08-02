@@ -31,7 +31,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="message">Message to add</param>
         /// <exception cref="AccessDeniedException"/>
         /// <exception cref="NotFoundException"/>
-        Task AddAsync(MessageDTO message);
+        Task AddAsync(MessageDto message);
 
         /// <summary>
         /// Edits message text
@@ -79,7 +79,7 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="topicId">Id of topic from which get messages</param>
         /// <param name="page">Number of page to get (zero-based)</param>
         /// <returns>Collection of messages</returns>
-        Task<IEnumerable<MessageDTO>> GetTopOldAsync(long topicId, int page);
+        Task<IEnumerable<MessageDto>> GetTopOldAsync(long topicId, int page);
 
         /// <summary>
         /// Gets count of pages to show all messages in topic

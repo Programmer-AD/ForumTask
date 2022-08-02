@@ -6,12 +6,12 @@ namespace ForumTask.BLL.Interfaces
     {
         /// <summary>
         /// <para>
-        /// If <see cref="MarkDTO.Value"/> is 0, then deletes mark,
+        /// If <see cref="MarkDto.Value"/> is 0, then deletes mark,
         /// else creates or updates it
         /// </para>
         /// </summary>
         /// <param name="mark">Mark to set</param>
-        Task SetAsync(MarkDTO mark);
+        Task SetAsync(MarkDto mark);
 
         /// <summary>
         /// Gets value of user mark

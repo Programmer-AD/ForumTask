@@ -24,25 +24,25 @@ namespace ForumTask.PL.Controllers
         [HttpGet("{userId}")]
         public UserViewModel Get(int userId)
         {
-            return new(userServ.Get(userId));
+            return new(userServ.GetAsync(userId));
         }
 
         [HttpGet("canUse/email/{email}")]
         public bool CanUseEmail([Required] string email)
         {
-            return !userServ.IsEmailUsed(email);
+            return !userServ.IsEmailUsedAsync(email);
         }
 
         [HttpGet("canUse/userName/{userName}")]
         public bool CanUseUserName([Required] string userName)
         {
-            return !userServ.IsUserNameUsed(userName);
+            return !userServ.IsUserNameUsedAsync(userName);
         }
 
         [HttpPost("register")]
         public IActionResult Register(RegisterModel register)
         {
-            userServ.Register(register.UserName, register.Email, register.Password);
+            userServ.RegisterAsync(register.UserName, register.Email, register.Password);
             return Ok();
         }
 
@@ -50,7 +50,7 @@ namespace ForumTask.PL.Controllers
         [HttpDelete("{userId}")]
         public IActionResult Delete(int userId)
         {
-            userServ.Delete(userId, User.GetId());
+            userServ.DeleteAsync(userId, User.GetId());
             return Ok();
         }
 
@@ -58,7 +58,7 @@ namespace ForumTask.PL.Controllers
         [HttpPut("{userId}/banned/{banned}")]
         public IActionResult SetBanned(int userId, bool banned)
         {
-            userServ.SetBanned(userId, banned, User.GetId());
+            userServ.SetBannedAsync(userId, banned, User.GetId());
             return Ok();
         }
 
@@ -66,14 +66,14 @@ namespace ForumTask.PL.Controllers
         [HttpPut("{userId}/roles")]
         public IActionResult SetRole(int userId, UserRoleSetModel model)
         {
-            userServ.SetRole(userId, model.RoleName, model.SetHasRole, User.GetId());
+            userServ.SetRoleAsync(userId, model.RoleName, model.SetHasRole, User.GetId());
             return Ok();
         }
 
         [HttpPost("signIn")]
         public IActionResult SignIn(SignInModel model)
         {
-            userServ.SignIn(model.UserName, model.Password, model.Remember);
+            userServ.SignInAsync(model.UserName, model.Password, model.Remember);
             return Ok();
         }
 
@@ -81,7 +81,7 @@ namespace ForumTask.PL.Controllers
         [HttpPost("signOut")]
         public new IActionResult SignOut()
         {
-            userServ.SignOut();
+            userServ.SignOutAsync();
             return Ok();
         }
 
@@ -89,7 +89,7 @@ namespace ForumTask.PL.Controllers
         [HttpGet("current")]
         public UserViewModel GetCurrentUser()
         {
-            return new(userServ.Get(User.GetId()));
+            return new(userServ.GetAsync(User.GetId()));
         }
     }
 }

@@ -60,9 +60,9 @@ namespace ForumTask.Tests.BllTests
             var uow = GetUow();
             var serv = GetService(uow);
 
-            serv.Set(new() { UserId = 1, MessageId = 2, Value = 0 });
+            serv.SetAsync(new() { UserId = 1, MessageId = 2, Value = 0 });
 
-            Assert.IsNull(uow.Marks.Get(1, 2L));
+            Assert.IsNull(uow.Marks.GetAsync(1, 2L));
         }
         [Test]
         public void Mark_Set_DontThrowExceptionIfTryToDeleteNotExisting()
@@ -72,7 +72,7 @@ namespace ForumTask.Tests.BllTests
 
             Assert.DoesNotThrow(() =>
             {
-                serv.Set(new() { UserId = 100, MessageId = 100, Value = 0 });
+                serv.SetAsync(new() { UserId = 100, MessageId = 100, Value = 0 });
             });
         }
         [Test]
@@ -81,9 +81,9 @@ namespace ForumTask.Tests.BllTests
             var uow = GetUow();
             var serv = GetService(uow);
 
-            serv.Set(new() { UserId = 1, MessageId = 2, Value = -1 });
+            serv.SetAsync(new() { UserId = 1, MessageId = 2, Value = -1 });
 
-            Assert.True(uow.Marks.Get(1, 2L).Type == MarkType.Negative);
+            Assert.True(uow.Marks.GetAsync(1, 2L).Type == MarkType.Negative);
         }
         [Test]
         public void Mark_Set_CreateMarkIfValueIsNot0()
@@ -91,9 +91,9 @@ namespace ForumTask.Tests.BllTests
             var uow = GetUow();
             var serv = GetService(uow);
 
-            serv.Set(new() { UserId = 100, MessageId = 100, Value = -1 });
+            serv.SetAsync(new() { UserId = 100, MessageId = 100, Value = -1 });
 
-            Assert.True(uow.Marks.Get(1, 2L).Type == MarkType.Positive);
+            Assert.True(uow.Marks.GetAsync(1, 2L).Type == MarkType.Positive);
         }
         #endregion
         #region Mark.GetOwn
@@ -104,7 +104,7 @@ namespace ForumTask.Tests.BllTests
         {
             var serv = GetService();
 
-            sbyte result = serv.GetOwn(uid, mid);
+            sbyte result = serv.GetOwnAsync(uid, mid);
 
             Assert.AreEqual(expected, result);
         }
@@ -114,7 +114,7 @@ namespace ForumTask.Tests.BllTests
         {
             var serv = GetService();
 
-            sbyte result = serv.GetOwn(uid, mid);
+            sbyte result = serv.GetOwnAsync(uid, mid);
 
             Assert.Zero(result);
         }

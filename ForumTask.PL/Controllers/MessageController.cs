@@ -25,7 +25,7 @@ namespace ForumTask.PL.Controllers
         [HttpGet("topic{topicId}/pageCount")]
         public int GetPageCount(long topicId)
         {
-            return messageServ.GetPagesCount(topicId);
+            return messageServ.GetPagesCountAsync(topicId);
         }
 
         [HttpGet("topic{topicId}")]
@@ -38,7 +38,7 @@ namespace ForumTask.PL.Controllers
         [HttpPost]
         public IActionResult Add(MessageAddModel model)
         {
-            messageServ.Add(new() { Text = model.Text, TopicId = model.TopicId, AuthorId = User.GetId() });
+            messageServ.AddAsync(new() { Text = model.Text, TopicId = model.TopicId, AuthorId = User.GetId() });
             return Ok();
         }
 
@@ -46,7 +46,7 @@ namespace ForumTask.PL.Controllers
         [HttpPut("{messageId}")]
         public IActionResult Edit(long messageId, MessageEditModel model)
         {
-            messageServ.Edit(messageId, model.NewText, User.GetId());
+            messageServ.EditAsync(messageId, model.NewText, User.GetId());
             return Ok();
         }
 

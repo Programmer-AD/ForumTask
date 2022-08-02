@@ -2,6 +2,7 @@
 using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
+using ForumTask.DAL;
 using ForumTask.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -31,11 +32,11 @@ namespace ForumTask.BLL.Services
             AssertSucceeded(result);
         }
 
-        public async Task<UserDTO> GetAsync(long userId)
+        public async Task<UserDto> GetAsync(long userId)
         {
             var user = await FindUserById(userId);
 
-            var userDto = new UserDTO(user)
+            var userDto = new UserDto(user)
             {
                 MaxRole = await GetMaxRoleAsync(user)
             };
@@ -57,7 +58,7 @@ namespace ForumTask.BLL.Services
                 var result = await userManager.CreateAsync(user, password);
                 AssertSucceeded(result);
 
-                await userManager.AddToRoleAsync(user, "User");
+                await userManager.AddToRoleAsync(user, RoleNames.User);
             }
             catch (IdentityException exception)
             {
@@ -89,14 +90,14 @@ namespace ForumTask.BLL.Services
 
         public async Task SetRoleAsync(long userId, string roleName, bool setHasRole, long callerId)
         {
-            if (roleName.ToLower() == "user")
+            if (roleName.ToLower() == RoleNames.User.ToLower())
             {
                 throw new InvalidOperationException();
             }
 
             var caller = await GetAsync(callerId);
 
-            if (caller.MaxRole <= RoleEnumConverter.GetRoleByName(roleName))
+            if (caller.MaxRole <= Enum.Parse<RoleEnum>(roleName))
             {
                 throw new AccessDeniedException("Cant manage higher or equal roles");
             }
@@ -141,7 +142,7 @@ namespace ForumTask.BLL.Services
         private async Task<RoleEnum> GetMaxRoleAsync(User user)
         {
             var roles = await userManager.GetRolesAsync(user);
-            return roles.Select(s => RoleEnumConverter.GetRoleByName(s)).Max();
+            return roles.Select(x => Enum.Parse<RoleEnum>(x)).Max();
         }
 
         private async Task CheckRightAsync(User victim, long callerId)

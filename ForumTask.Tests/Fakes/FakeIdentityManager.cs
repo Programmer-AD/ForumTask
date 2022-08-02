@@ -45,7 +45,7 @@ namespace ForumTask.Tests.Fakes
 
         public void Create(string userName, string email, string password)
         {
-            if (IsEmailUsed(email) || IsUserNameUsed(userName) || password.Length < 6)
+            if (IsEmailUsedAsync(email) || IsUserNameUsedAsync(userName) || password.Length < 6)
             {
                 throw new IdentityException("Wrong regitration data");
             }
@@ -104,12 +104,12 @@ namespace ForumTask.Tests.Fakes
                 .Select(r => r.GetRoleName()).ToList();
         }
 
-        public bool IsEmailUsed(string email)
+        public bool IsEmailUsedAsync(string email)
         {
             return data.Find(u => u.User.Email == email.ToLower()) is not null;
         }
 
-        public bool IsUserNameUsed(string userName)
+        public bool IsUserNameUsedAsync(string userName)
         {
             return data.Find(u => u.User.UserName == userName.ToLower()) is not null;
         }
@@ -140,7 +140,7 @@ namespace ForumTask.Tests.Fakes
             SignedOut = true;
         }
 
-        public bool TrySignIn(string userName, string password, bool remember)
+        public bool TrySignInAsync(string userName, string password, bool remember)
         {
             return data.Find(u => u.User.UserName == userName.ToLower())?.User.PasswordHash == password;
         }

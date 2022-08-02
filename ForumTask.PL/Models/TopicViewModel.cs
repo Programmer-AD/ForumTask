@@ -6,7 +6,7 @@ namespace ForumTask.PL.Models
     public class TopicViewModel
     {
         public TopicViewModel() { }
-        public TopicViewModel(TopicDTO dto)
+        public TopicViewModel(TopicDto dto)
         {
             Id = dto.Id;
             Title = dto.Title;

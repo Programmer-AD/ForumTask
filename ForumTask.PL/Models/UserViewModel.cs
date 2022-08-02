@@ -6,7 +6,7 @@ namespace ForumTask.PL.Models
     public class UserViewModel
     {
         public UserViewModel() { }
-        public UserViewModel(UserDTO dto)
+        public UserViewModel(UserDto dto)
         {
             Id = dto.Id;
             UserName = dto.UserName;
