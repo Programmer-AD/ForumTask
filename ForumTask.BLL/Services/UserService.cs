@@ -1,33 +1,39 @@
-﻿using ForumTask.BLL.DTO;
+﻿using System.Data;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
+using ForumTask.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace ForumTask.BLL.Services
 {
     public class UserService : IUserService
     {
-        private readonly IIdentityManager identityManager;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
-        public UserService(IIdentityManager identityManager)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            this.identityManager = identityManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public async Task DeleteAsync(long userId, long callerId)
         {
-            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
+            var user = await FindUserById(userId);
 
             if (userId != callerId)
             {
                 await CheckRightAsync(user, callerId);
             }
 
-            await identityManager.DeleteAsync(user);
+            var result = await userManager.DeleteAsync(user);
+            AssertSucceeded(result);
         }
 
         public async Task<UserDTO> GetAsync(long userId)
         {
-            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
+            var user = await FindUserById(userId);
 
             var userDto = new UserDTO(user)
             {
@@ -41,9 +47,19 @@ namespace ForumTask.BLL.Services
         {
             try
             {
-                await identityManager.CreateAsync(userName, email, password);
+                var user = new User
+                {
+                    UserName = userName,
+                    Email = email,
+                    RegisterDate = DateTime.UtcNow
+                };
+
+                var result = await userManager.CreateAsync(user, password);
+                AssertSucceeded(result);
+
+                await userManager.AddToRoleAsync(user, "User");
             }
-            catch (Identity.IdentityException exception)
+            catch (IdentityException exception)
             {
                 throw new IdentityValidationException(exception);
             }
@@ -51,7 +67,7 @@ namespace ForumTask.BLL.Services
 
         public async Task SetBannedAsync(long userId, bool banned, long callerId)
         {
-            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
+            var user = await FindUserById(userId);
 
             await CheckRightAsync(user, callerId);
 
@@ -59,8 +75,16 @@ namespace ForumTask.BLL.Services
             {
                 user.IsBanned = banned;
 
-                await identityManager.UpdateAsync(user);
+                var result = await userManager.UpdateAsync(user);
+                AssertSucceeded(result);
             }
+        }
+
+        private async Task<User> FindUserById(long userId)
+        {
+            var user = await FindUserById(userId);
+
+            return user;
         }
 
         public async Task SetRoleAsync(long userId, string roleName, bool setHasRole, long callerId)
@@ -77,27 +101,17 @@ namespace ForumTask.BLL.Services
                 throw new AccessDeniedException("Cant manage higher or equal roles");
             }
 
-            var user = await identityManager.FindAsync(userId) ?? throw new NotFoundException();
+            var user = await FindUserById(userId);
 
             await CheckRightAsync(user, callerId);
 
-            try
-            {
-                if (setHasRole)
-                {
-                    await identityManager.AddToRoleAsync(user, roleName);
-                }
-                else
-                {
-                    await identityManager.RemoveFromRoleAsync(user, roleName);
-                }
-            }
-            catch (Identity.IdentityException) { }
+            //Ignoring result check is normal
+            await (setHasRole ? userManager.AddToRoleAsync(user, roleName) : userManager.RemoveFromRoleAsync(user, roleName));
         }
 
         public async Task SignInAsync(string userName, string password, bool remember)
         {
-            var signedIn = await identityManager.TrySignInAsync(userName, password, remember);
+            var signedIn = await signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
 
             if (!signedIn)
             {
@@ -107,27 +121,30 @@ namespace ForumTask.BLL.Services
 
         public Task SignOutAsync()
         {
-            return identityManager.SignOutAsync();
+            return signInManager.SignOutAsync();
         }
 
-        public Task<bool> IsEmailUsedAsync(string email)
+        public async Task<bool> IsEmailUsedAsync(string email)
         {
-            return identityManager.IsEmailUsedAsync(email);
+            var user = await userManager.FindByEmailAsync(email);
+
+            return user != null;
         }
 
-        public Task<bool> IsUserNameUsedAsync(string userName)
+        public async Task<bool> IsUserNameUsedAsync(string userName)
         {
-            return identityManager.IsUserNameUsedAsync(userName);
+            var user = await userManager.FindByNameAsync(userName);
+
+            return user != null;
         }
 
-
-        private async Task<RoleEnum> GetMaxRoleAsync(DAL.Entities.User user)
+        private async Task<RoleEnum> GetMaxRoleAsync(User user)
         {
-            var roles = await identityManager.GetRolesAsync(user);
+            var roles = await userManager.GetRolesAsync(user);
             return roles.Select(s => RoleEnumConverter.GetRoleByName(s)).Max();
         }
 
-        private async Task CheckRightAsync(DAL.Entities.User victim, long callerId)
+        private async Task CheckRightAsync(User victim, long callerId)
         {
             var caller = await GetAsync(callerId);
             var victimMaxRole = await GetMaxRoleAsync(victim);
@@ -135,6 +152,14 @@ namespace ForumTask.BLL.Services
             if (caller.MaxRole <= victimMaxRole)
             {
                 throw new AccessDeniedException("To edit/delete this user your right-level must be greater then of that user");
+            }
+        }
+
+        private static void AssertSucceeded(IdentityResult identityResult)
+        {
+            if (!identityResult.Succeeded)
+            {
+                throw new IdentityException(identityResult.Errors.Select(e => e.Code));
             }
         }
     }

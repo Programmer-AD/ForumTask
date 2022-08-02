@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ForumTask.BLL.Identity
+namespace ForumTask.BLL.Exceptions
 {
 
     [Serializable]

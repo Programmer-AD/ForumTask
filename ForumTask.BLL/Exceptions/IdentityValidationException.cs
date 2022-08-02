@@ -6,7 +6,7 @@ namespace ForumTask.BLL.Exceptions
     public class IdentityValidationException : Exception
     {
         public IdentityValidationException() : base("Validation error") { }
-        internal IdentityValidationException(Identity.IdentityException e) : base("Validation error: " + e.Message)
+        internal IdentityValidationException(IdentityException e) : base("Validation error: " + e.Message)
         {
             foreach (string errCode in e.IdentityErrorCodes)
             {
