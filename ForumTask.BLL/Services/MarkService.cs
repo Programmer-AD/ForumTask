@@ -1,53 +1,57 @@
-﻿using System;
-using ForumTask.BLL.DTO;
+﻿using ForumTask.BLL.DTO;
 using ForumTask.BLL.Interfaces;
+using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
 
 namespace ForumTask.BLL.Services
 {
     public class MarkService : IMarkService
     {
-        private readonly IUnitOfWork uow;
+        private readonly IRepository<Mark> markRepository;
 
-        public MarkService(IUnitOfWork uow)
+        public MarkService(IRepository<Mark> markRepository)
         {
-            this.uow = uow;
+            this.markRepository = markRepository;
         }
 
-        public long GetCountOfType(long messageId, sbyte type)
+        public async Task<sbyte> GetOwnAsync(long userId, long messageId)
         {
-            return uow.Marks.GetCountOfType(messageId, type);
+            var mark = await GetMarkByKeys(userId, messageId);
+
+            return ((sbyte?)mark?.Type) ?? 0;
         }
 
-        public sbyte GetOwn(int userId, long messageId)
+        public async Task SetAsync(MarkDTO markDto)
         {
-            return ((sbyte?)uow.Marks.Get(userId, messageId)?.Type) ?? 0;
-        }
+            var mark = await GetMarkByKeys(markDto.UserId, markDto.UserId);
 
-        public void Set(MarkDTO mark)
-        {
-            if (mark.Value == 0)
+            if (markDto.Value == 0)
             {
-                try
+                if (mark != null)
                 {
-                    uow.Marks.Delete(mark.UserId, mark.MessageId);
+                    await markRepository.DeleteAsync(mark);
                 }
-                catch (InvalidOperationException) { }
             }
             else
             {
-                var dbm = uow.Marks.Get(mark.UserId, mark.MessageId);
-                if (dbm is null)
+                if (mark == null)
                 {
-                    uow.Marks.Create(mark.ToEntity());
+                    var newMark = markDto.ToEntity();
+
+                    await markRepository.CreateAsync(newMark);
                 }
-                else if ((sbyte)dbm.Type != mark.Value)
+                else if ((sbyte)mark.Type != markDto.Value)
                 {
-                    dbm.Type = (DAL.Entities.MarkType)Math.Sign(mark.Value);
-                    uow.Marks.Update(dbm);
+                    mark.Type = (MarkType)Math.Sign(markDto.Value);
+
+                    await markRepository.UpdateAsync(mark);
                 }
             }
-            uow.SaveChanges();
+        }
+
+        private Task<Mark> GetMarkByKeys(long userId, long messageId)
+        {
+            return markRepository.GetAsync(x => x.UserId == userId && x.MessageId == messageId);
         }
     }
 }

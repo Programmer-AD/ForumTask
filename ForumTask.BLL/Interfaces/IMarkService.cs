@@ -19,6 +19,6 @@ namespace ForumTask.BLL.Interfaces
         /// <param name="userId">User which mark to get</param>
         /// <param name="messageId">Message from which mark to get</param>
         /// <returns>Value of mark or 0 if don`t exist</returns>
-        Task GetOwnAsync(long userId, long messageId);
+        Task<sbyte> GetOwnAsync(long userId, long messageId);
     }
 }
