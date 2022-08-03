@@ -1,14 +1,17 @@
 import ApiAccessor from "../ApiAccessor";
 
-export default class MarkApi{
-    api
-    constructor(){
-        this.api=new ApiAccessor("/api/mark")
+export default class MarkApi {
+    apiAccessor
+
+    constructor() {
+        this.apiAccessor = new ApiAccessor("/api/mark")
     }
-    async getMark(messageId){
-        return await this.api.get(`/${messageId}`);
+
+    getMark(messageId) {
+        return this.apiAccessor.get(`/${messageId}`);
     }
-    async setMark(messageId,value){
-        return await this.api.put(`/${messageId}/${value}`,null);
+
+    setMark(messageId, value) {
+        return this.apiAccessor.put(`/${messageId}/${value}`, null);
     }
 }

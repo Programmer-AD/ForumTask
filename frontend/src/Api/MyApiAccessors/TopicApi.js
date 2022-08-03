@@ -1,29 +1,39 @@
 import ApiAccessor from "../ApiAccessor";
 
-export default class TopicApi{
-    api
-    constructor(){
-        this.api=new ApiAccessor("/api/topic")
+export default class TopicApi {
+    apiAccessor
+
+    constructor() {
+        this.apiAccessor = new ApiAccessor("/api/topic")
     }
-    async get(topicId){
-        return await this.api.get(`/${topicId}`);
+
+    get(topicId) {
+        return this.apiAccessor.get(`/${topicId}`);
     }
-    async getPageCount(){
-        return await this.api.get("/pageCount");
+
+    getPageCount() {
+        return this.apiAccessor.get("/pageCount");
     }
-    async getTopNew(page,searchTitle=""){
-        let par={page};
-        if (searchTitle!=="")
-            par.searchTitle=searchTitle;
-        return await this.api.get("/",par);
+
+    getTopNew(page, searchTitle = "") {
+        let par = { page };
+
+        if (searchTitle !== "") {
+            par.searchTitle = searchTitle;
+        }
+
+        return this.apiAccessor.get("/", par);
     }
-    async create(title,message){
-        return await this.api.post("/",{title,message});
+
+    create(title, message) {
+        return this.apiAccessor.post("/", { title, message });
     }
-    async rename(topicId,newTitle){
-        return await this.api.put(`/${topicId}`,{newTitle});
+
+    rename(topicId, newTitle) {
+        return this.apiAccessor.put(`/${topicId}`, { newTitle });
     }
-    async delete(topicId){
-        return await this.api.delete(`/${topicId}`);
+
+    delete(topicId) {
+        return this.apiAccessor.delete(`/${topicId}`);
     }
 }
