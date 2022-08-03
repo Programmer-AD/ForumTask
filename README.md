@@ -4,9 +4,11 @@
 
 It's project that was created to access laboratory of IT-company.
 
-It's simple forum with classic functions.
+It's simple forum with classic functions such as topic creation, writing messages and putting marks.
 
-    Project was major reworked and cleaned few monthes after presentation.
+    Project was reworked and cleaned after presentation,
+    but still have some code style/architecture issues.
+    They remain here as legacy and because project was shown with them.
 
 ## Technology stack
 
