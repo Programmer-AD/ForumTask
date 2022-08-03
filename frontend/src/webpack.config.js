@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+
 module.exports = {
     entry: "/app.jsx",
     output: {
@@ -19,5 +21,12 @@ module.exports = {
                 use: ["style-loader", "css-loader"],
             }
         ]
-    }
+    },
+    plugins: [
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: '../static' }
+            ]
+        })
+    ]
 }
