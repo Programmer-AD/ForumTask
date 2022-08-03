@@ -1,15 +1,16 @@
-.button{
+.button {
     background-color: skyblue;
     border-radius: 5px;
     border-style: solid;
     border-color: white;
-    color:black;
+    color: black;
     padding: 5px;
     margin: 5px;
     display: inline-block;
     cursor: pointer;
     user-select: none;
 }
-.button:hover{
+
+.button:hover {
     background-color: lightblue;
 }
