@@ -7,9 +7,10 @@ namespace ForumTask.DAL.EF
 {
     public class ForumContext : IdentityDbContext<User, IdentityRole<long>, long>
     {
+        private const int adminUserId = 1;
         private const string adminDefaultEmail = "admin@forum.here";
         private const string adminDefaultPassword = "admin_pass";
-        private const int adminUserId = 1;
+        private const string adminUserName = "Admin";
 
         public ForumContext(DbContextOptions<ForumContext> options) : base(options)
         {
@@ -54,7 +55,7 @@ namespace ForumTask.DAL.EF
         {
             var hasher = new PasswordHasher<User>();
 
-            var adminUser = CreateUser(adminUserId, RoleNames.Admin, adminDefaultEmail, adminDefaultPassword, hasher);
+            var adminUser = CreateUser(adminUserId, adminUserName, adminDefaultEmail, adminDefaultPassword, hasher);
 
             builder.Entity<User>().HasData(adminUser);
         }

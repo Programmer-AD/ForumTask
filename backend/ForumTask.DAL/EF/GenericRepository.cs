@@ -11,10 +11,12 @@ namespace ForumTask.DAL.EF
     internal class GenericRepository<T> : IRepository<T> where T : class
     {
         private readonly DbSet<T> set;
+        private readonly DbContext context;
 
         public GenericRepository(DbContext context)
         {
             set = context.Set<T>();
+            this.context = context;
         }
 
         public Task CreateAsync(T entity)
@@ -90,6 +92,11 @@ namespace ForumTask.DAL.EF
             }
 
             return result;
+        }
+
+        public Task ForceSaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
         }
     }
 }

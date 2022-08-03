@@ -53,6 +53,8 @@ namespace ForumTask.BLL.Services
                 await messageRepository.CreateAsync(message);
             }
 
+            await topicRepository.ForceSaveChangesAsync();
+
             return topic.Id;
         }
 

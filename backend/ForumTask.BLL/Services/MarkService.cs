@@ -16,14 +16,14 @@ namespace ForumTask.BLL.Services
 
         public async Task<sbyte> GetOwnAsync(long userId, long messageId)
         {
-            var mark = await GetMarkByKeys(userId, messageId);
+            var mark = await GetMarkByKeysAsync(userId, messageId);
 
             return ((sbyte?)mark?.Type) ?? 0;
         }
 
         public async Task SetAsync(MarkDto markDto)
         {
-            var mark = await GetMarkByKeys(markDto.UserId, markDto.UserId);
+            var mark = await GetMarkByKeysAsync(markDto.UserId, markDto.MessageId);
 
             if (markDto.Value == 0)
             {
@@ -49,7 +49,7 @@ namespace ForumTask.BLL.Services
             }
         }
 
-        private Task<Mark> GetMarkByKeys(long userId, long messageId)
+        private Task<Mark> GetMarkByKeysAsync(long userId, long messageId)
         {
             return markRepository.GetAsync(x => x.UserId == userId && x.MessageId == messageId);
         }

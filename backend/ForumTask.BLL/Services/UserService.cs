@@ -21,7 +21,7 @@ namespace ForumTask.BLL.Services
 
         public async Task DeleteAsync(long userId, long callerId)
         {
-            var user = await FindUserById(userId);
+            var user = await FindUserByIdAsync(userId);
 
             if (userId != callerId)
             {
@@ -34,7 +34,7 @@ namespace ForumTask.BLL.Services
 
         public async Task<UserDto> GetAsync(long userId)
         {
-            var user = await FindUserById(userId);
+            var user = await FindUserByIdAsync(userId);
 
             var userDto = new UserDto(user)
             {
@@ -68,7 +68,7 @@ namespace ForumTask.BLL.Services
 
         public async Task SetBannedAsync(long userId, bool banned, long callerId)
         {
-            var user = await FindUserById(userId);
+            var user = await FindUserByIdAsync(userId);
 
             await CheckRightAsync(user, callerId);
 
@@ -79,13 +79,6 @@ namespace ForumTask.BLL.Services
                 var result = await userManager.UpdateAsync(user);
                 AssertSucceeded(result);
             }
-        }
-
-        private async Task<User> FindUserById(long userId)
-        {
-            var user = await FindUserById(userId);
-
-            return user;
         }
 
         public async Task SetRoleAsync(long userId, string roleName, bool setHasRole, long callerId)
@@ -102,7 +95,7 @@ namespace ForumTask.BLL.Services
                 throw new AccessDeniedException("Cant manage higher or equal roles");
             }
 
-            var user = await FindUserById(userId);
+            var user = await FindUserByIdAsync(userId);
 
             await CheckRightAsync(user, callerId);
 
@@ -112,7 +105,7 @@ namespace ForumTask.BLL.Services
 
         public async Task SignInAsync(string userName, string password, bool remember)
         {
-            bool signedIn = await signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
+            var signedIn = await signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
 
             if (!signedIn)
             {
@@ -139,10 +132,20 @@ namespace ForumTask.BLL.Services
             return user != null;
         }
 
+        private async Task<User> FindUserByIdAsync(long userId)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+
+            return user;
+        }
+
         private async Task<RoleEnum> GetMaxRoleAsync(User user)
         {
             var roles = await userManager.GetRolesAsync(user);
-            return roles.Select(x => Enum.Parse<RoleEnum>(x)).Max();
+
+            var result = roles.Select(x => Enum.Parse<RoleEnum>(x)).Max();
+
+            return result;
         }
 
         private async Task CheckRightAsync(User victim, long callerId)

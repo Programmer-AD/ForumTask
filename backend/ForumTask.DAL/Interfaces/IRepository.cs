@@ -40,6 +40,7 @@ namespace ForumTask.DAL.Interfaces
             Expression<Func<T, bool>> predicate = null,
             int skipCount = 0,
             int takeCount = 0);
+        Task ForceSaveChangesAsync();
 
         /// <summary>
         /// Updates entity
