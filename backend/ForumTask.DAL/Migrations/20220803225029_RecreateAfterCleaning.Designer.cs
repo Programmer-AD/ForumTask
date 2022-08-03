@@ -7,49 +7,54 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace ForumTask.DAL.Migrations
 {
     [DbContext(typeof(ForumContext))]
-    [Migration("20211016231537_OnDelSetNull")]
-    partial class OnDelSetNull
+    [Migration("20220803225029_RecreateAfterCleaning")]
+    partial class RecreateAfterCleaning
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Mark", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("MessageId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
 
                     b.HasKey("UserId", "MessageId");
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("Marks");
+                    b.ToTable("Mark");
                 });
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Message", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
 
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long?>("AuthorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
@@ -61,27 +66,26 @@ namespace ForumTask.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId")
-                        .IsUnique()
-                        .HasFilter("[AuthorId] IS NOT NULL");
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Topic", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                    b.Property<long?>("CreatorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -90,19 +94,18 @@ namespace ForumTask.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId")
-                        .IsUnique()
-                        .HasFilter("[CreatorId] IS NOT NULL");
+                    b.HasIndex("CreatorId");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topic");
                 });
 
             modelBuilder.Entity("ForumTask.DAL.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -167,35 +170,36 @@ namespace ForumTask.DAL.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 1L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "107c6c51-9a40-40ca-85cd-56bbe6b01473",
+                            ConcurrencyStamp = "4016986d-ba87-467d-86aa-b7c63128e8bf",
                             Email = "admin@forum.here",
                             EmailConfirmed = true,
                             IsBanned = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FORUM.HERE",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJF5xL+Xuhxtc3Mn/TxzHvioN1JdVTcS0W5gWdvxeHNOu60LKhg+HIHjC8G6Rb5eVA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEISEI32yYAVt/rhK/lI1IFwUcjzWtnLITyCMlu3S0L2tPs2GtfSVHmHHI0OadO1fpg==",
                             PhoneNumberConfirmed = false,
-                            RegisterDate = new DateTime(2021, 10, 16, 23, 15, 36, 898, DateTimeKind.Utc).AddTicks(4257),
-                            SecurityStamp = "e2105f26-0693-4349-b657-806da1f1ef62",
+                            RegisterDate = new DateTime(2022, 8, 3, 22, 50, 29, 570, DateTimeKind.Utc).AddTicks(3282),
+                            SecurityStamp = "03b2483f-0eb5-455a-9b3a-0e351acd4228",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<long>", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -216,38 +220,39 @@ namespace ForumTask.DAL.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            ConcurrencyStamp = "fe2e492a-54c0-487a-9a02-f6273b3d9bd6",
+                            Id = 1L,
+                            ConcurrencyStamp = "416a0814-73ef-4669-81b4-e9ade2857b9a",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = 2,
-                            ConcurrencyStamp = "a3da107d-b316-4fdd-a8a4-d67bb9ef2a17",
+                            Id = 2L,
+                            ConcurrencyStamp = "b9c04e38-37cb-456b-8948-dfe82f950ef4",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = 3,
-                            ConcurrencyStamp = "5278b026-796f-4e7c-8d32-f7f6f5b82c93",
+                            Id = 3L,
+                            ConcurrencyStamp = "601818e3-b0ca-44df-931c-d7b94139dd63",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -255,22 +260,23 @@ namespace ForumTask.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -278,17 +284,17 @@ namespace ForumTask.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -299,42 +305,42 @@ namespace ForumTask.DAL.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            UserId = 1,
-                            RoleId = 3
+                            UserId = 1L,
+                            RoleId = 3L
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -347,7 +353,7 @@ namespace ForumTask.DAL.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ForumTask.DAL.Entities.Mark", b =>
@@ -372,8 +378,8 @@ namespace ForumTask.DAL.Migrations
             modelBuilder.Entity("ForumTask.DAL.Entities.Message", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", "Author")
-                        .WithOne()
-                        .HasForeignKey("ForumTask.DAL.Entities.Message", "AuthorId")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("ForumTask.DAL.Entities.Topic", "Topic")
@@ -390,23 +396,23 @@ namespace ForumTask.DAL.Migrations
             modelBuilder.Entity("ForumTask.DAL.Entities.Topic", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", "Creator")
-                        .WithOne()
-                        .HasForeignKey("ForumTask.DAL.Entities.Topic", "CreatorId")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<long>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", null)
                         .WithMany()
@@ -415,7 +421,7 @@ namespace ForumTask.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", null)
                         .WithMany()
@@ -424,9 +430,9 @@ namespace ForumTask.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<long>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -439,7 +445,7 @@ namespace ForumTask.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
                     b.HasOne("ForumTask.DAL.Entities.User", null)
                         .WithMany()

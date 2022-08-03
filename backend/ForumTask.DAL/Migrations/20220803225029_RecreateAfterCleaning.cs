@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ForumTask.DAL.Migrations
 {
-    public partial class Recreate : Migration
+    public partial class RecreateAfterCleaning : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,7 +12,7 @@ namespace ForumTask.DAL.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -25,7 +27,7 @@ namespace ForumTask.DAL.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsBanned = table.Column<bool>(type: "bit", nullable: false),
@@ -55,7 +57,7 @@ namespace ForumTask.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -76,7 +78,7 @@ namespace ForumTask.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -98,7 +100,7 @@ namespace ForumTask.DAL.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,8 +117,8 @@ namespace ForumTask.DAL.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,7 +141,7 @@ namespace ForumTask.DAL.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -156,75 +158,75 @@ namespace ForumTask.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Topics",
+                name: "Topic",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: true)
+                    CreatorId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Topics", x => x.Id);
+                    table.PrimaryKey("PK_Topic", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Topics_AspNetUsers_CreatorId",
+                        name: "FK_Topic_AspNetUsers_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
+                name: "Message",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
                     WriteTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TopicId = table.Column<long>(type: "bigint", nullable: false),
-                    AuthorId = table.Column<int>(type: "int", nullable: true)
+                    AuthorId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.PrimaryKey("PK_Message", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_AuthorId",
+                        name: "FK_Message_AspNetUsers_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_Messages_Topics_TopicId",
+                        name: "FK_Message_Topic_TopicId",
                         column: x => x.TopicId,
-                        principalTable: "Topics",
+                        principalTable: "Topic",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Marks",
+                name: "Mark",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     MessageId = table.Column<long>(type: "bigint", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Marks", x => new { x.UserId, x.MessageId });
+                    table.PrimaryKey("PK_Mark", x => new { x.UserId, x.MessageId });
                     table.ForeignKey(
-                        name: "FK_Marks_AspNetUsers_UserId",
+                        name: "FK_Mark_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Marks_Messages_MessageId",
+                        name: "FK_Mark_Message_MessageId",
                         column: x => x.MessageId,
-                        principalTable: "Messages",
+                        principalTable: "Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -234,20 +236,20 @@ namespace ForumTask.DAL.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "8b47a6ee-4863-4f5f-842e-1686c0e815ff", "User", "USER" },
-                    { 2, "1904a5ec-3f48-49dd-a594-e946552d24e2", "Moderator", "MODERATOR" },
-                    { 3, "80eb377c-ffc5-4d80-a9d8-f158300b8bf6", "Admin", "ADMIN" }
+                    { 1L, "416a0814-73ef-4669-81b4-e9ade2857b9a", "User", "USER" },
+                    { 2L, "b9c04e38-37cb-456b-8948-dfe82f950ef4", "Moderator", "MODERATOR" },
+                    { 3L, "601818e3-b0ca-44df-931c-d7b94139dd63", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsBanned", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RegisterDate", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "b273f5e4-cab3-4fea-8a93-1d8e8e8c373a", "admin@forum.here", true, false, false, null, "ADMIN@FORUM.HERE", "ADMIN", "AQAAAAEAACcQAAAAEKcjxgSWHJ3w8jZP8uMrwno+Emzr7wcBBLIRv9vurOkeiyNsrvvPTN1asTHY4xD5VQ==", null, false, new DateTime(2021, 10, 15, 17, 47, 25, 22, DateTimeKind.Utc).AddTicks(9343), "60b23f1a-43e8-4892-ac97-cad234517a96", false, "Admin" });
+                values: new object[] { 1L, 0, "4016986d-ba87-467d-86aa-b7c63128e8bf", "admin@forum.here", true, false, false, null, "ADMIN@FORUM.HERE", "ADMIN", "AQAAAAEAACcQAAAAEISEI32yYAVt/rhK/lI1IFwUcjzWtnLITyCMlu3S0L2tPs2GtfSVHmHHI0OadO1fpg==", null, false, new DateTime(2022, 8, 3, 22, 50, 29, 570, DateTimeKind.Utc).AddTicks(3282), "03b2483f-0eb5-455a-9b3a-0e351acd4228", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 3, 1 });
+                values: new object[] { 3L, 1L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -289,23 +291,23 @@ namespace ForumTask.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Marks_MessageId",
-                table: "Marks",
+                name: "IX_Mark_MessageId",
+                table: "Mark",
                 column: "MessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_AuthorId",
-                table: "Messages",
+                name: "IX_Message_AuthorId",
+                table: "Message",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_TopicId",
-                table: "Messages",
+                name: "IX_Message_TopicId",
+                table: "Message",
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Topics_CreatorId",
-                table: "Topics",
+                name: "IX_Topic_CreatorId",
+                table: "Topic",
                 column: "CreatorId");
         }
 
@@ -327,16 +329,16 @@ namespace ForumTask.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Marks");
+                name: "Mark");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                name: "Message");
 
             migrationBuilder.DropTable(
-                name: "Topics");
+                name: "Topic");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

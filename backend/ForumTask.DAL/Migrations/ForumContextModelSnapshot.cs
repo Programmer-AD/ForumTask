@@ -175,17 +175,17 @@ namespace ForumTask.DAL.Migrations
                         {
                             Id = 1L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7abb7240-5862-4256-a445-e771e6fead12",
+                            ConcurrencyStamp = "4016986d-ba87-467d-86aa-b7c63128e8bf",
                             Email = "admin@forum.here",
                             EmailConfirmed = true,
                             IsBanned = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FORUM.HERE",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAECdwFtp7HA4VBYXGAAZMRI39wfZHz1c8O5m/YRW2C6XR8NIqNQ+ssC+Mod4LmoEN7w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEISEI32yYAVt/rhK/lI1IFwUcjzWtnLITyCMlu3S0L2tPs2GtfSVHmHHI0OadO1fpg==",
                             PhoneNumberConfirmed = false,
-                            RegisterDate = new DateTime(2022, 8, 2, 1, 56, 1, 822, DateTimeKind.Utc).AddTicks(1378),
-                            SecurityStamp = "67d458dd-87df-4a0c-9813-430d84db2295",
+                            RegisterDate = new DateTime(2022, 8, 3, 22, 50, 29, 570, DateTimeKind.Utc).AddTicks(3282),
+                            SecurityStamp = "03b2483f-0eb5-455a-9b3a-0e351acd4228",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -224,21 +224,21 @@ namespace ForumTask.DAL.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "6d4fa982-7b49-4266-9922-01d74e265bdf",
+                            ConcurrencyStamp = "416a0814-73ef-4669-81b4-e9ade2857b9a",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "308c3771-d582-45f6-9405-5b20bb86f531",
+                            ConcurrencyStamp = "b9c04e38-37cb-456b-8948-dfe82f950ef4",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
                             Id = 3L,
-                            ConcurrencyStamp = "42c605cf-4afb-453e-930c-21a5950b264c",
+                            ConcurrencyStamp = "601818e3-b0ca-44df-931c-d7b94139dd63",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
