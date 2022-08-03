@@ -363,6 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #my
-BuildResult/
 **/node_modules/
-/ForumTask.Front/result
+**/publish/
