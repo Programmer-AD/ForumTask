@@ -1,21 +1,25 @@
-.title{
+.title {
     margin: 5px;
 }
-.container{
+
+.container {
     text-align: left;
 }
-.validation{
+
+.validation {
     background-color: crimson;
     border: solid;
     border-radius: 5px;
     padding: 5px;
     text-align: left;
 }
-.success{
+
+.success {
     background-color: lightgreen;
     padding: 20px;
 }
-.textarea{
-    overflow-y:scroll; 
-    resize:none;
+
+.textarea {
+    overflow-y: scroll;
+    resize: none;
 }
