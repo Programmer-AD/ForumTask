@@ -1,17 +1,21 @@
-.message_input,.banned{
+.message_input,
+.banned {
     margin: 0% 15%;
     padding: 5px;
     border-radius: 5px;
     border-style: solid;
 }
-.banned{
+
+.banned {
     background-color: crimson;
 }
-.message_input{
+
+.message_input {
     background-color: lightgray;
     text-align: center;
 }
-.textarea{
+
+.textarea {
     overflow-y: scroll;
     resize: none;
     text-align: left;

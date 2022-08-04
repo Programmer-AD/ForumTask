@@ -1,21 +1,24 @@
-.container{
+.container {
     padding: 10px;
     margin: 5px;
-    border-style:solid;
+    border-style: solid;
     border-radius: 5px;
     background-color: darkcyan;
 }
-.text{
+
+.text {
     text-align: left;
     font-size: medium;
     margin: 5px;
     overflow-wrap: break-word;
     border-bottom: solid;
 }
-.infos{
+
+.infos {
     text-align: right;
 }
-.info{
+
+.info {
     display: inline-block;
     margin: 0px 5px;
     padding: 5px;
@@ -24,6 +27,6 @@
     border-radius: 10px;
 }
 
-.button_container{
+.button_container {
     float: left;
 }

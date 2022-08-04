@@ -1,4 +1,4 @@
-.arrow{
+.arrow {
     width: 20px;
     height: 20px;
     margin: 5px;
@@ -7,13 +7,16 @@
     border-style: solid;
     border-color: black;
 }
-.arrow[set_up=true]{
+
+.arrow[set_up=true] {
     background-color: green;
 }
-.arrow[set_down=true]{
+
+.arrow[set_down=true] {
     background-color: darkred;
 }
-.mark{
+
+.mark {
     display: inline-block;
     margin: 5px;
 }

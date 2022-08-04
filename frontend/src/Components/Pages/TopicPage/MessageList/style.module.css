@@ -1,14 +1,16 @@
-.container{
+.container {
     text-align: center;
     margin: 0% 15%;
     padding: 5px;
 }
-.title{
+
+.title {
     text-align: left;
     font-size: x-large;
     margin: 5px;
 }
-.no_messages{
+
+.no_messages {
     text-align: center;
     font-size: x-large;
     font-family: monospace;
