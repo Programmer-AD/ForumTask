@@ -141,11 +141,9 @@ namespace ForumTask.BLL.Services
             return user != null;
         }
 
-        private async Task<User> FindUserByIdAsync(long userId)
+        private Task<User> FindUserByIdAsync(long userId)
         {
-            var user = await userManager.FindByIdAsync(userId.ToString());
-
-            return user;
+            return userManager.FindByIdAsync(userId.ToString());
         }
 
         private async Task<RoleEnum> GetMaxRoleAsync(User user)

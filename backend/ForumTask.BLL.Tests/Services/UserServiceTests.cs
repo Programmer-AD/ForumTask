@@ -29,6 +29,6 @@ namespace ForumTask.BLL.Tests.Services
                 mapperMock.Object);
         }
 
-
+        //TODO: SetRoleAsync
     }
 }
