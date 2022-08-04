@@ -4,6 +4,7 @@ import Button from "../Common/Button/Button.jsx";
 import css from "./style.module.css";
 
 export default class RegisterForm extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -20,9 +21,11 @@ export default class RegisterForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.tryRegister = this.tryRegister.bind(this);
     }
+
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
+    
     async tryRegister() {
         let validationError = "";
 

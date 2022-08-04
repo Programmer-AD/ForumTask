@@ -8,35 +8,45 @@ import NotFoundPage from './Pages/NotFoundPage/NotFoundPage.jsx';
 import css from "./style.module.css";
 import Api from "../Api/ApiUnited.js"
 
-export default class AppComponent extends React.Component{
-    constructor(props){
+export default class AppComponent extends React.Component {
+    
+    constructor(props) {
         super(props);
 
-        this.state={user:null};
+        this.state = { user: null };
 
-        this.handleUserChanged=this.handleUserChanged.bind(this);
+        this.handleUserChanged = this.handleUserChanged.bind(this);
     }
-    componentDidMount(){
+
+    componentDidMount() {
         this.loadCurrentUser();
     }
-    async loadCurrentUser(){
-        await Api.user.getCurrent().then((user)=>this.setState({user}))
-            .catch(()=>this.setState({user:null}));
+
+    async loadCurrentUser() {
+        try {
+            const user = await Api.user.getCurrent();
+
+            this.setState({ user });
+        } catch {
+            this.setState({ user: null });
+        }
     }
-    handleUserChanged(){
+
+    handleUserChanged() {
         this.loadCurrentUser();
     }
-    render(){
+
+    render() {
         return (<>
             <Router>
                 <Header user={this.state.user} onUserChanged={this.handleUserChanged} />
                 <div className={css.page_container}>
                     <Switch>
-                        <Route exact path="/" component={(props)=><MainPage user={this.state.user} {...props}/>}/>
-                        <Route path="/page-:page(\d{1,4})" component={(props)=><MainPage user={this.state.user} {...props}/>}/>
-                        <Route path="/topic-:topicId(\d{1,18})" component={(props)=><TopicPage user={this.state.user} {...props}/>}/>
-                        <Route path="/topic-:topicId(\d{1,18})/page-:page(\d{1,4})" component={(props)=><TopicPage user={this.state.user} {...props}/>}/>
-                        <Route path="/profile-:profileId(\d{1,10})" component={(props)=><ProfilePage user={this.state.user} {...props}/>} />
+                        <Route exact path="/" component={(props) => <MainPage user={this.state.user} {...props} />} />
+                        <Route path="/page-:page(\d{1,9})" component={(props) => <MainPage user={this.state.user} {...props} />} />
+                        <Route path="/topic-:topicId(\d{1,18})" component={(props) => <TopicPage user={this.state.user} {...props} />} />
+                        <Route path="/topic-:topicId(\d{1,18})/page-:page(\d{1,9})" component={(props) => <TopicPage user={this.state.user} {...props} />} />
+                        <Route path="/profile-:profileId(\d{1,18})" component={(props) => <ProfilePage user={this.state.user} {...props} />} />
                         <Route component={NotFoundPage} />
                     </Switch>
                 </div>

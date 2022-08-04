@@ -4,6 +4,7 @@ import Button from "../Common/Button/Button.jsx";
 import css from "./style.module.css";
 
 export default class TopicCreateForm extends React.Component {
+    
     constructor(props) {
         super(props);
 
@@ -18,9 +19,11 @@ export default class TopicCreateForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.tryCreate = this.tryCreate.bind(this);
     }
+
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
+
     tryCreate() {
         let validationError = "";
 
