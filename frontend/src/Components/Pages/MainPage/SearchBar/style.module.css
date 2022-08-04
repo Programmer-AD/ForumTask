@@ -1,4 +1,4 @@
-.search_bar{
+.search_bar {
     padding: 5px 10px;
     background-color: darkcyan;
     border-radius: 5px;
@@ -9,6 +9,7 @@
     white-space: nowrap;
     overflow: hidden;
 }
-.input{
-    width:400px;
+
+.input {
+    width: 400px;
 }

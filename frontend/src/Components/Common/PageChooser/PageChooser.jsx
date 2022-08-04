@@ -6,17 +6,17 @@ export default class PageChooser extends React.Component {
     constructor(props) {
         super(props);
 
-        let count = props.count;
-        let pageSet = new Set();
+        const count = props.count;
+        const pageSet = new Set();
 
-        pageSet.add(props.current);
-
+        //add 3 first pages
         for (let i = 0; i < 3 && i < count; i++) {
             pageSet.add(i + 1);
         }
 
         const isCorrectPageNumber = number => number > 0 && number <= count;
 
+        //add 5 pages near current
         for (let i = -2; i <= 2; i++) {
             let pageNumber = i + props.current;
 
@@ -25,13 +25,12 @@ export default class PageChooser extends React.Component {
             }
         }
 
+        //add 3 last pages
         for (let i = 0; i < 3 && i < count; i++) {
             pageSet.add(count - i);
         }
 
-        let pages = [...pageSet];
-
-        this.state = { pages };
+        this.state = { pages: [...pageSet] };
     }
 
     render() {
