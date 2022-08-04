@@ -142,18 +142,24 @@ namespace ForumTask.BLL.Services
                 throw new AccessDeniedException("Caller is banned");
             }
 
-            if ((user.MaxRole == RoleEnum.User || !canEditOtherUser) && (!creatorId.HasValue || creatorId.Value != callerId))
+            var isRegularUser = user.MaxRole == RoleEnum.User;
+            var hasCreator = creatorId.HasValue;
+            var notOwn = creatorId.Value != callerId;
+
+            if ((isRegularUser || !canEditOtherUser) && (!hasCreator || notOwn))
             {
                 throw new AccessDeniedException("Not enough rights to edit/delete other users topic");
             }
 
-            if (user.MaxRole == RoleEnum.User
-                && (DateTime.UtcNow - createTime).TotalMinutes > ITopicService.EditOrDeleteTime)
+            var timeSinceCreate = DateTime.UtcNow - createTime;
+            var timeLimitExceed = timeSinceCreate.TotalMinutes > ITopicService.EditOrDeleteTime;
+
+            if (isRegularUser && timeLimitExceed)
             {
                 throw new AccessDeniedException("Edit/delete time limit exceed");
             }
 
-            if (creatorId.HasValue && creatorId.Value != callerId)
+            if (hasCreator && creatorId.Value != callerId)
             {
                 var creator = await userService.GetAsync(creatorId.Value);
 

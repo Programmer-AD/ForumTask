@@ -86,7 +86,7 @@ namespace ForumTask.BLL.Services
 
         public async Task<int> GetPagesCountAsync(long topicId)
         {
-            long count = await messageRepository.CountAsync(x => x.TopicId == topicId);
+            var count = await messageRepository.CountAsync(x => x.TopicId == topicId);
 
             int result = count == 0 ? 0 : (int)(count / IMessageService.PageSize + 1);
 
@@ -109,18 +109,24 @@ namespace ForumTask.BLL.Services
                 throw new AccessDeniedException("Caller is banned");
             }
 
-            if ((user.MaxRole == RoleEnum.User || !canEditOtherUser) && (!authorId.HasValue || authorId.Value != callerId))
+            var isRegularUser = user.MaxRole == RoleEnum.User;
+            var hasAuthor = authorId.HasValue;
+            var notOwn = authorId.Value != callerId;
+
+            if ((isRegularUser || !canEditOtherUser) && (!hasAuthor || notOwn))
             {
                 throw new AccessDeniedException("Not enough rights to edit/delete other users message");
             }
 
-            if (user.MaxRole == RoleEnum.User
-                && (DateTime.UtcNow - writeTime).TotalMinutes > ITopicService.EditOrDeleteTime)
+            var timeSinceWrite = DateTime.UtcNow - writeTime;
+            var timeLimitExceed = timeSinceWrite.TotalMinutes > ITopicService.EditOrDeleteTime;
+
+            if (isRegularUser && timeLimitExceed)
             {
                 throw new AccessDeniedException("Edit/delete time limit exceed");
             }
 
-            if (authorId.HasValue && authorId.Value != callerId)
+            if (hasAuthor && notOwn)
             {
                 var author = await userService.GetAsync(authorId.Value);
 

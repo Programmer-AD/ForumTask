@@ -23,7 +23,9 @@ namespace ForumTask.BLL.Services
         {
             var mark = await GetMarkByKeysAsync(userId, messageId);
 
-            return ((sbyte?)mark?.Type) ?? 0;
+            var result = ((sbyte?)mark?.Type) ?? 0;
+
+            return result;
         }
 
         public async Task SetAsync(MarkDto markDto)
@@ -39,15 +41,17 @@ namespace ForumTask.BLL.Services
             }
             else
             {
+                var newMarkType = (MarkType)Math.Sign(markDto.Value);
+
                 if (mark == null)
                 {
                     var newMark = mapper.Map<Mark>(markDto);
 
                     await markRepository.CreateAsync(newMark);
                 }
-                else if ((sbyte)mark.Type != markDto.Value)
+                else if (mark.Type != newMarkType)
                 {
-                    mark.Type = (MarkType)Math.Sign(markDto.Value);
+                    mark.Type = newMarkType;
 
                     await markRepository.UpdateAsync(mark);
                 }

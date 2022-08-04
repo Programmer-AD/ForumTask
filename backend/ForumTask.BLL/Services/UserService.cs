@@ -62,7 +62,8 @@ namespace ForumTask.BLL.Services
                 var result = await userManager.CreateAsync(user, password);
                 AssertSucceeded(result);
 
-                await userManager.AddToRoleAsync(user, RoleNames.User);
+                result = await userManager.AddToRoleAsync(user, RoleNames.User);
+                AssertSucceeded(result);
             }
             catch (IdentityException exception)
             {
@@ -87,14 +88,16 @@ namespace ForumTask.BLL.Services
 
         public async Task SetRoleAsync(long userId, string roleName, bool setHasRole, long callerId)
         {
-            if (roleName.ToLower() == RoleNames.User.ToLower())
+            var isCorrectRoleName = Enum.TryParse<RoleEnum>(roleName, out var role);
+
+            if (!isCorrectRoleName || role == RoleEnum.User)
             {
                 throw new InvalidOperationException();
             }
 
             var caller = await GetAsync(callerId);
 
-            if (caller.MaxRole <= Enum.Parse<RoleEnum>(roleName))
+            if (caller.MaxRole <= role)
             {
                 throw new AccessDeniedException("Cant manage higher or equal roles");
             }
@@ -109,7 +112,9 @@ namespace ForumTask.BLL.Services
 
         public async Task SignInAsync(string userName, string password, bool remember)
         {
-            var signedIn = await signInManager.PasswordSignInAsync(userName, password, remember, false).ContinueWith(x => x.Result.Succeeded);
+            var result = await signInManager.PasswordSignInAsync(userName, password, remember, false);
+
+            var signedIn = result.Succeeded;
 
             if (!signedIn)
             {
