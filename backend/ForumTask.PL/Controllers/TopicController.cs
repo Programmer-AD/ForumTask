@@ -1,4 +1,5 @@
-﻿using ForumTask.BLL.Interfaces;
+﻿using AutoMapper;
+using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
 using ForumTask.PL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +11,14 @@ namespace ForumTask.PL.Controllers
     public class TopicController : ControllerBase
     {
         private readonly ITopicService topicService;
+        private readonly IMapper mapper;
 
-        public TopicController(ITopicService topicService)
+        public TopicController(
+            ITopicService topicService,
+            IMapper mapper)
         {
             this.topicService = topicService;
+            this.mapper = mapper;
         }
 
         [HttpGet("{topicId}")]
@@ -21,7 +26,7 @@ namespace ForumTask.PL.Controllers
         {
             var topicDto = await topicService.GetAsync(topicId);
 
-            var topicViewModel = new TopicViewModel(topicDto);
+            var topicViewModel = mapper.Map<TopicViewModel>(topicDto);
 
             return topicViewModel;
         }
@@ -37,7 +42,7 @@ namespace ForumTask.PL.Controllers
         {
             var topicDtos = await topicService.GetTopNewAsync(page, searchTitle);
 
-            var topicViewModels = topicDtos.Select(dto => new TopicViewModel(dto));
+            var topicViewModels = mapper.Map<IEnumerable<TopicViewModel>>(topicDtos);
 
             return topicViewModels;
         }

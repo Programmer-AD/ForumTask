@@ -1,4 +1,5 @@
-﻿using ForumTask.BLL.DTO;
+﻿using AutoMapper;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Entities;
@@ -11,15 +12,18 @@ namespace ForumTask.BLL.Services
         private readonly IRepository<Topic> topicRepository;
         private readonly IRepository<Message> messageRepository;
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
         public TopicService(
             IRepository<Topic> topicRepository,
             IRepository<Message> messageRepository,
-            IUserService userService)
+            IUserService userService,
+            IMapper mapper)
         {
             this.topicRepository = topicRepository;
             this.messageRepository = messageRepository;
             this.userService = userService;
+            this.mapper = mapper;
         }
 
         public async Task<long> CreateAsync(string title, string messageText, long callerId)
@@ -62,15 +66,17 @@ namespace ForumTask.BLL.Services
         {
             var topic = await GetTopicByIdAsync(id);
 
-            long messageCount = await GetMessageCountAsync(id);
-            var topicDto = new TopicDto(topic) { MessageCount = messageCount };
+            var messageCount = await GetMessageCountAsync(id);
+
+            var topicDto = mapper.Map<TopicDto>(topic);
+            topicDto.MessageCount = messageCount;
 
             return topicDto;
         }
 
         public async Task<int> GetPagesCountAsync()
         {
-            long count = await topicRepository.CountAsync();
+            var count = await topicRepository.CountAsync();
 
             int result = count == 0 ? 0 : (int)(count / ITopicService.PageSize + 1); ;
 
@@ -85,7 +91,7 @@ namespace ForumTask.BLL.Services
                 skipCount: page * ITopicService.PageSize,
                 takeCount: ITopicService.PageSize);
 
-            var topicDtos = topics.Select(x => new TopicDto(x)).ToArray();
+            var topicDtos = mapper.Map<IEnumerable<TopicDto>>(topics);
 
             foreach (var topicDto in topicDtos)
             {
@@ -102,6 +108,7 @@ namespace ForumTask.BLL.Services
             await CheckEditAccessAsync(topic.CreateTime, topic.CreatorId, callerId, false);
 
             topic.Title = newTitle;
+
             await topicRepository.UpdateAsync(topic);
         }
 
@@ -129,6 +136,7 @@ namespace ForumTask.BLL.Services
         private async Task CheckEditAccessAsync(DateTime createTime, long? creatorId, long callerId, bool canEditOtherUser)
         {
             var user = await userService.GetAsync(callerId);
+
             if (user.IsBanned)
             {
                 throw new AccessDeniedException("Caller is banned");

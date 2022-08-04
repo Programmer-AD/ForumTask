@@ -1,4 +1,5 @@
-﻿using ForumTask.BLL.DTO;
+﻿using AutoMapper;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Entities;
 using ForumTask.DAL.Interfaces;
@@ -8,10 +9,14 @@ namespace ForumTask.BLL.Services
     public class MarkService : IMarkService
     {
         private readonly IRepository<Mark> markRepository;
+        private readonly IMapper mapper;
 
-        public MarkService(IRepository<Mark> markRepository)
+        public MarkService(
+            IRepository<Mark> markRepository,
+            IMapper mapper)
         {
             this.markRepository = markRepository;
+            this.mapper = mapper;
         }
 
         public async Task<sbyte> GetOwnAsync(long userId, long messageId)
@@ -36,7 +41,7 @@ namespace ForumTask.BLL.Services
             {
                 if (mark == null)
                 {
-                    var newMark = markDto.ToEntity();
+                    var newMark = mapper.Map<Mark>(markDto);
 
                     await markRepository.CreateAsync(newMark);
                 }

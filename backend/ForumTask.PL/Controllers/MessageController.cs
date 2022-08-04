@@ -1,4 +1,5 @@
-﻿using ForumTask.BLL.DTO;
+﻿using AutoMapper;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
 using ForumTask.PL.Models;
@@ -11,10 +12,14 @@ namespace ForumTask.PL.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IMessageService messageService;
+        private readonly IMapper mapper;
 
-        public MessageController(IMessageService messageService)
+        public MessageController(
+            IMessageService messageService,
+            IMapper mapper)
         {
             this.messageService = messageService;
+            this.mapper = mapper;
         }
 
         [HttpGet("topic{topicId}/pageCount")]
@@ -28,7 +33,7 @@ namespace ForumTask.PL.Controllers
         {
             var messageDtos = await messageService.GetTopOldAsync(topicId, page);
 
-            var messageViewModels = messageDtos.Select(dto => new MessageViewModel(dto));
+            var messageViewModels = mapper.Map<IEnumerable<MessageViewModel>>(messageDtos);
 
             return messageViewModels;
         }
@@ -37,7 +42,8 @@ namespace ForumTask.PL.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync(MessageAddModel model)
         {
-            var messageDto = new MessageDto() { Text = model.Text, TopicId = model.TopicId, AuthorId = User.GetId() };
+            var messageDto = mapper.Map<MessageDto>(model);
+            messageDto.AuthorId = User.GetId();
 
             await messageService.AddAsync(messageDto);
 

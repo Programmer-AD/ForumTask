@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ForumTask.BLL.Interfaces;
 using ForumTask.PL.Extensions;
 using ForumTask.PL.Models;
@@ -12,10 +13,14 @@ namespace ForumTask.PL.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public UserController(IUserService userService)
+        public UserController(
+            IUserService userService,
+            IMapper mapper)
         {
             this.userService = userService;
+            this.mapper = mapper;
         }
 
         [HttpGet("{userId}")]
@@ -23,7 +28,7 @@ namespace ForumTask.PL.Controllers
         {
             var userDto = await userService.GetAsync(userId);
 
-            var userViewModel = new UserViewModel(userDto);
+            var userViewModel = mapper.Map<UserViewModel>(userDto);
 
             return userViewModel;
         }
@@ -98,7 +103,7 @@ namespace ForumTask.PL.Controllers
         {
             var userDto = await userService.GetAsync(User.GetId());
 
-            var userViewModel = new UserViewModel(userDto);
+            var userViewModel = mapper.Map<UserViewModel>(userDto);
 
             return userViewModel;
         }

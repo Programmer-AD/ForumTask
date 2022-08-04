@@ -1,4 +1,5 @@
-﻿using ForumTask.BLL.DTO;
+﻿using AutoMapper;
+using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
 using ForumTask.DAL.Entities;
@@ -12,31 +13,37 @@ namespace ForumTask.BLL.Services
         private readonly IRepository<Topic> topicRepository;
         private readonly IRepository<Mark> markRepository;
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
         public MessageService(
             IRepository<Message> messageRepository,
             IRepository<Topic> topicRepository,
             IRepository<Mark> markRepository,
-            IUserService userService)
+            IUserService userService,
+            IMapper mapper)
         {
             this.messageRepository = messageRepository;
             this.topicRepository = topicRepository;
             this.markRepository = markRepository;
             this.userService = userService;
+            this.mapper = mapper;
         }
 
-        public async Task AddAsync(MessageDto message)
+        public async Task AddAsync(MessageDto messageDto)
         {
-            var user = await userService.GetAsync(message.AuthorId.Value);
+            var user = await userService.GetAsync(messageDto.AuthorId.Value);
             if (user.IsBanned)
             {
                 throw new AccessDeniedException("Caller is banned");
             }
 
-            var topic = await topicRepository.GetAsync(x => x.Id == message.TopicId) ?? throw new NotFoundException();
+            var topic = await topicRepository.GetAsync(x => x.Id == messageDto.TopicId) ?? throw new NotFoundException();
 
-            message.WriteTime = DateTime.UtcNow;
-            await messageRepository.CreateAsync(message.ToEntity());
+            messageDto.WriteTime = DateTime.UtcNow;
+
+            var message = mapper.Map<Message>(messageDto);
+
+            await messageRepository.CreateAsync(message);
         }
 
         public async Task DeleteAsync(long messageId, long callerId)
@@ -66,7 +73,7 @@ namespace ForumTask.BLL.Services
                 skipCount: IMessageService.PageSize * page,
                 takeCount: IMessageService.PageSize);
 
-            var messageDtos = messages.Select(x => new MessageDto(x)).ToArray();
+            var messageDtos = mapper.Map<IEnumerable<MessageDto>>(messages);
 
             foreach (var messageDto in messageDtos)
             {

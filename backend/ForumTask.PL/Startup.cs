@@ -1,7 +1,9 @@
 using ForumTask.BLL.DependencyInjection;
+using ForumTask.BLL.Mapper;
 using ForumTask.DAL.DependencyInjection;
 using ForumTask.DAL.EF;
 using ForumTask.PL.Filters;
+using ForumTask.PL.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace ForumTask.PL
@@ -19,6 +21,12 @@ namespace ForumTask.PL
         {
             services.AddDal(config);
             services.AddBll(config);
+
+            services.AddAutoMapper(config =>
+            {
+                config.AddProfile<BllProfile>();
+                config.AddProfile<PlProfile>();
+            });
 
             services.AddSpaStaticFiles(config => config.RootPath = "wwwroot");
             services.AddControllers(options =>

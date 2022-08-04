@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using AutoMapper;
 using ForumTask.BLL.DTO;
 using ForumTask.BLL.Exceptions;
 using ForumTask.BLL.Interfaces;
@@ -12,11 +13,16 @@ namespace ForumTask.BLL.Services
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IMapper mapper;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager)
+        public UserService(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IMapper mapper)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
 
         public async Task DeleteAsync(long userId, long callerId)
@@ -36,10 +42,8 @@ namespace ForumTask.BLL.Services
         {
             var user = await FindUserByIdAsync(userId);
 
-            var userDto = new UserDto(user)
-            {
-                MaxRole = await GetMaxRoleAsync(user)
-            };
+            var userDto = mapper.Map<UserDto>(user);
+            userDto.MaxRole = await GetMaxRoleAsync(user);
 
             return userDto;
         }
