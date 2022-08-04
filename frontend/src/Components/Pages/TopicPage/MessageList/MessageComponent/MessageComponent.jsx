@@ -126,7 +126,7 @@ export default class MessageComponent extends React.Component {
 
         const userRoleId = Api.getRoleId(this.props.user.roleName);
         const isRegularUser = userRoleId === 0;
-        const isNotAuthor = this.props.user.id != this.state.author.id;
+        const isNotAuthor = this.props.user.id != this.state.author?.id;
 
         if (isRegularUser && !this.checkTime(false) || this.props.user.isBanned) {
             return null;
