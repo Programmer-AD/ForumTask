@@ -144,9 +144,9 @@ namespace ForumTask.BLL.Services
 
             var isRegularUser = user.MaxRole == RoleEnum.User;
             var hasCreator = creatorId.HasValue;
-            var notOwn = creatorId.Value != callerId;
+            var notOwn = creatorId != callerId;
 
-            if ((isRegularUser || !canEditOtherUser) && (!hasCreator || notOwn))
+            if ((isRegularUser || !canEditOtherUser) && notOwn)
             {
                 throw new AccessDeniedException("Not enough rights to edit/delete other users topic");
             }
@@ -159,11 +159,11 @@ namespace ForumTask.BLL.Services
                 throw new AccessDeniedException("Edit/delete time limit exceed");
             }
 
-            if (hasCreator && creatorId.Value != callerId)
+            if (!isRegularUser && hasCreator && notOwn)
             {
                 var creator = await userService.GetAsync(creatorId.Value);
 
-                if (creator.MaxRole >= user.MaxRole)
+                if (user.MaxRole <= creator.MaxRole)
                 {
                     throw new AccessDeniedException("Can`t edit/delete topic of user with same or bigger role");
                 }

@@ -141,9 +141,11 @@ namespace ForumTask.BLL.Services
             return user != null;
         }
 
-        private Task<User> FindUserByIdAsync(long userId)
+        private async Task<User> FindUserByIdAsync(long userId)
         {
-            return userManager.FindByIdAsync(userId.ToString());
+            var user = await userManager.FindByIdAsync(userId.ToString()) ?? throw new NotFoundException();
+
+            return user;
         }
 
         private async Task<RoleEnum> GetMaxRoleAsync(User user)
@@ -155,12 +157,12 @@ namespace ForumTask.BLL.Services
             return result;
         }
 
-        private async Task CheckRightAsync(User victim, long callerId)
+        private async Task CheckRightAsync(User target, long callerId)
         {
             var caller = await GetAsync(callerId);
-            var victimMaxRole = await GetMaxRoleAsync(victim);
+            var targetMaxRole = await GetMaxRoleAsync(target);
 
-            if (caller.MaxRole <= victimMaxRole)
+            if (caller.MaxRole <= targetMaxRole)
             {
                 throw new AccessDeniedException("To edit/delete this user your right-level must be greater then of that user");
             }
