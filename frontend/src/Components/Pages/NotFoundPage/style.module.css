@@ -1,0 +1,19 @@
+.title {
+    font-family: monospace;
+    font-size: xx-large;
+    font-style: italic;
+    margin: 5px;
+}
+
+.page_container {
+    text-align: center;
+}
+
+.link {
+    text-align: center;
+    padding: 10px;
+    background-color: gray;
+    color: white;
+    display: block;
+    font-size: larger;
+}
