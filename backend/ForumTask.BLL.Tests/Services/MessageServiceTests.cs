@@ -36,6 +36,46 @@ namespace ForumTask.BLL.Tests.Services
                 mapperMock.Object);
         }
 
-        //TODO: EditAsync
+        [Test]
+        public async Task EditAsync_WhenMessageNotFound_ThrowNotFoundException()
+        {
+            //TODO: EditAsync tests
+        }
+
+        [Test]
+        public async Task EditAsync_WhenCallerIsBanned_ThrowAccessDeniedException()
+        {
+
+        }
+
+        [Test]
+        public async Task EditAsync_WhenUserIsRegularAndNotOwnMessage_ThrowAccessDeniedException()
+        {
+
+        }
+
+        [Test]
+        public async Task EditAsync_WhenUserIsRegularAndEditTimeLimitExceed_ThrowAccessDeniedException()
+        {
+
+        }
+
+        [Test]
+        public async Task EditAsync_WhenNotOwnMessageAndAuthorMaxRoleIsSameOrGreater_ThrowAccessDeniedException()
+        {
+
+        }
+
+        [Test]
+        public async Task EditAsync_WhenOwnMessageAndTimeLimitNotExceed_UpdateMessage()
+        {
+
+        }
+
+        [Test]
+        public async Task EditAsync_WhenNotRegularUserAndHasGreaterRoleThanAuthor_UpdateMessage()
+        {
+
+        }
     }
 }

@@ -29,6 +29,53 @@ namespace ForumTask.BLL.Tests.Services
                 mapperMock.Object);
         }
 
-        //TODO: SetRoleAsync
+
+        [Test]
+        public async Task SetRoleAsync_WhenRoleNameIsIncorrect_ThrowInvalidOpertionException()
+        {
+            //TODO: SetRoleAsync tests
+        }
+
+        [Test]
+        public async Task SetRoleAsync_WhenRoleNameUser_ThrowInvalidOperationException()
+        {
+
+        }
+
+        [Test]
+        public async Task SetRoleAsync_WhenCallerRoleIsLessThanOrEqualToSettedRole_ThrowAccessDeniedException()
+        {
+
+        }
+
+        [Test]
+        public async Task SetRoleAsync_WhenTargetUserNotFound_ThrowNotFoundException()
+        {
+
+        }
+
+        [Test]
+        public async Task SetRoleAsync_WhenCallerMaxRoleIsLessThanOrEqualToTargetRole_ThrowAccessDeniedException()
+        {
+
+        }
+
+        [Test]
+        public async Task SetRoleAsync_WhenSetHasRoleIsTrue_AddToRole()
+        {
+
+        }
+
+        [Test]
+        public async Task SetRoleAsync_WhenSetHasRoleIsFalse_RemoveFromRole()
+        {
+
+        }
+
+        [Test]
+        public async Task SetRoleAsync_ParseOfRoleIsCaseInsensetive()
+        {
+
+        }
     }
 }

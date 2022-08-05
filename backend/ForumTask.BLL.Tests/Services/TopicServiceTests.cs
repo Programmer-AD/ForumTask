@@ -33,6 +33,40 @@ namespace ForumTask.BLL.Tests.Services
                 mapperMock.Object);
         }
 
-        //TODO: CreateAsync
+        [Test]
+        public async Task CreateAsync_WhenCallerIsBanned_ThrowAccessDeniedException()
+        {
+            //TODO: CreateAsync tests
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenCallerIsNotBanned_CreateTopic()
+        {
+
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenTopicCreatedAndMessageTextIsNotNullOrEmpty_CreateMessage()
+        {
+
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenTopicCreatedAndMessageTextIsNullOrEmpty_DontCreateMessage()
+        {
+
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenTopicCreated_ForceSaveChanges()
+        {
+
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenTopicCreatedWithMessage_ForceSaveChanges()
+        {
+
+        }
     }
 }
